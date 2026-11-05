@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEMBER SIGN IN | PYTHON 2026 ARCHIVE</title>
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+    .auth-section-wrap {
+      min-height: 75vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 4% 60px;
+      background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+    }
+    .auth-form-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 440px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    }
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      display: block;
+      color: #374151;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-fine);
+      background: #F9FAFB;
+      font-family: 'Anta', sans-serif;
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-group input:focus {
+      border-color: var(--dark-red);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+    }
+    .password-container {
+      position: relative;
+    }
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #9CA3AF;
+      cursor: pointer;
+    }
+    @media (max-width: 600px) {
+      .auth-section-wrap {
+        padding: 110px 4% 40px;
+      }
+      .auth-form-card {
+        padding: 26px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Ban Notice (auto-shown when redirected with ?banned=1) -->
+  <div id="bannedNotice" style="display:none;position:fixed;top:0;left:0;width:100%;background:#DC2626;color:#fff;padding:14px 20px;text-align:center;font-weight:800;font-size:0.9rem;z-index:9999;letter-spacing:0.5px;">
+    ⛔ Your account has been suspended by the administrator. Please contact support.
+  </div>
+  <script>
+    (function(){
+      if(new URLSearchParams(window.location.search).get('banned')==='1'){
+        var n=document.getElementById('bannedNotice');
+        if(n){n.style.display='block';}
+        // Clear any remaining session
+        try{localStorage.removeItem('python_user');}catch(e){}
+        try{sessionStorage.clear();}catch(e){}
+      }
+    })();
+  </script>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop" class="">NEW DROP</a></li>
+      <li><a href="shop.html" class="">SHOP ALL</a></li>
+      <li><a href="index.html#collections" class="">COLLECTIONS</a></li>
+      <li><a href="customize.html" class="">CUSTOMIZE</a></li>
+      <li><a href="offers.html" class="">OFFERS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="user" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart" style="">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px; "></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn ">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+    </div>
+  </div>
+<div id="auth-loading" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:99999; flex-direction:column; align-items:center; justify-content:center; gap:18px; backdrop-filter: blur(8px);">
+        <div class="snake-loader-wrapper" style="position: relative; width: 80px; height: 80px; display: flex; align-items: center; justify-content: center;">
+            <svg class="snake-svg" viewBox="0 0 100 100" style="width: 100%; height: 100%; filter: drop-shadow(0 0 10px rgba(34, 197, 94, 0.7)) drop-shadow(0 0 20px rgba(200, 169, 110, 0.4));">
+                <defs>
+                    <linearGradient id="snake-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stop-color="#22c55e" />
+                        <stop offset="50%" stop-color="#c8a96e" />
+                        <stop offset="100%" stop-color="transparent" stop-opacity="0" />
+                    </linearGradient>
+                </defs>
+                <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="6" />
+                <circle class="snake-body" cx="50" cy="50" r="40" fill="none" stroke="url(#snake-gradient)" stroke-width="6" stroke-linecap="round" />
+            </svg>
+        </div>
+        <p style="color:#fff;font-size:1.1rem;font-weight:700;letter-spacing:1px;">Please Wait...</p>
+    </div>
+
+    <main class="auth-section-wrap">
+        <div class="auth-form-card">
+            <div id="checkout-login-notice" style="display:none; background: rgba(220, 20, 60, 0.08); border: 1.5px solid #DC143C; color: #8B0000; padding: 12px 16px; border-radius: 12px; font-size: 0.9rem; font-weight: 700; margin-bottom: 20px; text-align: center;">
+                🛒 Order එක Place කිරීමට ප්‍රථමයෙන් Sign In වන්න (හෝ අලුතින් Account එකක් සාදන්න).
+            </div>
+            <h2 style="text-align: center; margin-bottom: 30px;">Welcome <span style="color: #8B0000;">BACK</span></h2>
+            <div class="form-group">
+                <label>Email Address</label>
+                <input type="email" id="login-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter') doLogin()">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-container">
+                    <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter') doLogin()">
+                    <button type="button" class="toggle-password" onclick="togglePass('login-pass', this)">
+                        <i class="eye-open" data-lucide="eye"></i>
+                        <i class="eye-closed" data-lucide="eye-off" style="display:none;"></i>
+                    </button>
+                </div>
+                <div style="text-align: right; margin-top: 8px;">
+                    <a href="#" onclick="forgotPassword(); return false;" style="color: #8B0000; text-decoration: none; font-size: 0.85rem;">Forgot Password? (මුරපදය අමතකද?)</a>
+                </div>
+            </div>
+            <div id="login-error" style="display:none; background:#fdf2f2; color:#9b1c1c; padding:10px 15px; border-radius:10px; font-size:0.88rem; margin-bottom:10px; border-left:4px solid #8B0000;"></div>
+            <button id="login-btn" class="btn btn-primary" style="width: 100%; margin-top: 10px;" onclick="doLogin()">
+                <i data-lucide="log-in" style="width:18px;"></i> Sign In
+            </button>
+            <p style="text-align: center; margin-top: 20px; color: var(--text-muted); font-size: 0.9rem;">
+                Don't have an account? <a id="signup-link" href="signup.html" style="color: #8B0000; font-weight: 800; text-decoration: underline;">Create Account (ගිණුමක් සාදන්න)</a>
+            </p>
+        </div>
+    </main>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('redirect') === 'checkout' || sessionStorage.getItem('redirect_after_login') === 'checkout.html') {
+            const notice = document.getElementById('checkout-login-notice');
+            if (notice) notice.style.display = 'block';
+            const signupLink = document.getElementById('signup-link');
+            if (signupLink) signupLink.href = 'signup.html?redirect=checkout';
+        }
+    });
+
+    // Toggle Password Visibility
+    function togglePass(inputId, btn) {
+        const input = document.getElementById(inputId);
+        const eyeOpen = btn.querySelector('.eye-open');
+        const eyeClosed = btn.querySelector('.eye-closed');
+        if (input.type === 'password') {
+            input.type = 'text';
+            eyeOpen.style.display = 'none';
+            eyeClosed.style.display = 'inline-block';
+        } else {
+            input.type = 'password';
+            eyeOpen.style.display = 'inline-block';
+            eyeClosed.style.display = 'none';
+        }
+    }
+
+    // Forgot Password flow via Firebase
+    function forgotPassword() {
+        const email = document.getElementById('login-email').value.trim();
+        const errEl = document.getElementById('login-error');
+        errEl.style.display = 'none';
+        
+        if (!email) {
+            errEl.textContent = '⚠️ කරුණාකර මුලින්ම ඔබගේ Email ලිපිනය ඇතුළත් කරන්න.';
+            errEl.style.background = '#fdf2f2';
+            errEl.style.color = '#9b1c1c';
+            errEl.style.borderLeft = '4px solid #DC143C';
+            errEl.style.display = 'block';
+            return;
+        }
+
+        document.getElementById('auth-loading').style.display = 'flex';
+
+        // Configure redirection URL dynamically to reset-password.html
+        const resetUrl = window.location.href.substring(0, window.location.href.lastIndexOf('/') + 1) + 'reset-password.html';
+        const actionCodeSettings = {
+            url: resetUrl,
+            handleCodeInApp: true
+        };
+
+        auth.sendPasswordResetEmail(email, actionCodeSettings).then(() => {
+            document.getElementById('auth-loading').style.display = 'none';
+            errEl.textContent = '✉️ මුරපදය නැවත සැකසීමේ සබැඳිය (Password reset link) ඔබගේ Email ලිපිනයට යවා ඇත. කරුණාකර ඔබගේ Inbox/Spam පරික්ෂා කරන්න.';
+            errEl.style.background = '#edfdfd';
+            errEl.style.color = '#008080';
+            errEl.style.borderLeft = '4px solid #008080';
+            errEl.style.display = 'block';
+        }).catch((error) => {
+            document.getElementById('auth-loading').style.display = 'none';
+            let errMsg = 'Email එක යැවීමේදී දෝෂයක් ඇතිවිය. කරුණාකර නැවත උත්සාහ කරන්න.';
+            if (error.code === 'auth/user-not-found') {
+                errMsg = '⚠️ මෙම Email ලිපිනයෙන් ලියාපදිංචි වී ඇති ගිණුමක් සොයාගත නොහැක.';
+            } else if (error.code === 'auth/invalid-email') {
+                errMsg = '⚠️ ඇතුළත් කළ Email ලිපිනය වැරදියි.';
+            }
+            errEl.textContent = errMsg;
+            errEl.style.background = '#fdf2f2';
+            errEl.style.color = '#9b1c1c';
+            errEl.style.borderLeft = '4px solid #DC143C';
+            errEl.style.display = 'block';
+        });
+    }
+
+    function doLogin() {
+        const email = document.getElementById('login-email').value.trim();
+        const pass  = document.getElementById('login-pass').value;
+        const errEl = document.getElementById('login-error');
+        const btn   = document.getElementById('login-btn');
+        errEl.style.display = 'none';
+        errEl.style.background = '#fdf2f2';
+        errEl.style.color = '#9b1c1c';
+        errEl.style.borderLeft = '4px solid #DC143C';
+        if (!email || !pass) { errEl.textContent = '⚠️ Email සහ Password ඇතුළත් කරන්න.'; errEl.style.display='block'; return; }
+
+        // Store Admin Direct Login Check
+        if (email.toLowerCase() === 'pythonstore@gmail.com' && pass === 'python123') {
+            sessionStorage.setItem('python_admin_session', 'authenticated');
+            sessionStorage.setItem('python_admin_email', 'pythonstore@gmail.com');
+            localStorage.setItem('python_admin_session', 'authenticated');
+            localStorage.setItem('python_admin_email', 'pythonstore@gmail.com');
+            window.location.href = 'database.html';
+            return;
+        }
+        document.getElementById('auth-loading').style.display = 'flex';
+        btn.disabled = true;
+        login(email, pass, function(errMsg) {
+            document.getElementById('auth-loading').style.display = 'none';
+            btn.disabled = false;
+            errEl.textContent = '⚠️ ' + errMsg;
+            errEl.style.display = 'block';
+        });
+    }
+    </script>
+
+      <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>lucide.createIcons();</script>
+</body>
+
+</html>

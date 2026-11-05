@@ -1,0 +1,2383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TRACK YOUR ORDER | PYTHON STREETWEAR 2026</title>
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="firebase-config.js"></script>
+
+  <style>
+    :root {
+      --bg-page: #FFFFFF;
+      --bg-surface: #FAFAFA;
+      --bg-card: #FFFFFF;
+      --border-subtle: #E5E7EB;
+      --border-dark: #111827;
+      --text-main: #0A0A0A;
+      --text-muted: #4B5563;
+      --text-dim: #9CA3AF;
+      --accent-red: #8B0000;
+      --accent-gold: #D97706;
+      --font-headline: 'Anta', sans-serif;
+      --font-sans: 'Plus Jakarta Sans', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      /* 4 Stage Colors */
+      --color-confirmed: #3B82F6;
+      --color-packed: #F59E0B;
+      --color-dispatched: #8B5CF6;
+      --color-delivered: #22C55E;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    main {
+      flex: 1;
+      padding-top: 140px;
+    }
+
+    /* Hero Section */
+    .track-hero-section {
+      max-width: 920px;
+      margin: 0 auto;
+      padding: 10px 18px 70px;
+      box-sizing: border-box;
+    }
+
+    .track-hero-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .hero-pill-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-family: var(--font-headline);
+      font-size: 0.72rem;
+      letter-spacing: 1.5px;
+      color: #0A0A0A;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .hero-pill-badge .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #22C55E;
+      box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+    }
+
+    .track-hero-title {
+      font-family: var(--font-headline);
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #0A0A0A;
+      margin: 0 0 8px;
+    }
+
+    .track-hero-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 620px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    /* Features Strip */
+    .track-features-strip {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 22px auto 30px;
+    }
+
+    .track-feature-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 999px;
+      padding: 7px 15px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1F2937;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .track-feature-item i {
+      color: #0A0A0A;
+      width: 15px;
+      height: 15px;
+    }
+
+    /* Tabs Selector */
+    .track-tabs-container {
+      max-width: 680px;
+      margin: 0 auto 16px;
+      display: flex;
+      background: #F3F4F6;
+      padding: 5px;
+      border-radius: 14px;
+      border: 1px solid #E5E7EB;
+    }
+
+    .track-tab-btn {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-family: var(--font-headline);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #4B5563;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .track-tab-btn.active {
+      background: #FFFFFF;
+      color: #0A0A0A;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .track-tab-btn:hover:not(.active) {
+      color: #0A0A0A;
+    }
+
+    /* Search Glass Box */
+    .track-search-wrapper {
+      max-width: 680px;
+      margin: 0 auto 12px;
+    }
+
+    .track-search-glass {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 16px;
+      padding: 7px 7px 7px 18px;
+      transition: all 0.25s ease;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .track-search-glass:focus-within {
+      border-color: #0A0A0A;
+      box-shadow: 0 0 0 4px rgba(10, 10, 10, 0.06);
+    }
+
+    .track-search-glass input {
+      flex: 1;
+      min-width: 0;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #0A0A0A;
+      font-size: 0.98rem;
+      font-weight: 600;
+      font-family: var(--font-sans);
+      padding: 10px 4px;
+    }
+
+    .track-search-glass input::placeholder {
+      color: #9CA3AF;
+      font-weight: 400;
+    }
+
+    .btn-track-submit {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 26px;
+      border-radius: 11px;
+      font-family: var(--font-headline);
+      font-size: 0.8rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .btn-track-submit:hover {
+      background: #262626;
+      transform: translateY(-1px);
+    }
+
+    .btn-track-submit:active {
+      transform: translateY(0);
+    }
+
+    .btn-track-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .track-hints {
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 8px;
+    }
+
+    .track-hints strong {
+      color: #374151;
+      font-family: var(--font-mono);
+    }
+
+    /* Loader */
+    .track-loader {
+      display: none;
+      text-align: center;
+      padding: 30px 10px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .track-spinner {
+      width: 36px;
+      height: 36px;
+      border: 3px solid #E5E7EB;
+      border-top-color: #0A0A0A;
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Error Banner */
+    .track-error-card {
+      display: none;
+      max-width: 680px;
+      margin: 16px auto 0;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      border-radius: 12px;
+      padding: 14px 18px;
+      color: #DC2626;
+      font-size: 0.88rem;
+      font-weight: 600;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .track-error-card i {
+      vertical-align: middle;
+      margin-right: 6px;
+    }
+
+    /* Results Wrap */
+    .track-results-wrap {
+      display: none;
+      margin-top: 36px;
+      animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Standard Luxury Cards */
+    .track-card {
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 20px;
+      padding: 26px;
+      margin-bottom: 22px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .track-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid #F3F4F6;
+      flex-wrap: wrap;
+    }
+
+    .card-head-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .card-icon-badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .track-card-head h3 {
+      font-family: var(--font-headline);
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #0A0A0A;
+      margin: 0;
+    }
+
+    /* Status Pills */
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-family: var(--font-headline);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pill.confirmed { background: rgba(59, 130, 246, 0.12); color: #2563EB; border: 1px solid rgba(59, 130, 246, 0.25); }
+    .status-pill.packed    { background: rgba(245, 158, 11, 0.12); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.25); }
+    .status-pill.dispatched{ background: rgba(139, 92, 246, 0.12); color: #7C3AED; border: 1px solid rgba(139, 92, 246, 0.25); }
+    .status-pill.delivered { background: rgba(34, 197, 94, 0.12);  color: #16A34A; border: 1px solid rgba(34, 197, 94, 0.25); }
+    .status-pill.cancelled { background: rgba(220, 38, 38, 0.12);  color: #DC2626; border: 1px solid rgba(220, 38, 38, 0.25); }
+    .status-pill.transit   { background: rgba(2, 119, 189, 0.12);  color: #0277BD; border: 1px solid rgba(2, 119, 189, 0.25); }
+
+    /* Store 4-Stage Timeline */
+    .store-timeline-container {
+      margin: 10px 0 16px;
+      position: relative;
+    }
+
+    .store-timeline {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    .store-timeline-line {
+      position: absolute;
+      top: 22px;
+      left: 30px;
+      right: 30px;
+      height: 3px;
+      background: #E5E7EB;
+      z-index: 1;
+      border-radius: 2px;
+    }
+
+    .store-timeline-fill {
+      height: 100%;
+      background: var(--color-confirmed);
+      border-radius: 2px;
+      transition: width 0.5s ease, background-color 0.4s ease;
+    }
+
+    .store-step-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 80px;
+    }
+
+    .store-step-circle {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2.5px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9CA3AF;
+      transition: all 0.3s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
+    .store-step-node.completed .store-step-circle {
+      background: var(--step-color);
+      border-color: var(--step-color);
+      color: #FFFFFF;
+    }
+
+    .store-step-node.active .store-step-circle {
+      background: var(--step-color);
+      border-color: var(--step-color);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 5px color-mix(in srgb, var(--step-color) 20%, transparent);
+    }
+
+    .store-step-label {
+      font-family: var(--font-headline);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      margin-top: 10px;
+      color: #9CA3AF;
+      line-height: 1.25;
+    }
+
+    .store-step-node.completed .store-step-label { color: #374151; }
+    .store-step-node.active .store-step-label    { color: #0A0A0A; }
+
+    .store-step-sub {
+      font-size: 0.65rem;
+      color: #9CA3AF;
+      margin-top: 3px;
+      font-weight: 500;
+    }
+
+    .store-step-node.active .store-step-sub {
+      font-weight: 700;
+      color: var(--step-color);
+    }
+
+    /* Cancelled Banner */
+    .cancelled-alert {
+      text-align: center;
+      padding: 24px;
+      background: #FEF2F2;
+      border-radius: 16px;
+      border: 1px solid #FCA5A5;
+      margin: 10px 0;
+    }
+
+    .cancelled-alert h4 {
+      color: #DC2626;
+      font-family: var(--font-headline);
+      font-size: 1.1rem;
+      margin: 0 0 6px;
+    }
+
+    .cancelled-alert p {
+      color: #7F1D1D;
+      font-size: 0.88rem;
+      margin: 0;
+    }
+
+    /* Meta Chips */
+    .meta-chips-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    .meta-chip {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 10px;
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .meta-chip span { color: #6B7280; }
+    .meta-chip strong {
+      font-weight: 700;
+      color: #0A0A0A;
+      font-family: var(--font-mono);
+    }
+
+    /* Item Card */
+    .order-item-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 14px 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .order-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .item-thumbnail {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      object-fit: cover;
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      flex-shrink: 0;
+    }
+
+    .item-thumb-placeholder {
+      width: 64px;
+      height: 64px;
+      border-radius: 12px;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9CA3AF;
+      flex-shrink: 0;
+    }
+
+    .item-desc {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .item-title {
+      font-weight: 700;
+      font-size: 0.92rem;
+      color: #0A0A0A;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .item-spec-chips {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px;
+      flex-wrap: wrap;
+    }
+
+    .spec-pill {
+      background: #F3F4F6;
+      padding: 2px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      color: #4B5563;
+      font-weight: 600;
+    }
+
+    .item-total-col {
+      text-align: right;
+    }
+
+    .item-total-price {
+      font-family: var(--font-headline);
+      font-size: 0.98rem;
+      font-weight: 900;
+      color: #0A0A0A;
+    }
+
+    .item-unit-calc {
+      font-size: 0.72rem;
+      color: #9CA3AF;
+      margin-top: 2px;
+    }
+
+    /* Price Breakdown */
+    .totals-breakdown {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .breakdown-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+      color: #4B5563;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .breakdown-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .breakdown-row.grand {
+      padding-top: 10px;
+      border-top: 1.5px solid #E5E7EB;
+      color: #0A0A0A;
+      font-weight: 800;
+      font-size: 1.1rem;
+    }
+
+    .breakdown-row.grand .val {
+      font-family: var(--font-headline);
+      color: var(--accent-red);
+      font-size: 1.25rem;
+    }
+
+    .btn-invoice-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #0A0A0A;
+      color: #FFFFFF;
+      padding: 12px 22px;
+      border-radius: 12px;
+      font-family: var(--font-headline);
+      font-size: 0.78rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-decoration: none;
+      margin-top: 18px;
+      transition: all 0.2s;
+    }
+
+    .btn-invoice-link:hover {
+      background: #262626;
+      transform: translateY(-1px);
+    }
+
+    /* Shipping Grid */
+    .shipment-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 18px;
+    }
+
+    .ship-cell label {
+      display: block;
+      font-family: var(--font-headline);
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      margin-bottom: 4px;
+    }
+
+    .ship-cell p {
+      font-weight: 600;
+      font-size: 0.92rem;
+      color: #0A0A0A;
+      margin: 0;
+    }
+
+    /* Courier Section Inside Order */
+    .courier-sync-card {
+      background: #F9FAFB;
+      border: 1.5px dashed #D1D5DB;
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 16px;
+    }
+
+    .courier-sync-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .courier-logo-badge {
+      width: 38px;
+      height: 38px;
+      background: #0A0A0A;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    /* ---- TRANZEXPRESS LIVE SECTION ---- */
+    .te-live-card {
+      background: #FFFFFF;
+      border: 1.5px solid #E5E7EB;
+      border-radius: 20px;
+      padding: 28px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+
+    .te-stepper-container {
+      margin: 32px 0 28px;
+      position: relative;
+    }
+
+    .te-stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 0 10px;
+    }
+
+    .te-stepper-bar-bg {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      background: #E5E7EB;
+      z-index: 1;
+      border-radius: 2px;
+    }
+
+    .te-stepper-bar-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: #0A0A0A;
+      border-radius: 2px;
+      transition: width 0.6s ease;
+    }
+
+    .te-node {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 84px;
+    }
+
+    .te-icon-wrap {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: #F9FAFB;
+      border: 2px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9CA3AF;
+      transition: all 0.3s ease;
+    }
+
+    .te-node.completed .te-icon-wrap {
+      background: #16A34A;
+      border-color: #16A34A;
+      color: #FFFFFF;
+    }
+
+    .te-node.active .te-icon-wrap {
+      background: #0A0A0A;
+      border-color: #0A0A0A;
+      color: #FFFFFF;
+      box-shadow: 0 0 0 5px rgba(10, 10, 10, 0.12);
+    }
+
+    .te-label {
+      margin-top: 8px;
+      font-family: var(--font-headline);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      color: #6B7280;
+      text-transform: uppercase;
+    }
+
+    .te-node.completed .te-label,
+    .te-node.active .te-label {
+      color: #0A0A0A;
+    }
+
+    .te-time {
+      font-size: 0.65rem;
+      color: #9CA3AF;
+      margin-top: 2px;
+    }
+
+    /* TransExpress 3 Detail Boxes */
+    .te-details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 26px;
+    }
+
+    .te-box {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .te-box-head {
+      font-family: var(--font-headline);
+      font-size: 0.75rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #0A0A0A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 2px;
+      border-bottom: 1px solid #E5E7EB;
+      padding-bottom: 8px;
+    }
+
+    .te-info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 0.85rem;
+    }
+
+    .te-info-label {
+      color: #6B7280;
+      font-size: 0.78rem;
+    }
+
+    .te-info-val {
+      font-weight: 700;
+      color: #0A0A0A;
+      text-align: right;
+    }
+
+    /* History Timeline */
+    .te-history-box {
+      margin-top: 28px;
+      padding-top: 22px;
+      border-top: 1px solid #E5E7EB;
+    }
+
+    .te-history-title {
+      font-family: var(--font-headline);
+      font-size: 0.88rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #0A0A0A;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .te-timeline-list {
+      position: relative;
+      padding-left: 24px;
+    }
+
+    .te-timeline-list::before {
+      content: '';
+      position: absolute;
+      left: 7px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: #E5E7EB;
+    }
+
+    .te-timeline-event {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .te-timeline-event:last-child {
+      margin-bottom: 0;
+    }
+
+    .te-timeline-dot {
+      position: absolute;
+      left: -24px;
+      top: 4px;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2.5px solid #9CA3AF;
+    }
+
+    .te-timeline-event:first-child .te-timeline-dot {
+      background: #0A0A0A;
+      border-color: #0A0A0A;
+      box-shadow: 0 0 0 3px rgba(10, 10, 10, 0.15);
+    }
+
+    .te-event-title {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #0A0A0A;
+      margin-bottom: 2px;
+    }
+
+    .te-event-desc {
+      font-size: 0.82rem;
+      color: #4B5563;
+      margin-bottom: 4px;
+    }
+
+    .te-event-meta {
+      display: flex;
+      gap: 12px;
+      font-size: 0.72rem;
+      color: #9CA3AF;
+    }
+
+    /* Official Courier Footer */
+    .te-official-strip {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 12px;
+      padding: 12px 18px;
+      margin-top: 22px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .te-official-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #374151;
+    }
+
+    .te-direct-link {
+      color: #0A0A0A;
+      font-weight: 700;
+      font-size: 0.82rem;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .te-direct-link:hover {
+      text-decoration: underline;
+    }
+
+    /* Help Section */
+    .track-help-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-top: 36px;
+    }
+
+    .track-help-card {
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 14px;
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #0A0A0A;
+      transition: all 0.2s;
+    }
+
+    .track-help-card:hover {
+      border-color: #0A0A0A;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    }
+
+    .help-icon-wrap {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: #F3F4F6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0A0A0A;
+      flex-shrink: 0;
+    }
+
+    .help-title {
+      font-weight: 800;
+      font-size: 0.88rem;
+      display: block;
+    }
+
+    .help-sub {
+      font-size: 0.75rem;
+      color: #6B7280;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      main { padding-top: 125px; }
+      .track-hero-section { padding: 10px 14px 60px; }
+      .track-hero-title { font-size: 1.6rem; }
+      .track-search-glass { flex-direction: column; padding: 12px; }
+      .track-search-glass input { width: 100%; text-align: center; }
+      .btn-track-submit { width: 100%; justify-content: center; }
+      .store-step-node { width: 62px; }
+      .store-step-label { font-size: 0.58rem; }
+      .store-step-circle { width: 34px; height: 34px; }
+      .store-timeline-line { top: 17px; left: 16px; right: 16px; }
+      .te-node { width: 60px; }
+      .te-icon-wrap { width: 34px; height: 34px; }
+      .te-label { font-size: 0.58rem; }
+      .te-stepper-bar-bg { top: 17px; left: 16px; right: 16px; }
+      .track-card { padding: 18px; }
+      .te-live-card { padding: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop" class="">NEW DROP</a></li>
+      <li><a href="shop.html" class="">SHOP ALL</a></li>
+      <li><a href="index.html#collections" class="">COLLECTIONS</a></li>
+      <li><a href="customize.html" class="">CUSTOMIZE</a></li>
+      <li><a href="offers.html" class="">OFFERS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="user" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart" style="">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px; "></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn ">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+<main>
+  <section class="track-hero-section">
+    <!-- Hero Title -->
+    <div class="track-hero-header">
+      <div class="hero-pill-badge">
+        <span class="pulse-dot"></span>
+        <span>PYTHON ARCHIVE 2026 LOGISTICS</span>
+      </div>
+      <h1 class="track-hero-title">Track Your Order</h1>
+      <p class="track-hero-subtitle">Check real-time store order progress or sync live parcel telemetry directly with our courier partner TransExpress.</p>
+    </div>
+
+    <!-- Feature Chips -->
+    <div class="track-features-strip">
+      <div class="track-feature-item">
+        <i data-lucide="shield-check"></i>
+        <span>Official TransExpress Sync</span>
+      </div>
+      <div class="track-feature-item">
+        <i data-lucide="zap"></i>
+        <span>Real-Time Status Updates</span>
+      </div>
+      <div class="track-feature-item">
+        <i data-lucide="map-pin"></i>
+        <span>Island-wide Express Tracking</span>
+      </div>
+    </div>
+
+    <!-- Mode Selector Tabs -->
+    <div class="track-tabs-container">
+      <button class="track-tab-btn active" id="tab-btn-order" onclick="switchTrackTab('order')">
+        <i data-lucide="shopping-bag" style="width: 15px; height: 15px;"></i>
+        <span>Track Store Order</span>
+      </button>
+      <button class="track-tab-btn" id="tab-btn-courier" onclick="switchTrackTab('courier')">
+        <i data-lucide="truck" style="width: 15px; height: 15px;"></i>
+        <span>TransExpress Courier</span>
+      </button>
+    </div>
+
+    <!-- Search Box -->
+    <div class="track-search-wrapper">
+      <form id="track-form" onsubmit="handleTrackSearch(event)">
+        <div class="track-search-glass">
+          <i data-lucide="search" style="color: #6B7280; width: 18px; height: 18px; margin-left: 2px;"></i>
+          <input type="text" id="track-main-input" placeholder="Enter Order ID (e.g. PS-ORD-12345678)" autocomplete="off">
+          <button type="submit" class="btn-track-submit" id="track-submit-btn">
+            <span id="btn-submit-text">TRACK NOW</span>
+            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </button>
+        </div>
+      </form>
+      <div class="track-hints" id="track-hints">
+        Hint: Enter your order number like <strong>PS-ORD-xxxxxxxx</strong> from your checkout confirmation.
+      </div>
+    </div>
+
+    <!-- Loader -->
+    <div class="track-loader" id="track-loader">
+      <div class="track-spinner"></div>
+      <p style="color: var(--text-muted); font-size: 0.9rem; font-weight: 600;" id="loader-status-msg">
+        Searching live records and connecting to logistics network...
+      </p>
+    </div>
+
+    <!-- Error Banner -->
+    <div class="track-error-card" id="track-error-card">
+      <i data-lucide="alert-triangle" style="width: 18px; height: 18px;"></i>
+      <span id="track-error-text">Unable to locate this order. Please check the ID and try again.</span>
+    </div>
+
+    <!-- ==========================================
+         RESULTS AREA: STORE ORDER TRACKING
+         ========================================== -->
+    <div class="track-results-wrap" id="store-order-results">
+      <!-- 1. Order Status Timeline Card -->
+      <div class="track-card">
+        <div class="track-card-head">
+          <div class="card-head-left">
+            <div class="card-icon-badge">
+              <i data-lucide="activity" style="width: 18px; height: 18px; stroke: #0A0A0A;"></i>
+            </div>
+            <h3>Order Status & Progress</h3>
+          </div>
+          <div id="store-status-pill-wrap"></div>
+        </div>
+
+        <!-- 4-Stage Timeline Container -->
+        <div class="store-timeline-container" id="store-timeline-box">
+          <div class="store-timeline">
+            <div class="store-timeline-line">
+              <div class="store-timeline-fill" id="store-timeline-fill" style="width: 0%;"></div>
+            </div>
+
+            <!-- Stage 1: Confirmed (Blue) -->
+            <div class="store-step-node" id="store-stage-1" style="--step-color: var(--color-confirmed);">
+              <div class="store-step-circle">
+                <i data-lucide="check-circle" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div class="store-step-label">Confirmed</div>
+              <div class="store-step-sub" id="store-sub-1">Order Placed</div>
+            </div>
+
+            <!-- Stage 2: Packed (Amber) -->
+            <div class="store-step-node" id="store-stage-2" style="--step-color: var(--color-packed);">
+              <div class="store-step-circle">
+                <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div class="store-step-label">Packed</div>
+              <div class="store-step-sub" id="store-sub-2">Ready to ship</div>
+            </div>
+
+            <!-- Stage 3: Dispatched / Out for Delivery (Purple) -->
+            <div class="store-step-node" id="store-stage-3" style="--step-color: var(--color-dispatched);">
+              <div class="store-step-circle">
+                <i data-lucide="truck" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div class="store-step-label">Dispatched</div>
+              <div class="store-step-sub" id="store-sub-3">On the way</div>
+            </div>
+
+            <!-- Stage 4: Delivered (Green) -->
+            <div class="store-step-node" id="store-stage-4" style="--step-color: var(--color-delivered);">
+              <div class="store-step-circle">
+                <i data-lucide="package-check" style="width: 18px; height: 18px;"></i>
+              </div>
+              <div class="store-step-label">Delivered</div>
+              <div class="store-step-sub" id="store-sub-4">Completed</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="store-cancelled-banner-wrap"></div>
+      </div>
+
+      <!-- 2. Order Details & Item Breakdown Card -->
+      <div class="track-card">
+        <div class="track-card-head">
+          <div class="card-head-left">
+            <div class="card-icon-badge">
+              <i data-lucide="shopping-bag" style="width: 18px; height: 18px; stroke: #0A0A0A;"></i>
+            </div>
+            <h3>Order Details</h3>
+          </div>
+          <div class="meta-chip">
+            <span>Order ID:</span>
+            <strong id="store-order-id-label">-</strong>
+          </div>
+        </div>
+
+        <!-- Meta Chips -->
+        <div class="meta-chips-row" id="store-meta-chips"></div>
+
+        <!-- Items List -->
+        <div id="store-items-list"></div>
+      </div>
+
+      <!-- 3. Payment Summary Card -->
+      <div class="track-card">
+        <div class="track-card-head">
+          <div class="card-head-left">
+            <div class="card-icon-badge">
+              <i data-lucide="receipt" style="width: 18px; height: 18px; stroke: #0A0A0A;"></i>
+            </div>
+            <h3>Payment Summary</h3>
+          </div>
+        </div>
+
+        <div class="totals-breakdown" id="store-totals-list"></div>
+
+        <a href="#" class="btn-invoice-link" id="store-invoice-btn" target="_blank">
+          <i data-lucide="file-text" style="width: 15px; height: 15px;"></i>
+          <span>View E-Invoice</span>
+        </a>
+      </div>
+
+      <!-- 4. Shipping Details Card -->
+      <div class="track-card">
+        <div class="track-card-head">
+          <div class="card-head-left">
+            <div class="card-icon-badge">
+              <i data-lucide="map-pin" style="width: 18px; height: 18px; stroke: #0A0A0A;"></i>
+            </div>
+            <h3>Shipping Details</h3>
+          </div>
+        </div>
+
+        <div class="shipment-details-grid" id="store-shipping-grid"></div>
+
+        <!-- Courier Integration Prompt inside Order -->
+        <div class="courier-sync-card" id="store-courier-sync-box">
+          <div class="courier-sync-header">
+            <div class="courier-logo-badge">
+              <i data-lucide="zap" style="width: 19px; height: 19px; stroke: #FFFFFF;"></i>
+            </div>
+            <div>
+              <div style="font-weight: 800; font-size: 0.95rem; color: #0A0A0A;">TransExpress Courier Synchronization</div>
+              <div style="font-size: 0.78rem; color: #6B7280;">Official islandwide courier partner for Python Store</div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: #4B5563; margin: 0 0 12px;">
+            Want live delivery rider location and hub dispatch timestamps? Query our courier network directly:
+          </p>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <input type="text" id="order-waybill-sync-input" placeholder="Enter Waybill or Tracking No" style="flex: 1; min-width: 180px; padding: 10px 14px; border: 1.5px solid #E5E7EB; border-radius: 10px; font-size: 0.88rem; outline: none;">
+            <button type="button" class="btn-track-submit" style="padding: 10px 20px;" onclick="syncWaybillFromOrder()">
+              <i data-lucide="refresh-cw" style="width: 14px; height: 14px;"></i>
+              <span>SYNC LIVE TELEMETRY</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==========================================
+         RESULTS AREA: TRANZEXPRESS LIVE COURIER
+         ========================================== -->
+    <div class="track-results-wrap" id="courier-live-results">
+      <div class="te-live-card">
+        <!-- Courier Top Header -->
+        <div class="track-card-head" style="margin-bottom: 24px;">
+          <div>
+            <div class="meta-chip" style="margin-bottom: 6px;">
+              <i data-lucide="package" style="width: 13px; height: 13px;"></i>
+              <span>WAYBILL:</span>
+              <strong id="te-res-waybill">-</strong>
+            </div>
+            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 4px;">
+              <h2 style="font-family: var(--font-headline); font-size: 1.35rem; font-weight: 900; letter-spacing: 0.5px; margin: 0; color: #0A0A0A;" id="te-res-customer-name">-</h2>
+              <span id="te-res-phone-badge" style="display: inline-flex; align-items: center; gap: 5px; background: #F3F4F6; color: #1F2937; border: 1px solid #E5E7EB; padding: 3px 10px; border-radius: 999px; font-size: 0.78rem; font-weight: 700; font-family: var(--font-mono);">
+                <i data-lucide="phone" style="width: 11px; height: 11px;"></i>
+                <span id="te-res-customer-phone">-</span>
+              </span>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.85rem; margin: 4px 0 0;" id="te-res-destination">-</p>
+          </div>
+
+          <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 6px;">
+            <div class="status-pill transit" id="te-res-status-pill">
+              <i data-lucide="truck" style="width: 14px; height: 14px;" id="te-res-status-icon"></i>
+              <span id="te-res-status-text">IN TRANSIT</span>
+            </div>
+            <button type="button" onclick="refreshCurrentCourier()" style="background: none; border: none; font-size: 0.74rem; font-weight: 700; color: #4B5563; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; padding: 4px 0;">
+              <i data-lucide="rotate-cw" style="width: 12px; height: 12px;"></i>
+              <span>Refresh Status</span>
+            </button>
+            <span style="font-size: 0.72rem; color: #9CA3AF;" id="te-res-last-sync">Last Sync: Just now</span>
+          </div>
+        </div>
+
+        <!-- 5-Stage Stepper Progress (TransExpress) -->
+        <div class="te-stepper-container">
+          <div class="te-stepper">
+            <div class="te-stepper-bar-bg">
+              <div class="te-stepper-bar-fill" id="te-stepper-fill" style="width: 20%;"></div>
+            </div>
+
+            <!-- Step 1 -->
+            <div class="te-node" id="te-step-1">
+              <div class="te-icon-wrap"><i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i></div>
+              <div class="te-label">Order Placed</div>
+              <div class="te-time" id="te-step-time-1">-</div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="te-node" id="te-step-2">
+              <div class="te-icon-wrap"><i data-lucide="box" style="width: 17px; height: 17px;"></i></div>
+              <div class="te-label">Picked Up</div>
+              <div class="te-time" id="te-step-time-2">-</div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="te-node" id="te-step-3">
+              <div class="te-icon-wrap"><i data-lucide="truck" style="width: 17px; height: 17px;"></i></div>
+              <div class="te-label">In Transit</div>
+              <div class="te-time" id="te-step-time-3">-</div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="te-node" id="te-step-4">
+              <div class="te-icon-wrap"><i data-lucide="navigation" style="width: 17px; height: 17px;"></i></div>
+              <div class="te-label">Out for Delivery</div>
+              <div class="te-time" id="te-step-time-4">-</div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="te-node" id="te-step-5">
+              <div class="te-icon-wrap"><i data-lucide="check-circle-2" style="width: 17px; height: 17px;"></i></div>
+              <div class="te-label">Delivered</div>
+              <div class="te-time" id="te-step-time-5">-</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TransExpress 3 Info Boxes Grid -->
+        <div class="te-details-grid">
+          <!-- Box 1 -->
+          <div class="te-box">
+            <div class="te-box-head">
+              <i data-lucide="info" style="width: 14px; height: 14px;"></i>
+              <span>Shipment Information</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Courier Partner:</span>
+              <span class="te-info-val">TransExpress Logistics</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Waybill Number:</span>
+              <span class="te-info-val" id="te-val-waybill">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Order Ref No:</span>
+              <span class="te-info-val" id="te-val-order-no">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Dispatch Date:</span>
+              <span class="te-info-val" id="te-val-date">-</span>
+            </div>
+          </div>
+
+          <!-- Box 2 -->
+          <div class="te-box">
+            <div class="te-box-head">
+              <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>
+              <span>Delivery & Hub</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Destination City:</span>
+              <span class="te-info-val" id="te-val-city">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Assigned Branch:</span>
+              <span class="te-info-val" id="te-val-branch">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Delivery Rider:</span>
+              <span class="te-info-val" id="te-val-rider" style="color: #2563EB;">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Est. Delivery:</span>
+              <span class="te-info-val" style="color: #16A34A;">1 - 3 Business Days</span>
+            </div>
+          </div>
+
+          <!-- Box 3 -->
+          <div class="te-box">
+            <div class="te-box-head">
+              <i data-lucide="wallet" style="width: 14px; height: 14px;"></i>
+              <span>Payment & Summary</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Payment Method:</span>
+              <span class="te-info-val" id="te-val-payment">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">COD Amount to Pay:</span>
+              <span class="te-info-val" id="te-val-cod" style="font-family: var(--font-headline); font-size: 0.95rem; color: var(--accent-red);">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Items Description:</span>
+              <span class="te-info-val" id="te-val-items">-</span>
+            </div>
+            <div class="te-info-row">
+              <span class="te-info-label">Package Weight:</span>
+              <span class="te-info-val" id="te-val-weight">0.5 kg</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TransExpress Activity History Timeline -->
+        <div class="te-history-box">
+          <div class="te-history-title">
+            <i data-lucide="history" style="width: 17px; height: 17px; stroke: #0A0A0A;"></i>
+            <span>TransExpress Route & Event Log</span>
+          </div>
+          <div class="te-timeline-list" id="te-timeline-events-list">
+            <!-- Events rendered via JS -->
+          </div>
+        </div>
+
+        <!-- Official Badge Strip -->
+        <div class="te-official-strip">
+          <div class="te-official-left">
+            <i data-lucide="shield-check" style="width: 16px; height: 16px; color: #16A34A;"></i>
+            <span>Live telemetry synchronized from TransExpress Courier Network.</span>
+          </div>
+          <a href="https://tracking.transexpress.lk/tracking" target="_blank" rel="noopener" class="te-direct-link" id="te-external-link">
+            <span>Open on TransExpress.lk</span>
+            <i data-lucide="external-link" style="width: 13px; height: 13px;"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Additional Help Links -->
+    <div class="track-help-grid">
+      <a class="track-help-card" href="order-history.html">
+        <div class="help-icon-wrap"><i data-lucide="archive"></i></div>
+        <div>
+          <span class="help-title">My Order History</span>
+          <span class="help-sub">View all your past orders & invoices</span>
+        </div>
+      </a>
+      <a class="track-help-card" href="https://wa.me/94757218786" target="_blank" rel="noopener">
+        <div class="help-icon-wrap"><i data-lucide="message-circle" style="color: #22C55E;"></i></div>
+        <div>
+          <span class="help-title">WhatsApp Support</span>
+          <span class="help-sub">075 721 8786 / 072 905 7972</span>
+        </div>
+      </a>
+      <a class="track-help-card" href="shop.html">
+        <div class="help-icon-wrap"><i data-lucide="shopping-bag"></i></div>
+        <div>
+          <span class="help-title">Explore New Drops</span>
+          <span class="help-sub">Heavyweight tees & apparel</span>
+        </div>
+      </a>
+    </div>
+  </section>
+</main>
+
+<script src="script.js"></script>
+<script>
+  // ========================================================
+  //  ADVANCED TRACKING HUB — PYTHON STORE & TRANZEXPRESS
+  // ========================================================
+
+  let currentTab = 'order'; // 'order' or 'courier'
+  let activeTrackingId = null;
+
+  // 4-Stage Config for Store Orders
+  const STORE_STAGES = [
+    { key: 'confirmed',  label: 'Confirmed',  subDone: 'Order placed', subActive: 'Order confirmed',  color: '#3B82F6', icon: 'check-circle',  statuses: ['pending', 'confirmed'] },
+    { key: 'packed',     label: 'Packed',     subDone: 'Ready to ship', subActive: 'Items packed',     color: '#F59E0B', icon: 'package',       statuses: ['processing', 'packed'] },
+    { key: 'dispatched', label: 'Dispatched', subDone: 'In Transit',   subActive: 'Out for delivery',  color: '#8B5CF6', icon: 'truck',         statuses: ['shipped'] },
+    { key: 'delivered',  label: 'Delivered',  subDone: 'Received',     subActive: 'Delivered',         color: '#22C55E', icon: 'package-check', statuses: ['delivered'] }
+  ];
+
+  // DOM Init
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.lucide) lucide.createIcons();
+    updateNavCounters();
+
+    // Check URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderParam = urlParams.get('order') || urlParams.get('id');
+    const waybillParam = urlParams.get('waybill') || urlParams.get('tracking');
+
+    if (waybillParam) {
+      switchTrackTab('courier');
+      document.getElementById('track-main-input').value = decodeURIComponent(waybillParam);
+      executeCourierTracking(decodeURIComponent(waybillParam));
+    } else if (orderParam) {
+      const cleanVal = decodeURIComponent(orderParam);
+      if (cleanVal.toUpperCase().startsWith('PS-ORD-') || cleanVal.toUpperCase().startsWith('ORD-')) {
+        switchTrackTab('order');
+        document.getElementById('track-main-input').value = cleanVal;
+        executeStoreOrderTracking(cleanVal);
+      } else {
+        // Could be a waybill or order ID
+        document.getElementById('track-main-input').value = cleanVal;
+        executeStoreOrderTracking(cleanVal);
+      }
+    }
+  });
+
+  function updateNavCounters() {
+    try {
+      const cart = JSON.parse(localStorage.getItem('python_cart') || '[]');
+      const cc = document.getElementById('cart-count');
+      if (cc) cc.textContent = cart.reduce((acc, it) => acc + (it.quantity || 1), 0);
+      const wl = JSON.parse(localStorage.getItem('python_wishlist') || '[]');
+      const wc = document.getElementById('wishlist-count');
+      if (wc) wc.textContent = wl.length;
+    } catch (e) {}
+  }
+
+  // Tab Switcher
+  function switchTrackTab(tab) {
+    currentTab = tab;
+    const btnOrder = document.getElementById('tab-btn-order');
+    const btnCourier = document.getElementById('tab-btn-courier');
+    const input = document.getElementById('track-main-input');
+    const hints = document.getElementById('track-hints');
+
+    if (tab === 'order') {
+      btnOrder.classList.add('active');
+      btnCourier.classList.remove('active');
+      input.placeholder = "Enter Order ID (e.g. PS-ORD-12345678)";
+      hints.innerHTML = 'Hint: Enter your order number like <strong>PS-ORD-xxxxxxxx</strong> from your checkout confirmation.';
+    } else {
+      btnCourier.classList.add('active');
+      btnOrder.classList.remove('active');
+      input.placeholder = "Enter TransExpress Waybill / Tracking Number";
+      hints.innerHTML = 'Hint: Enter your <strong>Waybill Number</strong> received via SMS upon courier dispatch.';
+    }
+
+    // Hide any previous errors
+    hideError();
+  }
+
+  // Handle Form Submission
+  function handleTrackSearch(e) {
+    if (e) e.preventDefault();
+    const input = document.getElementById('track-main-input');
+    const query = input ? input.value.trim() : '';
+
+    if (!query) {
+      showError(currentTab === 'order' ? 'Please enter a valid Order ID (e.g. PS-ORD-12345678).' : 'Please enter a TransExpress Waybill Number.');
+      return;
+    }
+
+    if (currentTab === 'order') {
+      executeStoreOrderTracking(query);
+    } else {
+      executeCourierTracking(query);
+    }
+  }
+
+  // Sync from inside order details
+  function syncWaybillFromOrder() {
+    const inp = document.getElementById('order-waybill-sync-input');
+    const wb = inp ? inp.value.trim() : '';
+    if (!wb) {
+      alert('Please enter a TransExpress Waybill or Tracking Number.');
+      return;
+    }
+    switchTrackTab('courier');
+    document.getElementById('track-main-input').value = wb;
+    executeCourierTracking(wb);
+  }
+
+  function setLoader(show, msg) {
+    const loader = document.getElementById('track-loader');
+    const btn = document.getElementById('track-submit-btn');
+    const btnText = document.getElementById('btn-submit-text');
+    const statusMsg = document.getElementById('loader-status-msg');
+
+    if (show) {
+      if (statusMsg && msg) statusMsg.textContent = msg;
+      loader.style.display = 'block';
+      if (btn) btn.disabled = true;
+      if (btnText) btnText.textContent = "SEARCHING...";
+    } else {
+      loader.style.display = 'none';
+      if (btn) btn.disabled = false;
+      if (btnText) btnText.textContent = "TRACK NOW";
+    }
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function showError(msg) {
+    const errCard = document.getElementById('track-error-card');
+    const errText = document.getElementById('track-error-text');
+    if (errText) errText.textContent = msg;
+    if (errCard) {
+      errCard.style.display = 'block';
+      errCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    if (window.lucide) lucide.createIcons();
+  }
+
+  function hideError() {
+    const errCard = document.getElementById('track-error-card');
+    if (errCard) errCard.style.display = 'none';
+  }
+
+  function hideAllResults() {
+    document.getElementById('store-order-results').style.display = 'none';
+    document.getElementById('courier-live-results').style.display = 'none';
+  }
+
+  // ========================================================
+  //  1. EXECUTE STORE ORDER TRACKING
+  // ========================================================
+  async function executeStoreOrderTracking(orderId) {
+    hideError();
+    hideAllResults();
+    setLoader(true, 'Searching order database for ' + orderId + '...');
+
+    const cleanId = orderId.trim();
+
+    let foundOrder = null;
+    const firestoreDb = (typeof db !== 'undefined' && db) ? db : (window.db || null);
+
+    // Search in Firestore first for real-time status updates from Admin!
+    if (firestoreDb) {
+      try {
+        let snap = await firestoreDb.collection('orders').where('id', '==', cleanId).limit(1).get();
+        if (snap.empty && cleanId.toUpperCase() !== cleanId) {
+          snap = await firestoreDb.collection('orders').where('id', '==', cleanId.toUpperCase()).limit(1).get();
+        }
+
+        if (!snap.empty) {
+          const doc = snap.docs[0];
+          foundOrder = Object.assign({ docId: doc.id }, doc.data());
+        } else {
+          try {
+            const docSnap = await firestoreDb.collection('orders').doc(cleanId).get();
+            if (docSnap.exists) {
+              foundOrder = Object.assign({ docId: docSnap.id }, docSnap.data());
+            }
+          } catch(e) {}
+        }
+      } catch (err) {
+        console.warn('Firestore order search error:', err);
+      }
+    }
+
+    // Fallback to localStorage orders
+    if (!foundOrder) {
+      try {
+        const local = JSON.parse(localStorage.getItem('python_orders') || '[]');
+        foundOrder = local.find(o => o.id === cleanId || o.docId === cleanId || (o.id && o.id.toUpperCase() === cleanId.toUpperCase()));
+      } catch (e) {}
+    } else {
+      // Sync fresh status from Firestore into localStorage
+      try {
+        let local = JSON.parse(localStorage.getItem('python_orders') || '[]');
+        let updated = false;
+        local.forEach(lo => {
+          if (lo.id === foundOrder.id || lo.docId === foundOrder.id || (foundOrder.docId && lo.docId === foundOrder.docId)) {
+            lo.status = foundOrder.status;
+            updated = true;
+          }
+        });
+        if (updated) {
+          localStorage.setItem('python_orders', JSON.stringify(local));
+        }
+      } catch(e) {}
+    }
+
+    setLoader(false);
+
+    if (foundOrder) {
+      renderStoreOrderResult(foundOrder);
+    } else {
+      // If looks like a waybill, try TransExpress automatically!
+      setLoader(true, 'No store order matching ' + cleanId + '. Checking TransExpress network...');
+      const teData = await fetchTransExpressLive(cleanId);
+      setLoader(false);
+      if (teData) {
+        switchTrackTab('courier');
+        renderTransExpressResult(teData);
+      } else {
+        showError('Order ID "' + cleanId + '" was not found. Please verify your order confirmation or search by courier waybill.');
+      }
+    }
+  }
+
+  function renderStoreOrderResult(order) {
+    const rawStatus = (order.status || 'pending').toLowerCase();
+    activeTrackingId = order.id;
+
+    // Show container
+    const wrap = document.getElementById('store-order-results');
+    wrap.style.display = 'block';
+
+    // Status Pill
+    const pillWrap = document.getElementById('store-status-pill-wrap');
+    const pillClass = rawStatus === 'confirmed' ? 'confirmed' :
+                      rawStatus === 'packed' || rawStatus === 'processing' ? 'packed' :
+                      rawStatus === 'shipped' ? 'dispatched' :
+                      rawStatus === 'delivered' ? 'delivered' :
+                      rawStatus === 'cancelled' ? 'cancelled' : 'confirmed';
+
+    const pillLabel = rawStatus === 'confirmed' ? 'ORDER CONFIRMED' :
+                      rawStatus === 'packed' || rawStatus === 'processing' ? 'PACKED & READY' :
+                      rawStatus === 'shipped' ? 'OUT FOR DELIVERY' :
+                      rawStatus === 'delivered' ? 'DELIVERED' :
+                      rawStatus === 'cancelled' ? 'CANCELLED' : 'PROCESSING';
+
+    pillWrap.innerHTML = '<span class="status-pill ' + pillClass + '">' + pillLabel + '</span>';
+
+    // Order ID Label
+    document.getElementById('store-order-id-label').textContent = order.id || '-';
+
+    // Timeline Rendering
+    renderStoreTimeline(rawStatus);
+
+    // Meta Chips
+    const metaBox = document.getElementById('store-meta-chips');
+    const dateStr = order.date || (order.timestamp ? new Date(order.timestamp.seconds ? order.timestamp.seconds * 1000 : order.timestamp).toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Recent');
+    metaBox.innerHTML =
+      '<div class="meta-chip"><span>Placed on:</span><strong>' + dateStr + (order.time ? ' &bull; ' + order.time : '') + '</strong></div>' +
+      '<div class="meta-chip"><span>Payment:</span><strong>' + (order.paymentMethod || 'Cash on Delivery') + '</strong></div>' +
+      '<div class="meta-chip"><span>Total Items:</span><strong>' + ((order.items || []).length) + '</strong></div>';
+
+    // Items List
+    const itemsList = document.getElementById('store-items-list');
+    const items = order.items || [];
+    if (items.length === 0) {
+      itemsList.innerHTML = '<p style="color: #6B7280; font-size: 0.88rem; padding: 10px 0;">No items found in this order.</p>';
+    } else {
+      itemsList.innerHTML = items.map(it => {
+        const qty = parseInt(it.quantity || 1, 10);
+        const price = parseFloat(it.price || 0);
+        const lineTotal = qty * price;
+        const imgTag = it.image
+          ? '<img src="' + it.image + '" class="item-thumbnail" alt="" onerror="this.style.display=\'none\'; this.nextElementSibling.style.display=\'flex\';">' +
+            '<div class="item-thumb-placeholder" style="display:none;"><i data-lucide="image" style="width:20px;height:20px;"></i></div>'
+          : '<div class="item-thumb-placeholder"><i data-lucide="image" style="width:20px;height:20px;"></i></div>';
+
+        let specs = [];
+        if (it.size) specs.push('<span class="spec-pill">Size: ' + it.size + '</span>');
+        if (it.color) specs.push('<span class="spec-pill">Color: ' + it.color + '</span>');
+        specs.push('<span class="spec-pill">Qty: ' + qty + '</span>');
+
+        return '<div class="order-item-row">' +
+          imgTag +
+          '<div class="item-desc">' +
+            '<div class="item-title">' + (it.name || 'Custom Apparel Item') + '</div>' +
+            '<div class="item-spec-chips">' + specs.join('') + '</div>' +
+          '</div>' +
+          '<div class="item-total-col">' +
+            '<div class="item-total-price">Rs. ' + lineTotal.toLocaleString() + '</div>' +
+            (qty > 1 ? '<div class="item-unit-calc">Rs. ' + price.toLocaleString() + ' each</div>' : '') +
+          '</div>' +
+        '</div>';
+      }).join('');
+    }
+
+    // Totals Breakdown
+    const totalsBox = document.getElementById('store-totals-list');
+    const subtotal = parseFloat(order.subtotal || order.total || 0);
+    const delivery = parseFloat(order.delivery || 0);
+    const discount = parseFloat(order.pointsDiscount || 0);
+    const grandTotal = parseFloat(order.total || (subtotal + delivery - discount));
+
+    let totalsHtml = '';
+    totalsHtml += '<div class="breakdown-row"><span>Items Subtotal</span><span style="font-family: var(--font-mono); font-weight: 700;">Rs. ' + subtotal.toLocaleString() + '</span></div>';
+    totalsHtml += '<div class="breakdown-row"><span>Islandwide Delivery</span><span style="font-family: var(--font-mono); font-weight: 700;">' + (delivery > 0 ? 'Rs. ' + delivery.toLocaleString() : 'FREE') + '</span></div>';
+    if (discount > 0) {
+      totalsHtml += '<div class="breakdown-row"><span>Club Points Discount</span><span style="font-family: var(--font-mono); font-weight: 700; color: #16A34A;">- Rs. ' + discount.toLocaleString() + '</span></div>';
+    }
+    totalsHtml += '<div class="breakdown-row grand"><span>Total Payable</span><span class="val">Rs. ' + grandTotal.toLocaleString() + '</span></div>';
+    totalsBox.innerHTML = totalsHtml;
+
+    // Invoice Link Button
+    const invBtn = document.getElementById('store-invoice-btn');
+    try {
+      const invPayload = {
+        id: order.id,
+        name: order.userName || order.name || '',
+        phone: order.userPhone || order.phone || '',
+        email: order.userEmail || order.email || '',
+        streetAddress: order.streetAddress || '',
+        city: order.city || '',
+        district: order.district || '',
+        postal: order.postal || '',
+        address: order.userAddress || order.address || '',
+        notes: order.notes || '',
+        date: order.date || '',
+        time: order.time || '',
+        items: order.items || [],
+        subtotal: order.subtotal || 0,
+        delivery: order.delivery || 0,
+        total: order.total || 0,
+        redeemedPoints: order.redeemedPoints || 0,
+        pointsDiscount: order.pointsDiscount || 0,
+        pointsEarned: order.pointsEarned || 0,
+        paymentMethod: order.paymentMethod || 'Cash on Delivery',
+        status: order.status || 'confirmed'
+      };
+      const base64Str = btoa(unescape(encodeURIComponent(JSON.stringify(invPayload))));
+      invBtn.href = 'invoice.html?data=' + base64Str;
+      invBtn.style.display = 'inline-flex';
+    } catch (e) {
+      invBtn.style.display = 'none';
+    }
+
+    // Shipping Details Grid
+    const shipGrid = document.getElementById('store-shipping-grid');
+    const street = order.streetAddress || order.userAddress || order.address || '-';
+    shipGrid.innerHTML =
+      '<div class="ship-cell"><label>Recipient Name</label><p>' + (order.userName || order.name || '-') + '</p></div>' +
+      '<div class="ship-cell"><label>Phone Number</label><p>' + (order.userPhone || order.phone || '-') + '</p></div>' +
+      '<div class="ship-cell" style="grid-column: 1 / -1;"><label>Delivery Address</label><p>' + street + '</p></div>' +
+      '<div class="ship-cell"><label>City</label><p>' + (order.city || '-') + '</p></div>' +
+      '<div class="ship-cell"><label>District</label><p>' + (order.district || '-') + '</p></div>' +
+      '<div class="ship-cell"><label>Postal Code</label><p>' + (order.postal || '-') + '</p></div>';
+
+    // If order has waybill_id, prefill waybill sync box
+    const wbInput = document.getElementById('order-waybill-sync-input');
+    if (wbInput && (order.waybill_id || order.trackingNumber)) {
+      wbInput.value = order.waybill_id || order.trackingNumber;
+    }
+
+    if (window.lucide) lucide.createIcons();
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  function renderStoreTimeline(status) {
+    const timelineBox = document.getElementById('store-timeline-box');
+    const cancelledWrap = document.getElementById('store-cancelled-banner-wrap');
+
+    if (status === 'cancelled') {
+      timelineBox.style.display = 'none';
+      cancelledWrap.innerHTML =
+        '<div class="cancelled-alert">' +
+          '<h4><i data-lucide="x-circle" style="vertical-align:middle;margin-right:6px;"></i> Order Cancelled</h4>' +
+          '<p>This order has been cancelled. For inquiries regarding refunds or replacement, contact our concierge on WhatsApp.</p>' +
+        '</div>';
+      if (window.lucide) lucide.createIcons();
+      return;
+    }
+
+    timelineBox.style.display = 'block';
+    cancelledWrap.innerHTML = '';
+
+    // Find active stage index (0 to 3)
+    let activeIdx = 0;
+    for (let i = 0; i < STORE_STAGES.length; i++) {
+      if (STORE_STAGES[i].statuses.includes(status)) {
+        activeIdx = i;
+        break;
+      }
+    }
+
+    // Set Fill width
+    const fillPercent = (activeIdx / 3) * 100;
+    const fillEl = document.getElementById('store-timeline-fill');
+    fillEl.style.width = fillPercent + '%';
+    fillEl.style.backgroundColor = STORE_STAGES[activeIdx].color;
+
+    for (let s = 1; s <= 4; s++) {
+      const node = document.getElementById('store-stage-' + s);
+      const sub = document.getElementById('store-sub-' + s);
+      const idx = s - 1;
+      const stage = STORE_STAGES[idx];
+
+      node.classList.remove('completed', 'active');
+      if (idx < activeIdx) {
+        node.classList.add('completed');
+        if (sub) sub.textContent = stage.subDone;
+      } else if (idx === activeIdx) {
+        node.classList.add('active');
+        if (sub) sub.textContent = stage.subActive;
+      } else {
+        if (sub) sub.textContent = 'Pending';
+      }
+    }
+
+    if (window.lucide) lucide.createIcons();
+  }
+
+  // ========================================================
+  //  2. EXECUTE TRANZEXPRESS COURIER LIVE TRACKING
+  // ========================================================
+  async function executeCourierTracking(trackingId) {
+    hideError();
+    hideAllResults();
+    activeTrackingId = trackingId;
+    setLoader(true, 'Connecting to TransExpress API for waybill ' + trackingId + '...');
+
+    try {
+      const data = await fetchTransExpressLive(trackingId);
+      setLoader(false);
+
+      if (data) {
+        renderTransExpressResult(data);
+      } else {
+        showError('TransExpress did not return any records for waybill "' + trackingId + '". Please ensure the number is correct, or try again in a few minutes.');
+      }
+    } catch (err) {
+      setLoader(false);
+      console.error('TransExpress search error:', err);
+      showError('Unable to connect to the TransExpress network right now. Please check your connection or track via WhatsApp support.');
+    }
+  }
+
+  function refreshCurrentCourier() {
+    if (activeTrackingId) {
+      executeCourierTracking(activeTrackingId);
+    }
+  }
+
+  // Fetch from TransExpress Official Live API (Exact endpoints from track-order roo.html)
+  async function fetchTransExpressLive(trackingId) {
+    const rawId = trackingId.trim();
+    const cleanId = encodeURIComponent(rawId);
+
+    const endpoints = [
+      'https://api.transexpress.lk/api/v1/tracking?waybill_id=' + cleanId,
+      'https://domestic.transexpress.lk/order-tracking?waybill_id=' + cleanId
+    ];
+
+    for (const ep of endpoints) {
+      try {
+        const ctrl = new AbortController();
+        const tid = setTimeout(() => ctrl.abort(), 7500);
+        const res = await fetch(ep, {
+          method: 'GET',
+          headers: { 'Accept': 'application/json, text/plain, */*' },
+          signal: ctrl.signal
+        });
+        clearTimeout(tid);
+
+        if (res.ok) {
+          const json = await res.json();
+          const parsed = parseTransExpressResponse(json, rawId);
+          if (parsed) return parsed;
+        }
+      } catch (e) {
+        console.warn('Endpoint fetch error for ' + ep + ':', e);
+      }
+    }
+
+    // Secondary: Also check if this waybill matches a store order
+    if (window.db) {
+      try {
+        const snap = await window.db.collection('orders').where('waybill_id', '==', rawId).limit(1).get();
+        if (!snap.empty) {
+          const o = snap.docs[0].data();
+          return {
+            waybillId: o.waybill_id || rawId,
+            trackingId: o.waybill_id || rawId,
+            orderNo: o.id || 'PS-ORD-REF',
+            customerName: o.userName || o.name || 'Valued Customer',
+            customerPhone: o.userPhone || o.phone || '-',
+            destination: (o.streetAddress ? o.streetAddress + ', ' : '') + (o.city || 'Sri Lanka'),
+            city: o.city || 'Sri Lanka',
+            status: o.status === 'delivered' ? 'Delivered' : (o.status === 'shipped' ? 'Out for Delivery' : 'In Transit'),
+            statusCode: o.status === 'delivered' ? 5 : (o.status === 'shipped' ? 4 : 3),
+            codAmount: o.total ? 'Rs. ' + Number(o.total).toLocaleString() : 'Prepaid',
+            paymentMethod: o.paymentMethod || 'Cash on Delivery',
+            orderDate: o.date || 'Recent',
+            branch: (o.district ? o.district + ' Hub' : 'TransExpress Colombo Central Hub'),
+            rider: 'Assigned upon local dispatch',
+            itemsDescription: 'Python Streetwear Luxury Apparel',
+            weight: '0.6 kg',
+            lastUpdated: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+            events: [
+              {
+                title: 'Order Dispatched to Courier',
+                desc: 'Parcel handed over to TransExpress courier network.',
+                location: 'Python Fulfillment Center',
+                time: o.date || 'Recent'
+              }
+            ]
+          };
+        }
+      } catch (e) {}
+    }
+
+    return null;
+  }
+
+  // Parse TransExpress JSON response
+  function parseTransExpressResponse(json, trackingId) {
+    if (!json) return null;
+    if (json.status_code === 200 && Array.isArray(json.data)) {
+      let orderDetails = null;
+      let trackingHistory = [];
+      for (const item of json.data) {
+        if (item.key === 'order_details' && Array.isArray(item.value) && item.value.length > 0) {
+          orderDetails = item.value[0];
+        } else if (item.key === 'tracking_history' && Array.isArray(item.value)) {
+          trackingHistory = item.value;
+        }
+      }
+      if (orderDetails) {
+        return normalizeTransExpressData(orderDetails, trackingHistory, trackingId);
+      }
+    }
+    return null;
+  }
+
+  // Normalize TransExpress Data Structure
+  function normalizeTransExpressData(order, history, trackingId) {
+    const statusStr = (order.current_status || order.status || 'Processing').toString();
+    const lower = statusStr.toLowerCase();
+    let statusCode = 1;
+
+    if (lower.includes('deliver') || lower.includes('complete') || lower.includes('success')) {
+      statusCode = 5;
+    } else if (lower.includes('out') || lower.includes('dispatch') || lower.includes('rider') || lower.includes('delivering')) {
+      statusCode = 4;
+    } else if (lower.includes('transit') || lower.includes('sorting') || lower.includes('shuttle') || lower.includes('warehouse') || lower.includes('branch')) {
+      statusCode = 3;
+    } else if (lower.includes('pick') || lower.includes('collected') || lower.includes('accepted')) {
+      statusCode = 2;
+    } else if (lower.includes('cancel') || lower.includes('reject') || lower.includes('return') || lower.includes('failed')) {
+      statusCode = 0;
+    }
+
+    // Extract Rider info
+    let riderInfo = order.rider_name ? (order.rider_name + (order.rider_phone ? ' (' + order.rider_phone + ')' : '')) : '';
+    let eventsList = [];
+
+    if (Array.isArray(history) && history.length > 0) {
+      for (const h of history) {
+        const rem = h.remarks || '';
+        if (!riderInfo) {
+          const mAssigned = rem.match(/Assigned to\s+([^\n\r.]+)/i);
+          const mRider = rem.match(/Rider:\s*([^\n\r]+)/i);
+          if (mAssigned) riderInfo = mAssigned[1].trim();
+          else if (mRider) riderInfo = mRider[1].trim();
+        }
+      }
+
+      eventsList = history.map(h => ({
+        title: h.status_name || h.name || h.status || statusStr,
+        desc: h.remarks || h.description || ('Status: ' + (h.status_name || statusStr)),
+        location: order.branch_name || order.customer_city || 'TransExpress Logistics Network',
+        time: h.status_created_at ? new Date(h.status_created_at).toLocaleString('en-GB') : 'Recent'
+      })).reverse();
+    } else {
+      eventsList = [{
+        title: 'Status: ' + statusStr,
+        desc: 'Live telemetry synced directly from TransExpress courier network.',
+        location: order.branch_name || order.customer_city || 'TransExpress Hub',
+        time: order.completed_date || order.order_date || 'Recent'
+      }];
+    }
+
+    return {
+      waybillId: order.waybill_id || trackingId,
+      trackingId: order.waybill_id || trackingId,
+      orderNo: order.order_no || ('PYTHON-' + (order.waybill_id || trackingId)),
+      customerName: order.customer_name || 'Valued Customer',
+      customerPhone: order.customer_phone_no || order.phone || order.contact || '-',
+      destination: order.customer_address || order.customer_city || 'Sri Lanka',
+      city: order.customer_city || order.customer_district || 'Sri Lanka',
+      status: statusStr,
+      statusCode: statusCode,
+      codAmount: order.cod ? 'Rs. ' + Number(order.cod).toLocaleString() : 'Prepaid',
+      paymentMethod: (order.cod && Number(order.cod) > 0) ? 'Cash on Delivery (COD)' : 'Prepaid / Online',
+      orderDate: order.order_date ? new Date(order.order_date).toLocaleDateString('en-GB') : 'Confirmed',
+      branch: order.branch_name || 'TransExpress Central Hub',
+      rider: riderInfo || 'Assigned upon local dispatch',
+      itemsDescription: order.description || 'Python Streetwear Apparel Package',
+      weight: order.weight ? (order.weight + ' kg') : '0.5 kg',
+      lastUpdated: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+      events: eventsList
+    };
+  }
+
+  function renderTransExpressResult(data) {
+    const wrap = document.getElementById('courier-live-results');
+    wrap.style.display = 'block';
+
+    // Header info
+    document.getElementById('te-res-waybill').textContent = data.waybillId;
+    document.getElementById('te-res-customer-name').textContent = data.customerName;
+    document.getElementById('te-res-customer-phone').textContent = data.customerPhone;
+    document.getElementById('te-res-destination').textContent = data.destination;
+    document.getElementById('te-res-last-sync').textContent = 'Last Sync: ' + data.lastUpdated;
+
+    // Status Pill
+    const pill = document.getElementById('te-res-status-pill');
+    const pillText = document.getElementById('te-res-status-text');
+    const pillIcon = document.getElementById('te-res-status-icon');
+
+    pill.className = 'status-pill';
+    if (data.statusCode === 5) {
+      pill.classList.add('delivered');
+      pillText.textContent = data.status || 'DELIVERED';
+      pillIcon.setAttribute('data-lucide', 'check-circle-2');
+    } else if (data.statusCode === 4) {
+      pill.classList.add('dispatched');
+      pillText.textContent = data.status || 'OUT FOR DELIVERY';
+      pillIcon.setAttribute('data-lucide', 'navigation');
+    } else if (data.statusCode === 3) {
+      pill.classList.add('transit');
+      pillText.textContent = data.status || 'IN TRANSIT';
+      pillIcon.setAttribute('data-lucide', 'truck');
+    } else if (data.statusCode === 2) {
+      pill.classList.add('packed');
+      pillText.textContent = data.status || 'PICKED UP';
+      pillIcon.setAttribute('data-lucide', 'box');
+    } else if (data.statusCode === 0) {
+      pill.classList.add('cancelled');
+      pillText.textContent = data.status || 'CANCELLED';
+      pillIcon.setAttribute('data-lucide', 'x-circle');
+    } else {
+      pill.classList.add('confirmed');
+      pillText.textContent = data.status || 'ORDER PLACED';
+      pillIcon.setAttribute('data-lucide', 'clock');
+    }
+
+    // 5-Stage Stepper
+    const validCode = Math.max(1, Math.min(5, data.statusCode || 1));
+    const stepPercent = ((validCode - 1) / 4) * 100;
+    document.getElementById('te-stepper-fill').style.width = stepPercent + '%';
+
+    for (let i = 1; i <= 5; i++) {
+      const stepEl = document.getElementById('te-step-' + i);
+      if (!stepEl) continue;
+      stepEl.classList.remove('completed', 'active');
+      if (i < validCode) stepEl.classList.add('completed');
+      else if (i === validCode) stepEl.classList.add('active');
+    }
+
+    // Grid Info
+    document.getElementById('te-val-waybill').textContent = data.waybillId;
+    document.getElementById('te-val-order-no').textContent = data.orderNo;
+    document.getElementById('te-val-date').textContent = data.orderDate;
+    document.getElementById('te-val-city').textContent = data.city;
+    document.getElementById('te-val-branch').textContent = data.branch;
+    document.getElementById('te-val-rider').textContent = data.rider;
+    document.getElementById('te-val-payment').textContent = data.paymentMethod;
+    document.getElementById('te-val-cod').textContent = data.codAmount;
+    document.getElementById('te-val-items').textContent = data.itemsDescription;
+    document.getElementById('te-val-weight').textContent = data.weight;
+
+    // External Link
+    const extLink = document.getElementById('te-external-link');
+    if (extLink) {
+      extLink.href = 'https://tracking.transexpress.lk/tracking?id=' + encodeURIComponent(data.waybillId);
+    }
+
+    // Events Timeline
+    const timelineEl = document.getElementById('te-timeline-events-list');
+    timelineEl.innerHTML = '';
+    const events = data.events || [];
+    events.forEach(ev => {
+      const item = document.createElement('div');
+      item.className = 'te-timeline-event';
+      item.innerHTML =
+        '<div class="te-timeline-dot"></div>' +
+        '<div class="te-event-title">' + (ev.title || 'Status Update') + '</div>' +
+        '<div class="te-event-desc">' + (ev.desc || '') + '</div>' +
+        '<div class="te-event-meta">' +
+          '<span><i data-lucide="map-pin" style="width:11px;height:11px;vertical-align:middle;"></i> ' + (ev.location || 'Hub') + '</span>' +
+          '<span><i data-lucide="clock" style="width:11px;height:11px;vertical-align:middle;"></i> ' + (ev.time || '') + '</span>' +
+        '</div>';
+      timelineEl.appendChild(item);
+    });
+
+    if (window.lucide) lucide.createIcons();
+    wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // Mobile Drawer Controls
+  const menuOverlay = document.getElementById('menu-overlay');
+  const mobileMenu  = document.getElementById('mobile-menu');
+  const mobileBtn   = document.getElementById('mobile-menu-btn');
+  const closeBtn    = document.getElementById('close-menu');
+
+  function openMobileDrawer() {
+    if (mobileMenu)  mobileMenu.classList.add('open');
+    if (menuOverlay) menuOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeMobileDrawer() {
+    if (mobileMenu)  mobileMenu.classList.remove('open');
+    if (menuOverlay) menuOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function openSearchModal() { closeMobileDrawer(); }
+
+  if (mobileBtn)   mobileBtn.addEventListener('click', openMobileDrawer);
+  if (closeBtn)    closeBtn.addEventListener('click', closeMobileDrawer);
+  if (menuOverlay) menuOverlay.addEventListener('click', closeMobileDrawer);
+</script>
+</body>
+</html>

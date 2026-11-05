@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MY WISHLIST | PYTHON 2026 ARCHIVE</title>
+  <meta name="description" content="View your saved PYTHON streetwear pieces. Add to bag or manage your favorites.">
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-white: #FFFFFF;
+      --text-black: #0A0A0A;
+      --text-muted: #525B6C;
+      --dark-red: #8B0000;
+      --dark-red-hover: #A00000;
+      --dark-red-soft: rgba(139, 0, 0, 0.08);
+      --border-fine: #E5E7EB;
+      --font-headline: 'Anta', sans-serif;
+    }
+
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+
+    .wishlist-header-banner {
+      padding: 130px 5% 30px;
+      text-align: center;
+      background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+      border-bottom: 1px solid var(--border-fine);
+    }
+    .wishlist-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(139, 0, 0, 0.08);
+      border: 1px solid rgba(139, 0, 0, 0.2);
+      color: var(--dark-red);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .wishlist-title {
+      font-family: 'Anta', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: #0A0A0A;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+
+    .wishlist-container {
+      max-width: 1380px;
+      margin: 40px auto 80px;
+      padding: 0 4%;
+      min-height: 50vh;
+    }
+
+    #wishlist-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+
+    @media (max-width: 1100px) {
+      #wishlist-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .wishlist-header-banner {
+        padding: 110px 4% 20px;
+      }
+      #wishlist-grid {
+        grid-template-columns: 1fr !important;
+        gap: 14px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop">NEW DROP</a></li>
+      <li><a href="shop.html">SHOP ALL</a></li>
+      <li><a href="index.html#collections">COLLECTIONS</a></li>
+      <li><a href="customize.html">CUSTOMIZE</a></li>
+      <li><a href="offers.html">OFFERS</a></li>
+      <li><a href="reviews.html">REVIEWS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account">
+        <i data-lucide="user" style="width: 17px; height: 17px;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter (Active) -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="heart" style="width: 17px; height: 17px; fill: #8B0000; stroke: #8B0000;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn active">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+      <a href="reviews.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">07</span>
+          <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+          <span>REVIEWS</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Header Banner -->
+  <header class="wishlist-header-banner">
+    <div class="wishlist-badge">
+      <i data-lucide="heart" style="width: 14px; height: 14px;"></i>
+      CURATED SAVED PIECES
+    </div>
+    <h1 class="wishlist-title">MY WISHLIST</h1>
+    <p style="color: #6B7280; font-size: 0.95rem; margin: 0 auto; max-width: 500px;">
+      Keep track of the heavyweight pieces you love and add them to your shopping bag anytime.
+    </p>
+  </header>
+
+  <!-- Main Wishlist Section -->
+  <main class="wishlist-container">
+    <div id="wishlist-grid" class="product-grid">
+      <!-- Dynamically rendered -->
+    </div>
+
+    <div id="wishlist-empty" style="display: none; text-align: center; padding: 70px 20px;">
+      <div style="display: inline-block; padding: 40px 50px; border-radius: 24px; border: 1.5px dashed var(--border-fine); background: #FAFAFA; max-width: 480px;">
+        <i data-lucide="heart" style="width: 48px; height: 48px; color: var(--dark-red); margin-bottom: 16px; stroke-width: 1.5;"></i>
+        <h3 style="font-family: var(--font-headline); font-size: 1.3rem; font-weight: 900; margin: 0 0 10px; text-transform: uppercase;">YOUR WISHLIST IS EMPTY</h3>
+        <p style="color: #6B7280; font-size: 0.9rem; line-height: 1.6; margin: 0 0 24px;">
+          Explore our heavyweight archive and tap the heart icon on any piece to save it here for later.
+        </p>
+        <a href="shop.html" class="btn-hero-primary" style="display: inline-flex; align-items: center; gap: 8px; text-decoration: none; padding: 13px 28px; font-size: 0.82rem;">
+          <i data-lucide="shopping-bag" style="width: 16px; height: 16px;"></i> EXPLORE CATALOG
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+  <script>
+    function renderWishlist() {
+      const grid = document.getElementById('wishlist-grid');
+      const emptyState = document.getElementById('wishlist-empty');
+      if (!grid || !emptyState) return;
+
+      wishlist = JSON.parse(localStorage.getItem('python_wishlist')) || [];
+      if (!Array.isArray(wishlist) || wishlist.length === 0) {
+        grid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      const wishedProducts = products.filter(p => wishlist.includes(p.id));
+      if (wishedProducts.length === 0) {
+        grid.style.display = 'none';
+        emptyState.style.display = 'block';
+        return;
+      }
+
+      grid.style.display = 'grid';
+      emptyState.style.display = 'none';
+      grid.innerHTML = '';
+
+      wishedProducts.forEach(p => {
+        const hasSizes = p.sizes && typeof p.sizes === 'object';
+        const displayPrice = hasSizes ? Object.values(p.sizes)[0].price : p.price;
+        const displayOldPrice = hasSizes ? Object.values(p.sizes)[0].oldPrice : p.oldPrice;
+        const img = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : (p.image || 'T Shirt.png');
+        const sizeKeys = Array.isArray(p.sizes) ? p.sizes : (p.sizes && typeof p.sizes === 'object' ? Object.keys(p.sizes) : ['S', 'M', 'L', 'XL']);
+
+        grid.innerHTML += `
+          <div class="product-card" onclick="window.location.href='product-detail.html?id=${p.id}'" style="cursor: pointer; position: relative;">
+            <div class="product-image">
+              <button class="wishlist-overlay-btn" onclick="event.stopPropagation(); removeWishlistItem('${p.id}')" title="Remove from Wishlist" style="position: absolute; top: 12px; right: 12px; background: rgba(255,255,255,0.95); width: 34px; height: 34px; border-radius: 50%; border: 1px solid var(--border-fine); display: flex; align-items: center; justify-content: center; cursor: pointer; z-index: 10;">
+                <i data-lucide="trash-2" style="width: 16px; height: 16px; color: #DC2626;"></i>
+              </button>
+              <img src="${img}" alt="${p.name}" onerror="this.src='logo.png'">
+            </div>
+            <div class="product-info">
+              <div>
+                <span style="font-size: 0.7rem; font-weight: 800; color: var(--dark-red); letter-spacing: 1px; text-transform: uppercase;">${p.category || 'Heavyweight Tee'}</span>
+                <h3 style="font-family: var(--font-headline); font-size: 1.05rem; font-weight: 900; margin: 4px 0 8px; color: #0A0A0A;">${p.name}</h3>
+                <div style="display: flex; gap: 4px; margin-bottom: 10px; flex-wrap: wrap;">
+                  ${sizeKeys.map(s => `<span style="font-size: 0.65rem; font-weight: 700; color: #525B6C; background: #F3F4F6; padding: 2px 7px; border-radius: 6px;">${s}</span>`).join('')}
+                </div>
+              </div>
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px;">
+                <div>
+                  <span style="font-size: 1.15rem; font-weight: 900; color: #0A0A0A;">Rs. ${displayPrice.toLocaleString()}</span>
+                  ${displayOldPrice ? `<span style="text-decoration: line-through; color: #9CA3AF; font-size: 0.8rem; margin-left: 6px;">Rs. ${displayOldPrice.toLocaleString()}</span>` : ''}
+                </div>
+                <button onclick="event.stopPropagation(); addToCart('${p.name.replace(/'/g, "\\'")}', ${displayPrice}, '${img}');" style="padding: 8px 14px; background: #0A0A0A; color: #FFF; border: none; border-radius: 8px; font-family: 'Anta', sans-serif; font-size: 0.75rem; font-weight: 800; display: inline-flex; align-items: center; gap: 5px; cursor: pointer;">
+                  <i data-lucide="shopping-bag" style="width: 14px; height: 14px;"></i> Add
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    function removeWishlistItem(productId) {
+      if (typeof toggleWishlist === 'function') {
+        toggleWishlist(productId);
+      } else {
+        let wl = JSON.parse(localStorage.getItem('python_wishlist')) || [];
+        wl = wl.filter(id => id !== productId);
+        localStorage.setItem('python_wishlist', JSON.stringify(wl));
+      }
+      renderWishlist();
+      if (typeof updateWishlistCount === 'function') updateWishlistCount();
+      if (typeof showNotification === 'function') showNotification('Removed from Wishlist!');
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderWishlist();
+    });
+  </script>
+</body>
+
+</html>

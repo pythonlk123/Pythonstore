@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CREATE ACCOUNT | PYTHON 2026 ARCHIVE</title>
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-white: #FFFFFF;
+      --text-black: #0A0A0A;
+      --text-muted: #525B6C;
+      --dark-red: #8B0000;
+      --dark-red-hover: #A00000;
+      --dark-red-soft: rgba(139, 0, 0, 0.08);
+      --border-fine: #E5E7EB;
+      --font-headline: 'Anta', sans-serif;
+    }
+
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+
+    .auth-section-wrap {
+      min-height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 140px 4% 60px;
+      background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+    }
+
+    .auth-form-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 24px;
+      padding: 40px;
+      width: 100%;
+      max-width: 480px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.04);
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+      display: block;
+      color: #374151;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 13px 18px;
+      border-radius: 12px;
+      border: 1px solid var(--border-fine);
+      background: #F9FAFB;
+      font-family: 'Anta', sans-serif;
+      font-size: 0.92rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: var(--dark-red);
+      background: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.1);
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: #9CA3AF;
+      cursor: pointer;
+    }
+
+    .btn-auth-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--dark-red);
+      color: #FFFFFF;
+      font-family: 'Anta', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 15px 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 20px rgba(139, 0, 0, 0.25);
+      margin-top: 12px;
+    }
+
+    .btn-auth-primary:hover {
+      background: #A00000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 0, 0, 0.35);
+    }
+
+    @media (max-width: 600px) {
+      .auth-section-wrap {
+        padding: 110px 4% 40px;
+      }
+      .auth-form-card {
+        padding: 26px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop">NEW DROP</a></li>
+      <li><a href="shop.html">SHOP ALL</a></li>
+      <li><a href="index.html#collections">COLLECTIONS</a></li>
+      <li><a href="customize.html">CUSTOMIZE</a></li>
+      <li><a href="offers.html">OFFERS</a></li>
+      <li><a href="reviews.html">REVIEWS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="user" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+      <a href="reviews.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">07</span>
+          <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+          <span>REVIEWS</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Loading Overlay -->
+  <div id="auth-loading" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.75); z-index:99999; flex-direction:column; align-items:center; justify-content:center; gap:18px; backdrop-filter: blur(8px);">
+    <div style="width: 50px; height: 50px; border: 3px solid rgba(255,255,255,0.15); border-top: 3px solid #8B0000; border-radius: 50%; animation: spin 0.8s linear infinite;"></div>
+    <p style="color:#fff; font-family: 'Anta', sans-serif; font-size:1rem; letter-spacing:1.5px; text-transform: uppercase;">CREATING YOUR ARCHIVE ACCOUNT...</p>
+  </div>
+
+  <main class="auth-section-wrap">
+    <div class="auth-form-card">
+      <div id="checkout-signup-notice" style="display:none; background: rgba(139, 0, 0, 0.08); border: 1.5px solid #8B0000; color: #8B0000; padding: 12px 16px; border-radius: 12px; font-size: 0.85rem; font-weight: 800; margin-bottom: 20px; text-align: center;">
+        🛒 Order එක Place කිරීමට ප්‍රථමයෙන් Account එකක් සාදා ගන්න (Create Account).
+      </div>
+      
+      <div style="text-align: center; margin-bottom: 26px;">
+        <span style="font-size: 0.72rem; font-weight: 800; letter-spacing: 2px; color: var(--dark-red); text-transform: uppercase; display: block; margin-bottom: 6px;">JOIN THE MOVEMENT</span>
+        <h2 style="font-family: var(--font-headline); font-size: 1.8rem; font-weight: 900; letter-spacing: 2px; text-transform: uppercase; margin: 0; color: #0A0A0A;">
+          CREATE <span style="color: var(--dark-red);">ACCOUNT</span>
+        </h2>
+      </div>
+
+      <div class="form-group">
+        <label>Full Name</label>
+        <input type="text" id="signup-name" placeholder="John Doe" onkeydown="if(event.key==='Enter') doSignup()">
+      </div>
+
+      <div class="form-group">
+        <label>Phone Number (WhatsApp)</label>
+        <input type="tel" id="signup-phone" placeholder="07X XXX XXXX" onkeydown="if(event.key==='Enter') doSignup()">
+      </div>
+
+      <div class="form-group">
+        <label>Delivery Address</label>
+        <input type="text" id="signup-address" placeholder="No. 12, Main Street, Colombo" onkeydown="if(event.key==='Enter') doSignup()">
+      </div>
+
+      <div class="form-group">
+        <label>Email Address</label>
+        <input type="email" id="signup-email" placeholder="email@example.com" onkeydown="if(event.key==='Enter') doSignup()">
+      </div>
+
+      <div class="form-group">
+        <label>Password</label>
+        <div class="password-container">
+          <input type="password" id="signup-pass" placeholder="Min. 6 characters" onkeydown="if(event.key==='Enter') doSignup()">
+          <button type="button" class="toggle-password" onclick="togglePass('signup-pass', this)">
+            <i class="eye-open" data-lucide="eye"></i>
+            <i class="eye-closed" data-lucide="eye-off" style="display:none;"></i>
+          </button>
+        </div>
+      </div>
+
+      <div id="signup-error" style="display:none; background:#fdf2f2; color:#9b1c1c; padding:12px 16px; border-radius:10px; font-size:0.85rem; margin-bottom:14px; border-left:4px solid var(--dark-red); line-height: 1.5;"></div>
+
+      <button id="signup-btn" class="btn-auth-primary" onclick="doSignup()">
+        <i data-lucide="user-plus" style="width:18px;"></i> CREATE ACCOUNT
+      </button>
+
+      <p style="text-align: center; margin-top: 24px; color: #6B7280; font-size: 0.85rem;">
+        Already have an account? <a id="login-link" href="login.html" style="color: var(--dark-red); font-weight: 800; text-decoration: underline;">Sign In (ඇතුළු වන්න)</a>
+      </p>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('redirect') === 'checkout' || sessionStorage.getItem('redirect_after_login') === 'checkout.html') {
+        const notice = document.getElementById('checkout-signup-notice');
+        if (notice) notice.style.display = 'block';
+        const loginLink = document.getElementById('login-link');
+        if (loginLink) loginLink.href = 'login.html?redirect=checkout';
+      }
+    });
+
+    function togglePass(inputId, btn) {
+      const input = document.getElementById(inputId);
+      const eyeOpen = btn.querySelector('.eye-open');
+      const eyeClosed = btn.querySelector('.eye-closed');
+      if (input.type === 'password') {
+        input.type = 'text';
+        eyeOpen.style.display = 'none';
+        eyeClosed.style.display = 'inline-block';
+      } else {
+        input.type = 'password';
+        eyeOpen.style.display = 'inline-block';
+        eyeClosed.style.display = 'none';
+      }
+    }
+
+    function doSignup() {
+      const name = document.getElementById('signup-name').value.trim();
+      const phone = document.getElementById('signup-phone').value.trim();
+      const address = document.getElementById('signup-address').value.trim();
+      const email = document.getElementById('signup-email').value.trim();
+      const pass = document.getElementById('signup-pass').value;
+      const errEl = document.getElementById('signup-error');
+      const btn = document.getElementById('signup-btn');
+      
+      errEl.style.display = 'none';
+      if (!name) { errEl.textContent = '⚠️ කරුණාකර ඔබගේ නම ඇතුළත් කරන්න.'; errEl.style.display = 'block'; return; }
+      if (!phone) { errEl.textContent = '⚠️ කරුණාකර දුරකථන අංකය ඇතුළත් කරන්න.'; errEl.style.display = 'block'; return; }
+      if (!address) { errEl.textContent = '⚠️ කරුණාකර ඔබගේ ලිපිනය ඇතුළත් කරන්න.'; errEl.style.display = 'block'; return; }
+      if (!email) { errEl.textContent = '⚠️ කරුණාකර Email ලිපිනය ඇතුළත් කරන්න.'; errEl.style.display = 'block'; return; }
+      if (pass.length < 6) { errEl.textContent = '⚠️ Password සඳහා අවම වශයෙන් අකුරු/ඉලක්කම් 6ක් ඇතුළත් කරන්න.'; errEl.style.display = 'block'; return; }
+
+      document.getElementById('auth-loading').style.display = 'flex';
+      btn.disabled = true;
+
+      signup(name, email, pass, phone, address, function(errMsg) {
+        document.getElementById('auth-loading').style.display = 'none';
+        btn.disabled = false;
+        errEl.textContent = '⚠️ ' + errMsg;
+        errEl.style.display = 'block';
+      });
+    }
+  </script>
+</body>
+
+</html>

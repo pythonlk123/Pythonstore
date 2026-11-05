@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MEMBER PROFILE | PYTHON 2026 ARCHIVE</title>
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+    .profile-card-unified {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 24px;
+      padding: 40px 30px 32px;
+      text-align: center;
+      box-shadow: 0 4px 25px rgba(0,0,0,0.03);
+      margin-bottom: 24px;
+    }
+    .profile-stat-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 18px;
+      padding: 22px 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+    }
+    .profile-stat-card:hover {
+      border-color: #0A0A0A;
+      transform: translateY(-2px);
+    }
+    .profile-stat-num {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #0A0A0A;
+      margin: 8px 0 2px;
+    }
+    .profile-stat-label {
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: #6B7280;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+    @media (max-width: 600px) {
+      .profile-card-unified {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop" class="">NEW DROP</a></li>
+      <li><a href="shop.html" class="">SHOP ALL</a></li>
+      <li><a href="index.html#collections" class="">COLLECTIONS</a></li>
+      <li><a href="customize.html" class="">CUSTOMIZE</a></li>
+      <li><a href="offers.html" class="">OFFERS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="user" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart" style="">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px; "></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn ">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+    </div>
+  </div>
+<main class="section" style="padding-top: 140px; min-height: 80vh; background: #FFFFFF;">
+        <div id="profile-content" style="max-width: 860px; margin: 0 auto; padding: 0 16px;">
+            
+            <!-- Profile Card -->
+            <div style="background: var(--surface); border: 1px solid var(--border-color); border-radius: 28px; padding: 45px 40px 40px; text-align: center; box-shadow: 0 8px 30px rgba(0,0,0,0.06); margin-bottom: 24px; position: relative; overflow: hidden;">
+                <!-- Decorative background gradient -->
+                <div style="position: absolute; top: 0; left: 0; right: 0; height: 90px; background: linear-gradient(135deg, rgba(220,20,60,0.07) 0%, rgba(255,30,56,0.04) 100%); border-radius: 28px 28px 0 0;"></div>
+
+                <!-- Avatar -->
+                <div style="position: relative; z-index: 2;">
+                    <div style="width: 90px; height: 90px; background: linear-gradient(135deg, #8B0000, #8B0000); border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 2.4rem; font-weight: 900; box-shadow: 0 8px 24px rgba(220,20,60,0.35);" id="profile-initial">U</div>
+                    <h2 id="profile-name" style="font-size: 1.6rem; font-weight: 900; color: var(--text-main); margin-bottom: 4px;">User Name</h2>
+                    <p id="profile-email" style="color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px;">email@example.com</p>
+
+                    <div style="display: inline-flex; align-items: center; gap: 7px; background: rgba(220,20,60,0.07); border: 1.5px solid rgba(220,20,60,0.22); color: #8B0000; font-weight: 800; font-size: 0.78rem; padding: 5px 15px; border-radius: 50px;">
+                        <i data-lucide="award" style="width: 13px; height: 13px;"></i> Python Club Member
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats Grid -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 16px; margin-bottom: 24px;">
+                
+                <div class="profile-stat-card" onclick="window.location.href='order-history.html'">
+                    <div class="profile-stat-icon" style="background: rgba(220,20,60,0.1);">
+                        <i data-lucide="package" style="color: #8B0000; width: 22px; height: 22px;"></i>
+                    </div>
+                    <div class="profile-stat-num" id="order-count">0</div>
+                    <div class="profile-stat-label">Total Orders</div>
+                </div>
+
+                <div class="profile-stat-card" onclick="window.location.href='wishlist.html'">
+                    <div class="profile-stat-icon" style="background: rgba(255, 59, 48, 0.1);">
+                        <i data-lucide="heart" style="color: #ff3b30; width: 22px; height: 22px;"></i>
+                    </div>
+                    <div class="profile-stat-num" id="profile-wishlist-count">0</div>
+                    <div class="profile-stat-label">Saved Wishlist</div>
+                </div>
+
+                <div class="profile-stat-card" onclick="window.location.href='cart.html'">
+                    <div class="profile-stat-icon" style="background: rgba(0, 122, 255, 0.1);">
+                        <i data-lucide="shopping-cart" style="color: #007aff; width: 22px; height: 22px;"></i>
+                    </div>
+                    <div class="profile-stat-num" id="profile-cart-count">0</div>
+                    <div class="profile-stat-label">Cart Items</div>
+                </div>
+
+                <div class="profile-stat-card" style="border-color: rgba(255,149,0,0.3); background: rgba(255,149,0,0.04);">
+                    <div class="profile-stat-icon" style="background: rgba(255,149,0,0.12);">
+                        <i data-lucide="award" style="color: #ff9500; width: 22px; height: 22px;"></i>
+                    </div>
+                    <div class="profile-stat-num" id="profile-points-count" style="color: #ff9500;">0</div>
+                    <div class="profile-stat-label" id="profile-points-value">Python Club Points</div>
+                </div>
+
+            </div>
+
+            <!-- Profile Option Cards -->
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-top: 24px;">
+                <div class="profile-option-card" style="background: #FFFFFF; border: 1px solid var(--border-fine); border-radius: 18px; padding: 24px; text-align: center; transition: all 0.2s ease; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-color: var(--border-fine);">
+                    <div style="width: 48px; height: 48px; background: rgba(139,0,0,0.1); border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="package" style="color: #8B0000; width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4 style="font-size: 0.85rem; font-weight: 800; margin-bottom: 8px;">My Orders</h4>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin: 0;">View order history</p>
+                </div>
+                <div class="profile-option-card" style="background: #FFFFFF; border: 1px solid var(--border-fine); border-radius: 18px; padding: 24px; text-align: center; transition: all 0.2s ease; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-color: var(--border-fine);">
+                    <div style="width: 48px; height: 48px; background: rgba(255,59,48,0.1); border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="heart" style="color: #ff3b30; width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4 style="font-size: 0.85rem; font-weight: 800; margin-bottom: 8px;">Saved Items</h4>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin: 0;">Wishlist management</p>
+                </div>
+                <div class="profile-option-card" style="background: #FFFFFF; border: 1px solid var(--border-fine); border-radius: 18px; padding: 24px; text-align: center; transition: all 0.2s ease; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.03); border-color: var(--border-fine);">
+                    <div style="width: 48px; height: 48px; background: rgba(0,122,255,0.1); border-radius: 12px; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center;">
+                        <i data-lucide="shopping-cart" style="color: #007aff; width: 24px; height: 24px;"></i>
+                    </div>
+                    <h4 style="font-size: 0.85rem; font-weight: 800; margin-bottom: 8px;">Shopping</h4>
+                    <p style="font-size: 0.7rem; color: var(--text-muted); margin: 0;">Browse new arrivals</p>
+                </div>
+            </div>
+
+            <!-- Quick Actions -->
+            <div style="display: flex; gap: 14px; flex-wrap: wrap;">
+                <a href="order-history.html" class="btn btn-primary" style="text-decoration: none; display: flex; align-items: center; justify-content: center; gap: 9px; flex: 1; min-width: 180px; padding: 15px 24px; border-radius: 16px; font-weight: 800; font-size: 0.95rem;">
+                    <i data-lucide="history" style="width: 18px;"></i> Order History
+                </a>
+                <button class="btn btn-outline" style="flex: 1; min-width: 180px; padding: 15px 24px; border-radius: 16px; font-weight: 800; font-size: 0.95rem;" onclick="logout()">
+                    <i data-lucide="log-out" style="width: 18px; margin-right: 8px;"></i> Sign Out
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+
+      <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        if (typeof lucide !== 'undefined') { lucide.createIcons(); }
+
+        function renderProfilePage(user) {
+            if (!user) return;
+            const name = user.name || (user.email ? user.email.split('@')[0] : 'Member');
+            const nameEl = document.getElementById('profile-name');
+            const emailEl = document.getElementById('profile-email');
+            const initialEl = document.getElementById('profile-initial');
+            if (nameEl) nameEl.innerText = name;
+            if (emailEl) emailEl.innerText = user.email || '';
+            if (initialEl) initialEl.innerText = name.charAt(0).toUpperCase();
+
+            const wl = JSON.parse(localStorage.getItem('python_wishlist')) || [];
+            const wlEl = document.getElementById('profile-wishlist-count');
+            if (wlEl) wlEl.innerText = wl.length;
+
+            const cartItems = JSON.parse(localStorage.getItem('python_cart')) || [];
+            const cartEl = document.getElementById('profile-cart-count');
+            if (cartEl) cartEl.innerText = cartItems.reduce((acc, curr) => acc + (curr.quantity || 1), 0);
+
+            const points = user.clubPoints || 0;
+            const pointsVal = (points / 20 * 10).toFixed(0);
+            const pointsEl = document.getElementById('profile-points-count');
+            const pointsValueEl = document.getElementById('profile-points-value');
+            if (pointsEl) pointsEl.innerText = points;
+            if (pointsValueEl) pointsValueEl.innerText = `${points} pts = Rs. ${pointsVal}`;
+        }
+
+        // Protect this page using the cached session, with Firebase Auth as a refresh.
+        document.addEventListener('DOMContentLoaded', function () {
+            const cachedUser = (typeof currentUser !== 'undefined' && currentUser)
+                ? currentUser
+                : (typeof readStoredUser === 'function' ? readStoredUser() : JSON.parse(localStorage.getItem('python_user') || 'null'));
+
+            const redirectToLogin = function () {
+                window.location.href = 'login.html';
+            };
+
+            if (cachedUser) {
+                renderProfilePage(cachedUser);
+            }
+
+            if (typeof auth !== 'undefined' && auth) {
+                auth.onAuthStateChanged(function (firebaseUser) {
+                    if (!firebaseUser) {
+                        // Only redirect when there is genuinely no session at all.
+                        if (!cachedUser && !(typeof readStoredUser === 'function' ? readStoredUser() : localStorage.getItem('python_user'))) {
+                            redirectToLogin();
+                        }
+                        return;
+                    }
+                    db.collection('users').doc(firebaseUser.uid).get().then(function (doc) {
+                        const data = doc.exists ? (doc.data() || {}) : {};
+                        const user = {
+                            uid: firebaseUser.uid,
+                            name: data.name || firebaseUser.displayName || firebaseUser.email.split('@')[0],
+                            email: firebaseUser.email,
+                            phone: data.phone || '',
+                            address: data.address || '',
+                            clubPoints: data.clubPoints || 0,
+                            authProvider: 'firebase'
+                        };
+                        if (typeof saveSession === 'function') saveSession(user);
+                        renderProfilePage(user);
+                        if (typeof loadProfile === 'function') loadProfile();
+                    }).catch(function (err) {
+                        console.warn('Profile load fallback:', err);
+                        const fallback = cachedUser || {
+                            uid: firebaseUser.uid,
+                            name: firebaseUser.displayName || firebaseUser.email.split('@')[0],
+                            email: firebaseUser.email
+                        };
+                        renderProfilePage(fallback);
+                        if (typeof loadProfile === 'function') loadProfile();
+                    });
+                });
+            } else if (!cachedUser) {
+                redirectToLogin();
+            }
+        });
+    </script>
+</body>
+
+</html>

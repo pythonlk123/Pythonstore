@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WRITE A REVIEW | PYTHON 2026 ARCHIVE</title>
+    <meta name="description" content="Write a service review or a product review for PYTHON streetwear. Share your experience with delivery, packaging, fit, fabric and print quality.">
+    <link rel="icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ---------- Hero ---------- */
+        .write-hero {
+            padding: 138px 5% 28px;
+            text-align: center;
+            background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+            border-bottom: 1px solid var(--border-fine);
+        }
+        .write-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            background: rgba(139, 0, 0, 0.08);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            color: var(--dark-red);
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .write-hero h1 {
+            font-family: var(--font-headline);
+            font-size: clamp(2rem, 5vw, 3.1rem);
+            font-weight: 900;
+            color: #0A0A0A;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+            line-height: 1.15;
+        }
+        .write-hero h1 span { color: var(--dark-red); }
+        .write-hero p {
+            font-size: 0.94rem;
+            color: #6B7280;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.65;
+        }
+
+        /* ---------- Layout ---------- */
+        .write-container {
+            max-width: 760px;
+            margin: 26px auto 70px;
+            padding: 0 4%;
+        }
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #6B7280;
+            text-decoration: none;
+            margin-bottom: 18px;
+        }
+        .back-link:hover { color: var(--dark-red); }
+
+        /* ---------- Type Picker ---------- */
+        .review-type-picker {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 11px;
+            margin-bottom: 18px;
+        }
+        .type-option {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            text-align: left;
+            padding: 15px 15px;
+            border: 1px solid var(--border-fine);
+            border-radius: 16px;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Anta', sans-serif;
+            min-width: 0;
+        }
+        .type-option:hover {
+            border-color: rgba(139, 0, 0, 0.35);
+            transform: translateY(-1px);
+        }
+        .type-option.active {
+            border-color: var(--dark-red);
+            background: rgba(139, 0, 0, 0.035);
+            box-shadow: 0 8px 24px rgba(139, 0, 0, 0.09);
+        }
+        .type-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--dark-red-soft);
+            color: var(--dark-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .type-option.active .type-icon {
+            background: var(--dark-red);
+            color: #FFFFFF;
+        }
+        .type-text { min-width: 0; display: block; }
+        .type-text strong {
+            display: block;
+            font-size: 0.74rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #0A0A0A;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .type-text small {
+            display: block;
+            font-size: 0.67rem;
+            color: #6B7280;
+            font-weight: 600;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .type-option.active .type-text small { color: var(--dark-red); }
+        .type-check {
+            position: absolute;
+            top: 9px;
+            right: 9px;
+            width: 15px;
+            height: 15px;
+            color: var(--dark-red);
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .type-option.active .type-check { opacity: 1; }
+
+        /* ---------- Form Card ---------- */
+        .write-form-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-fine);
+            border-radius: 22px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.05);
+            padding: 28px;
+        }
+        .form-head { margin-bottom: 20px; }
+        .form-eyebrow {
+            display: inline-block;
+            font-size: 0.64rem;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--dark-red);
+            margin-bottom: 6px;
+        }
+        .form-head h2 {
+            font-family: var(--font-headline);
+            font-size: clamp(1.25rem, 3.5vw, 1.65rem);
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: #0A0A0A;
+            margin: 0 0 5px;
+            line-height: 1.25;
+        }
+        .form-head p {
+            font-size: 0.8rem;
+            line-height: 1.6;
+            color: #6B7280;
+            margin: 0;
+        }
+        .form-group { margin-bottom: 17px; }
+        .form-group label {
+            display: block;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #0A0A0A;
+            margin-bottom: 7px;
+            text-transform: uppercase;
+        }
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            border: 1px solid var(--border-fine);
+            background: #F9FAFB;
+            border-radius: 12px;
+            padding: 12px 14px;
+            font-family: 'Anta', sans-serif;
+            font-size: 0.86rem;
+            color: #0A0A0A;
+            outline: none;
+            transition: all 0.2s ease;
+            resize: vertical;
+        }
+        .form-group select {
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            padding-right: 36px;
+        }
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: var(--dark-red);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px rgba(139, 0, 0, 0.08);
+        }
+        .field-hint {
+            font-size: 0.68rem;
+            color: #9CA3AF;
+            margin: 5px 0 0;
+        }
+        .star-rating-select {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 2px;
+        }
+        .rating-star {
+            border: none;
+            background: none;
+            padding: 0;
+            font-size: 2rem;
+            line-height: 1;
+            color: #D1D5DB;
+            cursor: pointer;
+            transition: transform 0.15s ease, color 0.15s ease;
+        }
+        .rating-star:hover { transform: scale(1.12); }
+        .rating-star.active { color: var(--dark-red); }
+        .submit-review-btn {
+            width: 100%;
+            margin-top: 4px;
+            padding: 13px 18px;
+            border: none;
+            border-radius: 50px;
+            background: var(--dark-red);
+            color: #FFFFFF;
+            font-family: var(--font-headline);
+            font-size: 0.78rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 8px 20px rgba(139, 0, 0, 0.2);
+            transition: all 0.2s ease;
+        }
+        .submit-review-btn:hover { background: var(--dark-red-hover); transform: translateY(-1px); }
+        .submit-review-btn:disabled { background: #9CA3AF; cursor: not-allowed; box-shadow: none; transform: none; }
+        .form-error {
+            display: none;
+            margin-top: 12px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            background: rgba(220, 38, 38, 0.08);
+            border: 1px solid rgba(220, 38, 38, 0.2);
+            color: #DC2626;
+            text-align: center;
+            font-size: 0.78rem;
+            font-weight: 700;
+        }
+
+        /* ---------- Success ---------- */
+        .success-card {
+            text-align: center;
+            padding: 16px 6px 8px;
+        }
+        .success-icon {
+            width: 62px;
+            height: 62px;
+            margin: 0 auto 14px;
+            border-radius: 50%;
+            background: #F0FDF4;
+            border: 1px solid #BBF7D0;
+            color: #16A34A;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .success-icon i, .success-icon svg { width: 30px; height: 30px; }
+        .success-card h2 {
+            font-family: var(--font-headline);
+            font-size: 1.35rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0A0A0A;
+            margin: 0 0 6px;
+        }
+        .success-card p {
+            font-size: 0.82rem;
+            color: #6B7280;
+            line-height: 1.6;
+            margin: 0 auto 18px;
+            max-width: 360px;
+        }
+        .success-actions {
+            display: flex;
+            justify-content: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+        .wr-btn-primary,
+        .wr-btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 11px 20px;
+            border-radius: 50px;
+            font-family: var(--font-headline);
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .wr-btn-primary {
+            background: var(--dark-red);
+            color: #FFFFFF;
+            box-shadow: 0 7px 18px rgba(139, 0, 0, 0.2);
+        }
+        .wr-btn-primary:hover { background: var(--dark-red-hover); }
+        .wr-btn-secondary {
+            background: #FFFFFF;
+            color: #0A0A0A;
+            border-color: var(--border-fine);
+        }
+        .wr-btn-secondary:hover { border-color: #0A0A0A; }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 768px) {
+            .write-hero { padding: 116px 4% 24px; }
+            .write-container { margin: 20px auto 56px; }
+            .write-form-card { padding: 20px 16px; border-radius: 18px; }
+            .form-head h2 { font-size: 1.2rem; }
+            .rating-star { font-size: 1.9rem; }
+        }
+        @media (max-width: 520px) {
+            .review-type-picker { grid-template-columns: 1fr; }
+            .type-option { padding: 13px 13px; }
+            .type-icon { width: 38px; height: 38px; }
+            .write-form-card { padding: 18px 14px; }
+            .success-actions { flex-direction: column; }
+            .wr-btn-primary, .wr-btn-secondary { width: 100%; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Marquee -->
+    <header class="site-header">
+<div class="announcement-bar">
+        <div class="announcement-track">
+            <div class="announcement-content">
+                <span class="dot"></span>
+                <span>PYTHON ARCHIVE 2026</span>
+                <span class="announcement-divider">•</span>
+                <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+                <span class="announcement-divider">•</span>
+                <span>ISLANDWIDE EXPRESS DELIVERY</span>
+                <span class="announcement-divider">•</span>
+                <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+                <span class="announcement-divider">•</span>
+                <span>CASH ON DELIVERY AVAILABLE</span>
+            </div>
+            <div class="announcement-content" aria-hidden="true">
+                <span class="dot"></span>
+                <span>PYTHON ARCHIVE 2026</span>
+                <span class="announcement-divider">•</span>
+                <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+                <span class="announcement-divider">•</span>
+                <span>ISLANDWIDE EXPRESS DELIVERY</span>
+                <span class="announcement-divider">•</span>
+                <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+                <span class="announcement-divider">•</span>
+                <span>CASH ON DELIVERY AVAILABLE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Minimal Navbar -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Python Logo">
+            <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="index.html#new-drop">NEW DROP</a></li>
+            <li><a href="shop.html">SHOP ALL</a></li>
+            <li><a href="index.html#collections">COLLECTIONS</a></li>
+            <li><a href="customize.html">CUSTOMIZE</a></li>
+            <li><a href="offers.html">OFFERS</a></li>
+            <li><a href="reviews.html" class="active">REVIEWS</a></li>
+        </ul>
+
+        <div class="nav-icons">
+            <a href="shop.html" class="nav-icon-btn" title="Search Products" aria-label="Search">
+                <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+            </a>
+            <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account">
+                <i data-lucide="user" style="width: 17px; height: 17px;"></i>
+            </a>
+            <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+                <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+                <span id="wishlist-count" class="nav-badge">0</span>
+            </a>
+            <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart">
+                <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+                <span id="cart-count" class="nav-badge">0</span>
+            </a>
+            <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="logo.png" alt="Python Logo" class="drawer-logo">
+                <div>
+                    <span class="drawer-title">PYTHON</span>
+                    <span class="drawer-subtitle">ARCHIVE 2026</span>
+                </div>
+            </div>
+            <button class="close-menu" id="close-menu" aria-label="Close Menu">
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
+
+        <div class="drawer-quick-actions">
+            <a href="shop.html" class="drawer-action-btn">
+                <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+                <span>Search</span>
+            </a>
+            <a href="wishlist.html" class="drawer-action-btn">
+                <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+                <span>Wishlist</span>
+            </a>
+            <a href="cart.html" class="drawer-action-btn">
+                <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+                <span>Cart</span>
+            </a>
+            <a href="profile.html" class="drawer-action-btn">
+                <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+                <span>Account</span>
+            </a>
+        </div>
+
+        <div class="drawer-section-label">NAVIGATION</div>
+        <div class="drawer-links-group">
+            <a href="index.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">01</span>
+                    <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+                    <span>HOME</span>
+                </div>
+            </a>
+            <a href="index.html#new-drop" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">02</span>
+                    <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                    <span>NEW DROP</span>
+                </div>
+            </a>
+            <a href="shop.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">03</span>
+                    <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+                    <span>SHOP ALL</span>
+                </div>
+            </a>
+            <a href="customize.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">04</span>
+                    <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+                    <span>CUSTOM PRINT</span>
+                </div>
+            </a>
+            <a href="offers.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">05</span>
+                    <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                    <span>OFFERS</span>
+                </div>
+            </a>
+            <a href="track-order.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">06</span>
+                    <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+                    <span>TRACK ORDER</span>
+                </div>
+            </a>
+            <a href="reviews.html" class="drawer-link active">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">07</span>
+                    <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+                    <span>REVIEWS</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <header class="write-hero">
+        <div class="write-hero-badge">
+            <i data-lucide="pen-line" style="width: 14px; height: 14px;"></i>
+            SHARE YOUR EXPERIENCE
+        </div>
+        <h1>WRITE A <span>REVIEW</span></h1>
+        <p>Choose Service Review or Product Review, rate your experience and help other customers shop with confidence.</p>
+    </header>
+
+    <main class="write-container">
+        <a href="reviews.html" class="back-link">
+            <i data-lucide="arrow-left" style="width:13px;height:13px;"></i>
+            READ ALL REVIEWS
+        </a>
+
+        <!-- Service / Product Selector -->
+        <div class="review-type-picker" id="review-type-picker">
+            <button type="button" class="type-option active" data-type="service" onclick="setReviewType('service')">
+                <span class="type-icon"><i data-lucide="headphones" style="width:19px;height:19px;"></i></span>
+                <span class="type-text">
+                    <strong>SERVICE REVIEW</strong>
+                    <small>Delivery, packaging & support</small>
+                </span>
+                <i data-lucide="check-circle-2" class="type-check"></i>
+            </button>
+            <button type="button" class="type-option" data-type="product" onclick="setReviewType('product')">
+                <span class="type-icon"><i data-lucide="shirt" style="width:19px;height:19px;"></i></span>
+                <span class="type-text">
+                    <strong>PRODUCT REVIEW</strong>
+                    <small>Fit, fabric & print quality</small>
+                </span>
+                <i data-lucide="check-circle-2" class="type-check"></i>
+            </button>
+        </div>
+
+        <div class="write-form-card">
+            <form id="write-review-form" onsubmit="submitNewReview(event)">
+                <div id="form-body">
+                    <div class="form-head">
+                        <span class="form-eyebrow" id="form-eyebrow">SERVICE REVIEW</span>
+                        <h2 id="form-title">HOW WAS YOUR EXPERIENCE?</h2>
+                        <p id="form-desc">Rate our service and tell us about delivery, packaging or customer support.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label id="rating-label">SERVICE RATING</label>
+                        <div class="star-rating-select" id="rating-selector">
+                            <button type="button" class="rating-star" data-rating="1" aria-label="1 star">&#9733;</button>
+                            <button type="button" class="rating-star" data-rating="2" aria-label="2 stars">&#9733;</button>
+                            <button type="button" class="rating-star" data-rating="3" aria-label="3 stars">&#9733;</button>
+                            <button type="button" class="rating-star" data-rating="4" aria-label="4 stars">&#9733;</button>
+                            <button type="button" class="rating-star" data-rating="5" aria-label="5 stars">&#9733;</button>
+                        </div>
+                        <input type="hidden" id="selected-rating" value="0">
+                    </div>
+
+                    <div class="form-group" id="product-group" style="display: none;">
+                        <label for="review-product">SELECT PRODUCT</label>
+                        <select id="review-product">
+                            <option value="">Choose a product</option>
+                        </select>
+                        <p class="field-hint">Select the exact piece you want to review.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewer-name">YOUR NAME</label>
+                        <input type="text" id="reviewer-name" placeholder="e.g. John Doe" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reviewer-comment">YOUR REVIEW</label>
+                        <textarea id="reviewer-comment" rows="5" placeholder="Tell us about your delivery, packaging or customer support experience..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-review-btn" id="submit-btn">
+                        <i data-lucide="send" style="width:15px;height:15px;"></i> SUBMIT SERVICE REVIEW
+                    </button>
+
+                    <div class="form-error" id="review-error"></div>
+                </div>
+
+                <div class="success-card" id="review-success" style="display: none;">
+                    <div class="success-icon">
+                        <i data-lucide="check-circle-2"></i>
+                    </div>
+                    <h2>REVIEW PUBLISHED</h2>
+                    <p>Thank you! Your review is now live and visible to other customers.</p>
+                    <div class="success-actions">
+                        <a href="reviews.html?tab=service" id="read-reviews-link" class="wr-btn-primary">
+                            READ ALL REVIEWS
+                        </a>
+                        <button type="button" class="wr-btn-secondary" onclick="writeAnother()">
+                            WRITE ANOTHER
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <!-- Luxury Editorial Footer -->
+    <footer class="luxury-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>PYTHON</h2>
+                <p>
+                    Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>STOREFRONT</h4>
+                <ul>
+                    <li><a href="shop.html">Shop All</a></li>
+                    <li><a href="index.html#new-drop">New Releases</a></li>
+                    <li><a href="customize.html">Custom Orders</a></li>
+                    <li><a href="offers.html">Special Offers</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CLIENT SERVICES</h4>
+                <ul>
+                    <li><a href="track-order.html">Track Order</a></li>
+                    <li><a href="reviews.html">Customer Reviews</a></li>
+                    <li><a href="profile.html">Member Account</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>VIP CONCIERGE</h4>
+                <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+                <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+                    <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+            <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        let selectedRating = 0;
+        let reviewType = 'service';
+        let loggedInEmail = null;
+        let knownProducts = [];
+        let pendingProductId = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const typeParam = params.get('type');
+            const productParam = params.get('product') || params.get('id');
+
+            if (productParam) {
+                reviewType = 'product';
+                pendingProductId = String(productParam);
+            } else if (typeParam === 'product' || typeParam === 'service') {
+                reviewType = typeParam;
+            }
+
+            prefillReviewer();
+            bindRatingStars();
+            loadProductCatalog();
+            setReviewType(reviewType);
+        });
+
+        /* ---------- User prefill ---------- */
+        function prefillReviewer() {
+            const nameInput = document.getElementById('reviewer-name');
+            const cached = (typeof readStoredUser === 'function') ? readStoredUser() : null;
+
+            if (cached) {
+                loggedInEmail = cached.email || null;
+                if (nameInput && !nameInput.value) {
+                    nameInput.value = cached.name || (cached.email ? cached.email.split('@')[0] : '');
+                }
+            }
+
+            if (typeof auth !== 'undefined' && auth && typeof auth.onAuthStateChanged === 'function') {
+                auth.onAuthStateChanged((user) => {
+                    if (!user) return;
+                    loggedInEmail = user.email || loggedInEmail;
+                    if (!nameInput || nameInput.value) return;
+                    nameInput.value = user.displayName || (user.email ? user.email.split('@')[0] : '');
+                });
+            }
+        }
+
+        /* ---------- Star rating ---------- */
+        function paintStars(value) {
+            document.querySelectorAll('#rating-selector .rating-star').forEach((star) => {
+                star.classList.toggle('active', Number(star.dataset.rating) <= value);
+            });
+        }
+
+        function setRating(rating) {
+            selectedRating = rating;
+            const input = document.getElementById('selected-rating');
+            if (input) input.value = rating;
+            paintStars(rating);
+        }
+
+        function bindRatingStars() {
+            const wrap = document.getElementById('rating-selector');
+            if (!wrap || wrap.dataset.bound === '1') return;
+            wrap.dataset.bound = '1';
+
+            wrap.addEventListener('click', (e) => {
+                const star = e.target.closest('.rating-star');
+                if (star) setRating(Number(star.dataset.rating));
+            });
+            wrap.addEventListener('mouseover', (e) => {
+                const star = e.target.closest('.rating-star');
+                if (star) paintStars(Number(star.dataset.rating));
+            });
+            wrap.addEventListener('mouseout', (e) => {
+                const star = e.target.closest('.rating-star');
+                if (star) paintStars(selectedRating);
+            });
+        }
+
+        /* ---------- Review type ---------- */
+        function setReviewType(type) {
+            if (type !== 'service' && type !== 'product') return;
+            reviewType = type;
+
+            document.querySelectorAll('.type-option').forEach((btn) => {
+                btn.classList.toggle('active', btn.dataset.type === type);
+            });
+
+            const productGroup = document.getElementById('product-group');
+            const productSelect = document.getElementById('review-product');
+            const formEyebrow = document.getElementById('form-eyebrow');
+            const formTitle = document.getElementById('form-title');
+            const formDesc = document.getElementById('form-desc');
+            const ratingLabel = document.getElementById('rating-label');
+            const submitBtn = document.getElementById('submit-btn');
+            const comment = document.getElementById('reviewer-comment');
+
+            if (productGroup) productGroup.style.display = type === 'product' ? 'block' : 'none';
+            if (productSelect) productSelect.required = type === 'product';
+
+            if (formEyebrow) formEyebrow.innerText = type === 'product' ? 'PRODUCT REVIEW' : 'SERVICE REVIEW';
+            if (formTitle) formTitle.innerText = type === 'product' ? 'RATE THIS PRODUCT' : 'HOW WAS YOUR EXPERIENCE?';
+            if (formDesc) {
+                formDesc.innerText = type === 'product'
+                    ? 'Choose the piece you ordered and rate the fit, fabric and print quality.'
+                    : 'Rate our service and tell us about delivery, packaging or customer support.';
+            }
+            if (ratingLabel) ratingLabel.innerText = type === 'product' ? 'PRODUCT RATING' : 'SERVICE RATING';
+            if (comment) {
+                comment.placeholder = type === 'product'
+                    ? 'Tell us about the fit, fabric, stitching and print quality...'
+                    : 'Tell us about your delivery, packaging or customer support experience...';
+            }
+            if (submitBtn) {
+                submitBtn.innerHTML = `<i data-lucide="send" style="width:15px;height:15px;"></i> SUBMIT ${type === 'product' ? 'PRODUCT' : 'SERVICE'} REVIEW`;
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        /* ---------- Product catalog ---------- */
+        function dedupeProducts(list) {
+            const seen = new Set();
+            return list
+                .filter((p) => {
+                    if (!p || !p.id || !p.name) return false;
+                    if (seen.has(String(p.id))) return false;
+                    seen.add(String(p.id));
+                    return true;
+                })
+                .map((p) => ({ id: String(p.id), name: p.name }))
+                .sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function buildProductOptions() {
+            const select = document.getElementById('review-product');
+            if (!select) return;
+
+            const previous = select.value || '';
+            select.innerHTML = '<option value="">Choose a product</option>';
+
+            knownProducts.forEach((p) => {
+                const option = document.createElement('option');
+                option.value = p.id;
+                option.textContent = p.name;
+                select.appendChild(option);
+            });
+
+            if (pendingProductId && !knownProducts.some((p) => p.id === String(pendingProductId))) {
+                const option = document.createElement('option');
+                option.value = String(pendingProductId);
+                option.textContent = 'Product #' + pendingProductId;
+                select.appendChild(option);
+            }
+
+            const target = pendingProductId ? String(pendingProductId) : previous;
+            if ([...select.options].some((o) => o.value === target)) {
+                select.value = target;
+            }
+            pendingProductId = null;
+        }
+
+        function loadProductCatalog() {
+            if (typeof products !== 'undefined' && Array.isArray(products)) {
+                products.filter((p) => p && !p.isDeleted).forEach((p) => {
+                    if (p.id != null && p.name) knownProducts.push({ id: String(p.id), name: p.name });
+                });
+            }
+            knownProducts = dedupeProducts(knownProducts);
+            buildProductOptions();
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('products').get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const data = doc.data() || {};
+                        if (!data.isDeleted && data.name) {
+                            knownProducts.push({ id: String(doc.id), name: data.name });
+                        }
+                    });
+                    knownProducts = dedupeProducts(knownProducts);
+                    buildProductOptions();
+                }).catch(() => {});
+            }
+        }
+
+        /* ---------- Helpers ---------- */
+        function getDeviceType() {
+            const width = window.innerWidth;
+            if (width < 768) return 'Mobile Phone';
+            if (width < 1024) return 'Tablet';
+            return 'Desktop / Laptop';
+        }
+
+        function showError(message) {
+            const errorEl = document.getElementById('review-error');
+            if (!errorEl) return;
+            errorEl.innerText = message;
+            errorEl.style.display = 'block';
+            window.setTimeout(() => { errorEl.style.display = 'none'; }, 5000);
+        }
+
+        function saveReviewLocally(review) {
+            let localReviews = [];
+            try {
+                localReviews = JSON.parse(localStorage.getItem('local_customer_reviews')) || [];
+            } catch (e) {}
+            review.timestampLocal = new Date().toISOString();
+            localReviews.push(review);
+            localStorage.setItem('local_customer_reviews', JSON.stringify(localReviews));
+        }
+
+        /* ---------- Submit ---------- */
+        function submitNewReview(e) {
+            e.preventDefault();
+
+            const nameInput = document.getElementById('reviewer-name');
+            const commentInput = document.getElementById('reviewer-comment');
+            const productSelect = document.getElementById('review-product');
+            const submitBtn = document.getElementById('submit-btn');
+
+            const name = nameInput ? nameInput.value.trim() : '';
+            const comment = commentInput ? commentInput.value.trim() : '';
+            const productId = productSelect ? String(productSelect.value || '') : '';
+
+            if (selectedRating === 0) {
+                showError('Please select a star rating.');
+                return;
+            }
+            if (!name) {
+                showError('Please enter your name.');
+                return;
+            }
+            if (reviewType === 'product' && !productId) {
+                showError('Please select the product you want to review.');
+                return;
+            }
+            if (!comment) {
+                showError('Please write a short review.');
+                return;
+            }
+
+            let productName = '';
+            if (reviewType === 'product' && productId) {
+                const found = knownProducts.find((p) => p.id === productId);
+                productName = found ? found.name : ((productSelect.options[productSelect.selectedIndex] || {}).textContent || '');
+            }
+
+            const reviewData = {
+                reviewType: reviewType,
+                name: name,
+                rating: selectedRating,
+                comment: comment,
+                timestamp: (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore.FieldValue)
+                    ? firebase.firestore.FieldValue.serverTimestamp()
+                    : new Date().toISOString(),
+                email: loggedInEmail || '',
+                device: getDeviceType()
+            };
+
+            if (reviewType === 'product') {
+                reviewData.productId = productId;
+                reviewData.productName = productName || 'Python Product';
+            }
+
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = '<span style="display:inline-block;width:15px;height:15px;border:2px solid #fff;border-top-color:transparent;border-radius:50%;animation:spin 1s linear infinite;"></span> SUBMITTING...';
+            }
+
+            const finish = () => {
+                showSuccess(productId);
+            };
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('reviews').add(reviewData)
+                    .then(finish)
+                    .catch((err) => {
+                        console.warn('Review save failed, saving locally instead:', err);
+                        const localCopy = Object.assign({}, reviewData, { timestamp: new Date().toISOString() });
+                        saveReviewLocally(localCopy);
+                        finish();
+                    });
+            } else {
+                const localCopy = Object.assign({}, reviewData, { timestamp: new Date().toISOString() });
+                saveReviewLocally(localCopy);
+                finish();
+            }
+        }
+
+        function showSuccess(productId) {
+            const formBody = document.getElementById('form-body');
+            const success = document.getElementById('review-success');
+            const readLink = document.getElementById('read-reviews-link');
+
+            if (formBody) formBody.style.display = 'none';
+            if (success) success.style.display = 'block';
+
+            if (readLink) {
+                let url = 'reviews.html?tab=' + reviewType;
+                if (reviewType === 'product' && productId) {
+                    url += '&product=' + encodeURIComponent(productId);
+                }
+                readLink.href = url;
+            }
+
+            if (success) success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function writeAnother() {
+            const formBody = document.getElementById('form-body');
+            const success = document.getElementById('review-success');
+            const submitBtn = document.getElementById('submit-btn');
+            const comment = document.getElementById('reviewer-comment');
+
+            if (success) success.style.display = 'none';
+            if (formBody) formBody.style.display = 'block';
+            if (comment) comment.value = '';
+            setRating(0);
+            setReviewType(reviewType);
+
+            if (submitBtn) {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = `<i data-lucide="send" style="width:15px;height:15px;"></i> SUBMIT ${reviewType === 'product' ? 'PRODUCT' : 'SERVICE'} REVIEW`;
+            }
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <style>
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</body>
+
+</html>

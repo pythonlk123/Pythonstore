@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SHOPPING BAG | PYTHON 2026 ARCHIVE</title>
+  <meta name="description" content="View your PYTHON shopping bag. Heavyweight luxury streetwear pieces, custom prints, and islandwide delivery.">
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    :root {
+      --bg-white: #FFFFFF;
+      --text-black: #0A0A0A;
+      --text-muted: #525B6C;
+      --dark-red: #8B0000;
+      --dark-red-hover: #A00000;
+      --dark-red-soft: rgba(139, 0, 0, 0.08);
+      --border-fine: #E5E7EB;
+      --font-headline: 'Anta', sans-serif;
+    }
+
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF;
+      color: #0A0A0A;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+
+    .cart-header-banner {
+      padding: 130px 5% 30px;
+      text-align: center;
+      background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+      border-bottom: 1px solid var(--border-fine);
+    }
+    .cart-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      background: rgba(139, 0, 0, 0.08);
+      border: 1px solid rgba(139, 0, 0, 0.2);
+      color: var(--dark-red);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+    }
+    .cart-title {
+      font-family: 'Anta', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      color: #0A0A0A;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin: 0 0 10px;
+    }
+
+    .cart-main-wrap {
+      max-width: 900px;
+      margin: 36px auto 80px;
+      padding: 0 4%;
+      min-height: 50vh;
+    }
+
+    .cart-item {
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-fine) !important;
+      border-radius: 16px !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03) !important;
+      transition: border-color 0.2s;
+    }
+    .cart-item:hover {
+      border-color: #0A0A0A !important;
+    }
+
+    .btn-qty {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      width: 28px;
+      height: 28px;
+      border-radius: 6px;
+      font-family: 'Anta', sans-serif;
+      font-weight: 800;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .btn-qty:hover {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      border-color: #0A0A0A;
+    }
+
+    .cart-summary {
+      background: #FFFFFF !important;
+      border: 1px solid var(--border-fine) !important;
+      border-radius: 20px !important;
+      padding: 32px !important;
+      margin-top: 30px !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04) !important;
+    }
+
+    .btn-checkout-primary {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      background: var(--dark-red);
+      color: #FFFFFF;
+      font-family: 'Anta', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 6px 20px rgba(139, 0, 0, 0.25);
+    }
+    .btn-checkout-primary:hover {
+      background: #A00000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(139, 0, 0, 0.35);
+    }
+
+    @media (max-width: 640px) {
+      .cart-header-banner {
+        padding: 110px 4% 20px;
+      }
+      .cart-item {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 16px !important;
+      }
+      .cart-item > div:last-child {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .cart-summary {
+        padding: 22px 18px !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop">NEW DROP</a></li>
+      <li><a href="shop.html">SHOP ALL</a></li>
+      <li><a href="index.html#collections">COLLECTIONS</a></li>
+      <li><a href="customize.html">CUSTOMIZE</a></li>
+      <li><a href="offers.html">OFFERS</a></li>
+      <li><a href="reviews.html">REVIEWS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account">
+        <i data-lucide="user" style="width: 17px; height: 17px;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter (Active) -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn active">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+      <a href="reviews.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">07</span>
+          <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+          <span>REVIEWS</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <!-- Header Banner -->
+  <header class="cart-header-banner">
+    <div class="cart-badge">
+      <i data-lucide="shopping-bag" style="width: 14px; height: 14px;"></i>
+      YOUR SELECTIONS
+    </div>
+    <h1 class="cart-title">SHOPPING BAG</h1>
+    <p style="color: #6B7280; font-size: 0.95rem; margin: 0 auto; max-width: 500px;">
+      Review your heavy streetwear items before continuing to secure checkout.
+    </p>
+  </header>
+
+  <!-- Main Cart Section -->
+  <main class="cart-main-wrap">
+    <div id="cart-items-container">
+      <div id="cart-items">
+        <!-- Rendered by script.js -->
+      </div>
+
+      <div class="cart-summary">
+        <h3 style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: 900; letter-spacing: 1px; margin: 0 0 20px; text-transform: uppercase;">ORDER SUMMARY</h3>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; font-size: 0.92rem;">
+          <span style="color: #6B7280;">Subtotal</span>
+          <span id="cart-total" style="font-weight: 900; font-size: 1.15rem; color: #0A0A0A;">Rs. 0.00</span>
+        </div>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; font-size: 0.92rem; border-bottom: 1px dashed var(--border-fine); padding-bottom: 18px;">
+          <span style="color: #6B7280;">Delivery</span>
+          <span id="cart-shipping" style="font-weight: 800; color: #16A34A;">Calculated</span>
+        </div>
+
+        <button onclick="handleCheckoutNavigation()" class="btn-checkout-primary">
+          <i data-lucide="lock" style="width: 16px; height: 16px;"></i>
+          PROCEED TO CHECKOUT
+        </button>
+        
+        <div style="margin-top: 18px; text-align: center;">
+          <a href="shop.html" style="font-size: 0.8rem; font-weight: 800; color: #6B7280; text-decoration: none; letter-spacing: 1px; text-transform: uppercase; display: inline-flex; align-items: center; gap: 6px;">
+            <i data-lucide="arrow-left" style="width: 14px; height: 14px;"></i> Continue Shopping
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+  <script>
+    if (typeof lucide !== 'undefined') {
+      lucide.createIcons();
+    }
+    function handleCheckoutNavigation() {
+      if (typeof auth !== 'undefined' && auth && auth.currentUser) {
+        window.location.href = 'checkout.html';
+      } else if (localStorage.getItem('python_user')) {
+        window.location.href = 'checkout.html';
+      } else {
+        sessionStorage.setItem('redirect_after_login', 'checkout.html');
+        window.location.href = 'login.html?redirect=checkout';
+      }
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,40 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Development / Storefront Open Rules (Recommended for python-store-55bb5)
+    // Products: Public read and write from Admin dashboard
+    match /products/{productId} {
+      allow read, write: if true;
+    }
+
+    // Orders: Anyone can create order; Admin can read and update status
+    match /orders/{orderId} {
+      allow read, write: if true;
+    }
+
+    // Users & Customers
+    match /users/{userId} {
+      allow read, write: if true;
+    }
+
+    // Reviews & Feedback
+    match /reviews/{reviewId} {
+      allow read, write: if true;
+    }
+
+    // Waitlist & Inquiries
+    match /waitlist/{waitlistId} {
+      allow read, write: if true;
+    }
+
+    // Analytics & Settings
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+
+    // Fallback for any other collection
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

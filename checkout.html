@@ -1,0 +1,921 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CHECKOUT | PYTHON 2026 ARCHIVE</title>
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+    .checkout-stepper {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    .step-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      border: 1px solid var(--border-fine);
+      background: #F9FAFB;
+      color: #6B7280;
+    }
+    .step-pill.active {
+      background: var(--dark-red);
+      color: #FFFFFF;
+      border-color: var(--dark-red);
+      box-shadow: 0 4px 14px rgba(139, 0, 0, 0.25);
+    }
+    .checkout-main-grid {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.25fr 1fr;
+      gap: 36px;
+      align-items: start;
+    }
+    .checkout-box {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    }
+    @media (max-width: 860px) {
+      .checkout-main-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .checkout-box {
+        padding: 20px 16px;
+      }
+    }
+
+    /* ═══════════════════════════════════════════
+       MOBILE CHECKOUT FORM IMPROVEMENTS
+       (max-width: 600px - small phone screens)
+    ═══════════════════════════════════════════ */
+    @media (max-width: 600px) {
+      /* Stack 2-col form rows to 1 col */
+      .form-row-2col {
+        grid-template-columns: 1fr !important;
+        gap: 12px !important;
+      }
+
+      /* Make checkout grid single column */
+      .checkout-grid {
+        grid-template-columns: 1fr !important;
+        gap: 20px !important;
+        padding: 0 !important;
+      }
+
+      /* Reduce form box padding */
+      .glass.checkout-form {
+        padding: 20px 16px !important;
+        border-radius: 18px !important;
+      }
+
+      /* Bigger tap targets for inputs */
+      .input-with-icon input,
+      .input-with-icon textarea,
+      .input-with-icon select {
+        font-size: 1rem !important;
+        padding: 14px 14px 14px 42px !important;
+        min-height: 50px !important;
+      }
+
+      /* Textarea height on mobile */
+      .input-with-icon textarea {
+        min-height: 90px !important;
+      }
+
+      /* Page heading - smaller on mobile */
+      .section-title h2 {
+        font-size: 1.75rem !important;
+      }
+
+      /* Stepper pills wrap better */
+      .checkout-stepper {
+        gap: 6px !important;
+        margin-bottom: 20px !important;
+      }
+      .step-pill {
+        font-size: 0.72rem !important;
+        padding: 7px 12px !important;
+      }
+      .step-arrow {
+        display: none !important;
+      }
+
+      /* Place order button - bigger on mobile */
+      #place-order-btn {
+        padding: 18px !important;
+        font-size: 1.08rem !important;
+        border-radius: 14px !important;
+      }
+
+      /* Order summary box full width */
+      .glass[style*="sticky"] {
+        position: relative !important;
+        top: auto !important;
+      }
+
+      /* Trust badges 2-col stays but smaller */
+      .trust-badge-item {
+        font-size: 0.75rem !important;
+        gap: 6px !important;
+      }
+      .trust-badge-item i {
+        width: 14px !important;
+        height: 14px !important;
+      }
+
+      /* Main section padding reduction */
+      main.section {
+        padding-top: 110px !important;
+        padding-left: 12px !important;
+        padding-right: 12px !important;
+      }
+
+      /* Option cards */
+      .option-card {
+        padding: 14px !important;
+        border-radius: 14px !important;
+      }
+
+      /* Grand total font */
+      #checkout-total {
+        font-size: 1.5rem !important;
+      }
+
+      /* Item summary max-height */
+      #checkout-items-list {
+        max-height: 220px !important;
+      }
+    }
+    .item-summary-card {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 12px 0;
+      border-bottom: 1px solid #E5E7EB;
+    }
+    .item-summary-card:last-child {
+      border-bottom: none;
+    }
+    .item-thumb-box {
+      position: relative;
+      width: 56px;
+      height: 56px;
+      min-width: 56px;
+      max-width: 56px;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.04);
+    }
+    .item-thumb-box img {
+      width: 56px;
+      height: 56px;
+      max-width: 56px;
+      max-height: 56px;
+      object-fit: cover;
+      display: block;
+      border-radius: 8px;
+    }
+    .item-qty-badge {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: #8B0000;
+      color: #FFFFFF;
+      font-size: 0.68rem;
+      font-weight: 800;
+      min-width: 18px;
+      height: 18px;
+      line-height: 18px;
+      text-align: center;
+      border-radius: 50%;
+      padding: 0 4px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.25);
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop" class="">NEW DROP</a></li>
+      <li><a href="shop.html" class="">SHOP ALL</a></li>
+      <li><a href="index.html#collections" class="">COLLECTIONS</a></li>
+      <li><a href="customize.html" class="">CUSTOMIZE</a></li>
+      <li><a href="offers.html" class="">OFFERS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account" style="">
+        <i data-lucide="user" style="width: 17px; height: 17px; "></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn active">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+    </div>
+  </div>
+<main class="section" style="padding-top: 140px; min-height: 85vh; position: relative; z-index: 1;">
+        
+        <!-- Stepper Navigation -->
+        <div class="checkout-stepper">
+            <a href="cart.html" class="step-pill completed" style="text-decoration: none;">
+                <i data-lucide="shopping-bag" style="width: 14px; height: 14px;"></i> 1. Shopping Bag
+            </a>
+            <i data-lucide="chevron-right" class="step-arrow" style="width: 16px;"></i>
+            <div class="step-pill active">
+                <i data-lucide="truck" style="width: 14px; height: 14px;"></i> 2. Delivery & Points
+            </div>
+            <i data-lucide="chevron-right" class="step-arrow" style="width: 16px;"></i>
+            <div class="step-pill">
+                <i data-lucide="check-circle" style="width: 14px; height: 14px;"></i> 3. Confirmation
+            </div>
+        </div>
+
+        <div class="section-title" style="text-align: center; margin-bottom: 30px;">
+            <span class="modern-pill" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: 12px; padding: 6px 18px; border-radius: 50px; background: rgba(220, 20, 60, 0.08); border: 1px solid rgba(220, 20, 60, 0.25); color: #8B0000; font-size: 0.85rem; font-weight: 700;">
+                <i data-lucide="shield-check" style="width: 14px;"></i> 100% Encrypted & Safe Checkout
+            </span>
+            <h2 style="font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin-bottom: 6px;">
+                Finalize Your <span style="color: #8B0000;">Order</span>
+            </h2>
+            <p style="font-size: 0.95rem; color: var(--text-muted);">Cash on Delivery available nationwide · Fast 2-3 day courier delivery</p>
+        </div>
+
+        <div class="checkout-grid" style="max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.25fr 1fr; gap: 30px; align-items: start;">
+            
+            <!-- Left Column: Customer Details & Options -->
+            <div class="glass checkout-form" style="padding: 35px; border-radius: 24px; border: 1px solid var(--border-color); background: var(--surface); box-shadow: var(--shadow-sm);">
+                
+                <!-- Customer Contact Section -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px;">
+                        <i data-lucide="user-check" style="color: #8B0000; width: 20px;"></i> Contact Information
+                    </h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Step 1 of 2</span>
+                </div>
+
+                <div class="form-row-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">Full Name *</label>
+                        <div class="input-with-icon">
+                            <i data-lucide="user"></i>
+                            <input type="text" id="checkout-name" placeholder="e.g. Kasun Perera" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">WhatsApp / Phone *</label>
+                        <div class="input-with-icon">
+                            <i data-lucide="phone"></i>
+                            <input type="tel" id="checkout-phone" placeholder="07XXXXXXXX" required>
+                        </div>
+                    </div>
+                </div>
+
+                <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 25px 0;">
+
+                <!-- Shipping Address Section -->
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+                    <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 10px;">
+                        <i data-lucide="map-pin" style="color: #8B0000; width: 20px;"></i> Delivery Address
+                    </h3>
+                    <span style="font-size: 0.75rem; color: var(--text-muted); font-weight: 600;">Step 2 of 2</span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 15px;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">Street Address / Home No *</label>
+                    <div class="input-with-icon">
+                        <i data-lucide="home"></i>
+                        <input type="text" id="checkout-address" placeholder="No. 45, Temple Road, Mount Lavinia" required>
+                    </div>
+                </div>
+
+                <div class="form-row-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">City / Town *</label>
+                        <div class="input-with-icon">
+                            <i data-lucide="building-2"></i>
+                            <input type="text" id="checkout-city" placeholder="Colombo" required>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">District (Optional)</label>
+                        <div class="input-with-icon">
+                            <i data-lucide="navigation"></i>
+                            <input type="text" id="checkout-district" placeholder="Colombo / Gampaha / Kandy">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Postal Code Row -->
+                <div class="form-row-2col" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 25px;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">Postal Code <span style="font-weight:500; color:var(--text-muted);">(Optional)</span></label>
+                        <div class="input-with-icon">
+                            <i data-lucide="hash"></i>
+                            <input type="text" id="checkout-postal" placeholder="e.g. 10100  11000  20000" maxlength="10" inputmode="numeric">
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0; display: flex; align-items: flex-end;">
+                        <p style="font-size: 0.72rem; color: var(--text-muted); font-weight: 600; padding-bottom: 10px; line-height: 1.4;">
+                            Postal code helps ensure faster &amp; accurate delivery.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Delivery Speed Cards -->
+                <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 10px; color: var(--text-main);">Delivery Method</label>
+                <div style="display: grid; grid-template-columns: 1fr; gap: 10px; margin-bottom: 25px;">
+                    <div class="option-card selected" id="delivery-opt-standard" onclick="selectDeliveryOption(this, 0)">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 36px; height: 36px; border-radius: 50%; background: rgba(220, 20, 60, 0.1); display: flex; align-items: center; justify-content: center; color: #8B0000;">
+                                <i data-lucide="truck" style="width: 18px;"></i>
+                            </div>
+                            <div>
+                                <p style="font-size: 0.88rem; font-weight: 800; margin: 0; color: var(--text-main);">Islandwide Courier Delivery</p>
+                                <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0;">Delivered within 2 - 3 business days</p>
+                            </div>
+                        </div>
+                        <span id="delivery-method-badge" class="free-delivery-badge">Calculated</span>
+                    </div>
+                </div>
+
+                <!-- Special Delivery Instructions -->
+                <div class="form-group" style="margin-bottom: 25px;">
+                    <label style="display: block; font-size: 0.8rem; font-weight: 700; margin-bottom: 6px; color: var(--text-main);">Order Notes / Special Instructions (Optional)</label>
+                    <div class="input-with-icon">
+                        <i data-lucide="message-square" style="top: 18px;"></i>
+                        <textarea id="checkout-notes" placeholder="e.g. Call before delivery, leave with neighbor, gift pack request..."></textarea>
+                    </div>
+                </div>
+
+                <!-- Payment Method Info -->
+                <h3 style="font-size: 1.15rem; font-weight: 800; color: var(--text-main); margin-bottom: 15px; display: flex; align-items: center; gap: 10px;">
+                    <i data-lucide="wallet" style="color: #8B0000; width: 20px;"></i> Payment Method
+                </h3>
+                
+                <div class="option-card selected" style="margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <input type="radio" name="payment" checked style="accent-color: #8B0000; transform: scale(1.2);">
+                        <div>
+                            <p style="font-size: 0.88rem; font-weight: 800; margin: 0; color: var(--text-main);">Cash on Delivery (COD)</p>
+                            <p style="font-size: 0.75rem; color: var(--text-muted); margin: 2px 0 0;">Pay in cash or bank transfer upon package handover</p>
+                        </div>
+                    </div>
+                    <span style="font-size: 0.75rem; font-weight: 800; color: #22c55e;">100% Safe</span>
+                </div>
+            </div>
+
+            <!-- Right Column: Order Summary, Points & Confirm CTA -->
+            <div style="display: flex; flex-direction: column; gap: 20px; position: sticky; top: 100px;">
+                
+                <div class="glass" style="padding: 30px; border-radius: 24px; border: 1px solid var(--border-color); background: var(--surface); box-shadow: var(--shadow-sm);">
+                    
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3 style="font-size: 1.2rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px;">
+                            <i data-lucide="package" style="color: #8B0000; width: 20px;"></i> Order Summary
+                        </h3>
+                        <a href="cart.html" style="font-size: 0.8rem; font-weight: 700; color: #8B0000; text-decoration: none;">Edit Bag</a>
+                    </div>
+
+                    <!-- Items Container with Thumbnails -->
+                    <div id="checkout-items-list" style="max-height: 280px; overflow-y: auto; padding-right: 5px; margin-bottom: 15px;">
+                        <!-- Injected by JS -->
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--border-light); margin: 15px 0;">
+
+                    <!-- Python Club Points Box -->
+                    <div id="club-points-box" style="padding: 16px; border-radius: 16px; background: rgba(255, 149, 0, 0.06); border: 1.5px dashed rgba(255, 149, 0, 0.35); margin-bottom: 18px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px;">
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <div style="width: 34px; height: 34px; border-radius: 50%; background: #ff9500; display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0;">
+                                    <i data-lucide="award" style="width: 18px;"></i>
+                                </div>
+                                <div>
+                                    <p style="font-size: 0.85rem; font-weight: 800; color: var(--text-main); margin: 0;">Python Club Points</p>
+                                    <p style="font-size: 0.73rem; color: var(--text-muted); font-weight: 700; margin: 2px 0 0;" id="points-status-text">Checking balance...</p>
+                                </div>
+                            </div>
+                            <div id="points-action-slot">
+                                <!-- Checkbox / Login prompt injected by JS -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Breakdown Table -->
+                    <div style="display: flex; flex-direction: column; gap: 10px; font-size: 0.88rem;">
+                        <div style="display: flex; justify-content: space-between; color: var(--text-muted);">
+                            <span>Subtotal (<span id="summary-item-count">0</span> items)</span>
+                            <span id="summary-subtotal" style="font-weight: 700; color: var(--text-main);">Rs. 0.00</span>
+                        </div>
+
+                        <div style="display: flex; justify-content: space-between; align-items: center; color: var(--text-muted);">
+                            <span>Delivery Fee</span>
+                            <span id="summary-delivery" style="font-weight: 700; color: var(--text-main);">Rs. 450.00</span>
+                        </div>
+
+                        <div id="summary-discount-row" style="display: none; justify-content: space-between; align-items: center; color: #8B0000; font-weight: 800;">
+                            <span id="summary-discount-label">Club Points Discount</span>
+                            <span id="summary-discount-val">-Rs. 0.00</span>
+                        </div>
+
+                        <div id="summary-earned-row" style="display: flex; justify-content: space-between; align-items: center; color: #ff9500; font-size: 0.78rem; font-weight: 700;">
+                            <span>Points you will earn:</span>
+                            <span id="summary-earned-val">+0 pts</span>
+                        </div>
+                    </div>
+
+                    <hr style="border: 0; border-top: 1px solid var(--border-color); margin: 18px 0;">
+
+                    <!-- Grand Total -->
+                    <div style="display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px;">
+                        <div>
+                            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block;">Total Amount to Pay</span>
+                            <span style="font-size: 0.72rem; color: #22c55e; font-weight: 700;">(Cash on Delivery)</span>
+                        </div>
+                        <span id="checkout-total" style="font-size: 1.8rem; font-weight: 900; color: #8B0000;">Rs. 0.00</span>
+                    </div>
+
+                    <!-- Place Order Button -->
+                    <button class="btn btn-primary" id="place-order-btn" style="width: 100%; padding: 18px; border-radius: 16px; font-weight: 900; font-size: 1.05rem; display: flex; align-items: center; justify-content: center; gap: 10px; box-shadow: 0 10px 25px rgba(220, 20, 60, 0.35); transition: var(--transition-smooth);"
+                        onclick="placeOrder()">
+                        <i data-lucide="lock" style="width: 18px;"></i> Place Order & Confirm
+                    </button>
+
+                    <p style="text-align: center; font-size: 0.72rem; color: var(--text-muted); margin-top: 12px; font-weight: 600;">
+                        Instant order receipt generated + 1-Click WhatsApp confirmation
+                    </p>
+                </div>
+
+                <!-- Trust Guarantee Panel -->
+                <div class="glass" style="padding: 20px; border-radius: 20px; border: 1px solid var(--border-light); background: var(--surface);">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                        <div class="trust-badge-item">
+                            <i data-lucide="check-circle-2"></i>
+                            <span>100% Premium Fabric</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <i data-lucide="repeat"></i>
+                            <span>7-Day Easy Exchange</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <i data-lucide="shield-check"></i>
+                            <span>Discreet Packaging</span>
+                        </div>
+                        <div class="trust-badge-item">
+                            <i data-lucide="headphones"></i>
+                            <span>24/7 WhatsApp Help</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+      <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+
+        let availablePoints = 0;
+        let pointsToRedeem = 0;
+        let pointsDiscount = 0;
+        let subtotal = 0;
+        let itemCount = 0;
+        let deliveryFee = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const cart = JSON.parse(localStorage.getItem('python_cart')) || [];
+            const listContainer = document.getElementById('checkout-items-list');
+            
+            if (cart.length === 0) {
+                listContainer.innerHTML = '<p style="color:var(--text-muted); text-align:center; padding: 20px;">Your cart is empty. <a href="shop.html" style="color:#8B0000; font-weight:700;">Explore Shop</a></p>';
+                const placeBtn = document.getElementById('place-order-btn');
+                if (placeBtn) {
+                    placeBtn.disabled = true;
+                    placeBtn.style.opacity = '0.5';
+                    placeBtn.style.cursor = 'not-allowed';
+                }
+                return;
+            }
+
+            let itemsHtml = '';
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+                itemCount += item.quantity;
+                const safeColor = (typeof getColorName === 'function') ? getColorName(item.color) : ((typeof colorNames !== 'undefined' && colorNames[item.color]) ? colorNames[item.color] : (item.color || 'Classic'));
+                const defaultImg = item.image || 'logo.png';
+
+                itemsHtml += `
+                    <div class="item-summary-card">
+                        <div class="item-thumb-box">
+                            <img src="${defaultImg}" alt="${item.name}" onerror="this.src='logo.png'">
+                            <span class="item-qty-badge">${item.quantity}</span>
+                        </div>
+                        <div style="flex: 1; min-width: 0;">
+                            <h4 style="font-size: 0.86rem; font-weight: 800; margin: 0; color: var(--text-main); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</h4>
+                            <div style="display: flex; gap: 6px; margin-top: 4px;">
+                                <span style="font-size: 0.68rem; font-weight: 700; background: var(--primary-light); border: 1px solid var(--border-light); padding: 1px 6px; border-radius: 4px; color: var(--text-muted);">${item.size || 'Free Size'}</span>
+                                <span style="font-size: 0.68rem; font-weight: 700; background: var(--primary-light); border: 1px solid var(--border-light); padding: 1px 6px; border-radius: 4px; color: var(--text-muted);">${safeColor}</span>
+                            </div>
+                        </div>
+                        <div style="text-align: right; flex-shrink: 0;">
+                            <span style="font-size: 0.9rem; font-weight: 900; color: var(--text-main);">Rs. ${itemTotal.toLocaleString()}</span>
+                        </div>
+                    </div>
+                `;
+            });
+
+            listContainer.innerHTML = itemsHtml;
+            document.getElementById('summary-item-count').innerText = itemCount;
+            document.getElementById('summary-subtotal').innerText = `Rs. ${subtotal.toLocaleString()}.00`;
+
+            // Free delivery on 4+ items, else Rs. 500
+            deliveryFee = itemCount >= 4 ? 0 : 500;
+            const deliveryMethodBadge = document.getElementById('delivery-method-badge');
+            if (deliveryFee === 0) {
+                document.getElementById('summary-delivery').innerHTML = '<span style="color:#22c55e; font-weight:800;">FREE (4+ Items)</span>';
+                if (deliveryMethodBadge) {
+                    deliveryMethodBadge.className = 'free-delivery-badge';
+                    deliveryMethodBadge.innerText = 'FREE Delivery';
+                }
+            } else {
+                document.getElementById('summary-delivery').innerText = `Rs. ${deliveryFee.toLocaleString()}.00`;
+                if (deliveryMethodBadge) {
+                    deliveryMethodBadge.className = '';
+                    deliveryMethodBadge.style.fontSize = '0.85rem';
+                    deliveryMethodBadge.style.fontWeight = '800';
+                    deliveryMethodBadge.style.color = 'var(--text-main)';
+                    deliveryMethodBadge.innerText = `Rs. ${deliveryFee.toLocaleString()}.00`;
+                }
+            }
+
+            // Calculate points earned: 20 pts per Rs. 1750
+            const pointsEarned = Math.floor(subtotal / 1750) * 20;
+            document.getElementById('summary-earned-val').innerText = `+${pointsEarned} pts (Rs. ${(pointsEarned / 20 * 10).toFixed(0)})`;
+
+            // Prefill user details if logged in
+            prefillUserData();
+
+            updateCheckoutTotals();
+        });
+
+        function prefillUserData() {
+            const cachedUser = (typeof currentUser !== 'undefined' && currentUser)
+                ? currentUser
+                : (typeof readStoredUser === 'function' ? readStoredUser() : JSON.parse(localStorage.getItem('python_user') || 'null'));
+
+            const applyUser = (data) => {
+                if (!data) return;
+                const nameInput = document.getElementById('checkout-name');
+                const phoneInput = document.getElementById('checkout-phone');
+                const addressInput = document.getElementById('checkout-address');
+                const cityInput = document.getElementById('checkout-city');
+
+                if (nameInput && data.name) nameInput.value = data.name;
+                if (phoneInput && data.phone) phoneInput.value = data.phone;
+                if (addressInput && data.address) addressInput.value = data.address;
+                if (cityInput && data.city) cityInput.value = data.city;
+
+                availablePoints = (data.clubPoints !== undefined && data.clubPoints !== null) ? data.clubPoints : 0;
+                renderPointsWidget();
+            };
+
+            const redirectToLogin = () => {
+                sessionStorage.setItem('redirect_after_login', 'checkout.html');
+                window.location.href = 'login.html?redirect=checkout';
+            };
+
+            if (cachedUser) applyUser(cachedUser);
+
+            if (typeof auth !== 'undefined' && auth) {
+                auth.onAuthStateChanged(firebaseUser => {
+                    if (!firebaseUser) {
+                        // Keep the cached local session instead of bouncing to login.
+                        if (!cachedUser && !(typeof readStoredUser === 'function' ? readStoredUser() : localStorage.getItem('python_user'))) {
+                            redirectToLogin();
+                        }
+                        return;
+                    }
+                    db.collection('users').doc(firebaseUser.uid).get().then(doc => {
+                        applyUser(Object.assign({}, cachedUser || {}, doc.exists ? doc.data() : {}));
+                    }).catch(function (err) {
+                        console.warn('Checkout prefill fallback:', err);
+                        if (!cachedUser) redirectToLogin();
+                    });
+                });
+            } else if (!cachedUser) {
+                redirectToLogin();
+            }
+        }
+
+        function renderPointsWidget() {
+            const statusText = document.getElementById('points-status-text');
+            const actionSlot = document.getElementById('points-action-slot');
+            const rupeeVal = (availablePoints / 20 * 10);
+
+            if (statusText) {
+                statusText.innerText = `You have ${availablePoints} pts available (Value: Rs. ${rupeeVal.toFixed(2)})`;
+            }
+
+            if (actionSlot) {
+                if (availablePoints >= 20) {
+                    actionSlot.innerHTML = `
+                        <label style="display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.85rem; font-weight: 800; color: #8B0000; background: var(--surface); padding: 6px 14px; border-radius: 50px; border: 1.5px solid #8B0000; box-shadow: 0 2px 8px rgba(220, 20, 60, 0.15);">
+                            <input type="checkbox" id="use-points-checkbox" onchange="togglePointsRedemption(this.checked)" style="transform: scale(1.2); accent-color: #8B0000;">
+                            Apply Discount
+                        </label>
+                    `;
+                } else {
+                    actionSlot.innerHTML = `
+                        <span style="font-size: 0.72rem; color: var(--text-muted); font-weight: 700;">Min. 20 pts to redeem</span>
+                    `;
+                }
+            }
+        }
+
+        function renderGuestPointsWidget() {
+            const statusText = document.getElementById('points-status-text');
+            const actionSlot = document.getElementById('points-action-slot');
+            if (statusText) statusText.innerText = 'Log in to earn & redeem Python Club points on this order!';
+            if (actionSlot) {
+                actionSlot.innerHTML = `
+                    <a href="login.html" style="font-size: 0.75rem; font-weight: 800; color: #8B0000; text-decoration: underline;">Log In</a>
+                `;
+            }
+        }
+
+        function togglePointsRedemption(isChecked) {
+            if (isChecked) {
+                // Redeem increments of 20 points
+                pointsToRedeem = Math.floor(availablePoints / 20) * 20;
+                pointsDiscount = (pointsToRedeem / 20) * 10;
+            } else {
+                pointsToRedeem = 0;
+                pointsDiscount = 0;
+            }
+            updateCheckoutTotals();
+        }
+
+        function updateCheckoutTotals() {
+            const discountRow = document.getElementById('summary-discount-row');
+            const discountLabel = document.getElementById('summary-discount-label');
+            const discountVal = document.getElementById('summary-discount-val');
+
+            if (pointsDiscount > 0) {
+                discountRow.style.display = 'flex';
+                discountLabel.innerText = `Club Points Discount (-${pointsToRedeem} pts)`;
+                discountVal.innerText = `-Rs. ${pointsDiscount.toLocaleString()}.00`;
+            } else {
+                discountRow.style.display = 'none';
+            }
+
+            const grandTotal = Math.max(0, subtotal + deliveryFee - pointsDiscount);
+            document.getElementById('checkout-total').innerText = `Rs. ${grandTotal.toLocaleString()}.00`;
+            
+            // Expose globally so script.js placeOrder() saves them accurately
+            window.checkoutPointsRedeemed = pointsToRedeem;
+            window.checkoutPointsDiscount = pointsDiscount;
+        }
+
+        function selectDeliveryOption(elem, fee) {
+            document.querySelectorAll('.option-card').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,2567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PYTHON — Luxury Streetwear & Heavyweight Fashion</title>
+  <meta name="description" content="Official PYTHON Store. Sri Lanka's avant-garde streetwear brand featuring 220 GSM heavyweight combed cotton, bespoke high-definition DTF graphics, and luxury oversized essentials.">
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Super Premium Editorial Fashion Additions */
+    :root {
+      --bg-white: #FFFFFF;
+      --bg-offwhite: #F9FAFB;
+      --bg-subtle: #F3F4F6;
+      --text-black: #0A0A0A;
+      --text-muted: #525B6C;
+      --dark-red: #8B0000;
+      --dark-red-hover: #A00000;
+      --dark-red-soft: rgba(139, 0, 0, 0.08);
+      --border-fine: #E5E7EB;
+      --font-headline: 'Anta', sans-serif;
+      --font-editorial: 'Anta', sans-serif;
+      --font-sans: 'Anta', sans-serif;
+    }
+
+    html, body {
+      font-family: 'Anta', sans-serif !important;
+      overflow-x: hidden !important;
+      max-width: 100vw;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+
+    /* Announcement Bar */
+    .announcement-bar {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      font-family: var(--font-headline);
+      font-size: 0.72rem;
+      letter-spacing: 2px;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+    .announcement-bar .dot {
+      background: var(--dark-red);
+      box-shadow: 0 0 8px var(--dark-red);
+    }
+    .announcement-divider {
+      color: var(--dark-red);
+      font-weight: 900;
+    }
+
+    /* Floating Navigation */
+    nav#navbar {
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid var(--border-fine);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(20px);
+    }
+    .nav-links a {
+      color: #374151;
+      font-family: var(--font-headline);
+      font-size: 0.8rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+    }
+    .nav-links a:hover, .nav-links a.active {
+      color: #0A0A0A;
+    }
+    .nav-icon-btn {
+      background: #F9FAFB;
+      border: 1px solid var(--border-fine);
+      color: #0A0A0A;
+    }
+    .nav-icon-btn:hover {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      border-color: #0A0A0A;
+    }
+
+    /* ==========================================================
+       EDITORIAL LUXURY BANNER — DARK RED, BLACK & WHITE (ANTA)
+       ========================================================== */
+    :root {
+      --dark-red: #8B0000;
+      --dark-red-hover: #A00000;
+      --dark-red-soft: rgba(139, 0, 0, 0.08);
+      --text-black: #0A0A0A;
+      --border-fine: #E5E7EB;
+      --font-headline: 'Anta', sans-serif;
+    }
+
+    .fashion-hero {
+      position: relative;
+      background: #FFFFFF;
+      padding: 140px 4% 70px;
+      overflow: hidden;
+      border-bottom: 1px solid var(--border-fine);
+      user-select: none;
+    }
+
+    /* ================================================================
+       CREATIVE LARGE SQUARES (LOKU KOTU) WITH AMBIENT FADE IN/OUT
+       ================================================================ */
+    .hero-large-squares-bg {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
+      /* Large Architectural Grid Lines (120px x 120px) softly fading at borders */
+      background-image: 
+        linear-gradient(to right, rgba(10, 10, 10, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(10, 10, 10, 0.04) 1px, transparent 1px);
+      background-size: 120px 120px;
+      background-position: center center;
+      -webkit-mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, #000 20%, rgba(0, 0, 0, 0.4) 60%, transparent 95%);
+      mask-image: radial-gradient(ellipse 85% 75% at 50% 50%, #000 20%, rgba(0, 0, 0, 0.4) 60%, transparent 95%);
+    }
+
+    /* Individual Large Geometric Squares (Loku Kotu) */
+    .large-square {
+      position: absolute;
+      border: 1.5px solid rgba(10, 10, 10, 0.09);
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(245, 245, 245, 0.25) 100%);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.025);
+      border-radius: 6px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 10px 12px;
+      box-sizing: border-box;
+      will-change: opacity, transform;
+    }
+
+    /* Subtle Dark Red Tinted Square */
+    .large-square.sq-red-tint {
+      border-color: rgba(139, 0, 0, 0.22);
+      background: linear-gradient(135deg, rgba(139, 0, 0, 0.04) 0%, rgba(255, 255, 255, 0.5) 100%);
+      box-shadow: 0 4px 24px rgba(139, 0, 0, 0.04);
+    }
+
+    /* Dashed Haute-Couture Square */
+    .large-square.sq-dashed {
+      border: 1.5px dashed rgba(139, 0, 0, 0.25);
+      background: rgba(139, 0, 0, 0.018);
+    }
+
+    /* Square Architectural Micro Corners (+) */
+    .sq-corner {
+      position: absolute;
+      font-size: 10px;
+      line-height: 1;
+      color: rgba(10, 10, 10, 0.35);
+      font-weight: 700;
+      user-select: none;
+    }
+    .sq-corner.tl { top: 4px; left: 5px; }
+    .sq-corner.tr { top: 4px; right: 5px; }
+    .sq-corner.bl { bottom: 4px; left: 5px; }
+    .sq-corner.br { bottom: 4px; right: 5px; }
+
+    /* Minimal Editorial Tag inside Square */
+    .sq-tag {
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.62rem;
+      letter-spacing: 1.5px;
+      color: rgba(10, 10, 10, 0.42);
+      font-weight: 700;
+      text-transform: uppercase;
+      user-select: none;
+    }
+    .sq-red-tint .sq-tag {
+      color: rgba(139, 0, 0, 0.65);
+    }
+
+    /* ================================================================
+       SMOOTH FADE IN / OUT KEYFRAMES (STAGGERED CYCLES)
+       ================================================================ */
+    @keyframes squareFadeCycleA {
+      0% {
+        opacity: 0.06;
+        transform: translateY(0px) scale(0.97);
+      }
+      35% {
+        opacity: 0.88;
+        transform: translateY(-5px) scale(1.015);
+      }
+      65% {
+        opacity: 0.72;
+        transform: translateY(-3px) scale(1.01);
+      }
+      100% {
+        opacity: 0.06;
+        transform: translateY(0px) scale(0.97);
+      }
+    }
+
+    @keyframes squareFadeCycleB {
+      0% {
+        opacity: 0.85;
+        transform: translateY(-4px) scale(1.015);
+      }
+      40% {
+        opacity: 0.08;
+        transform: translateY(0px) scale(0.97);
+      }
+      75% {
+        opacity: 0.82;
+        transform: translateY(-5px) scale(1.01);
+      }
+      100% {
+        opacity: 0.85;
+        transform: translateY(-4px) scale(1.015);
+      }
+    }
+
+    @keyframes squareFadeCycleC {
+      0% {
+        opacity: 0.12;
+        transform: scale(0.98);
+      }
+      50% {
+        opacity: 0.92;
+        transform: scale(1.02);
+      }
+      100% {
+        opacity: 0.12;
+        transform: scale(0.98);
+      }
+    }
+
+    /* Specific Placement & Staggered Animations for Each Large Square */
+    .sq-1 {
+      top: 14%;
+      left: 14%;
+      width: 140px;
+      height: 140px;
+      animation: squareFadeCycleA 9s ease-in-out infinite;
+    }
+    .sq-2 {
+      top: 8%;
+      left: 44%;
+      width: 155px;
+      height: 155px;
+      animation: squareFadeCycleB 11s ease-in-out 1.5s infinite;
+    }
+    .sq-3 {
+      top: 12%;
+      right: 12%;
+      width: 165px;
+      height: 165px;
+      animation: squareFadeCycleA 10s ease-in-out 3s infinite;
+    }
+    .sq-4 {
+      top: 48%;
+      left: 4%;
+      width: 125px;
+      height: 125px;
+      animation: squareFadeCycleC 8.5s ease-in-out 0.8s infinite;
+    }
+    .sq-5 {
+      top: 46%;
+      left: 46%;
+      width: 150px;
+      height: 150px;
+      animation: squareFadeCycleB 12s ease-in-out 2.5s infinite;
+    }
+    .sq-6 {
+      top: 44%;
+      right: 5%;
+      width: 145px;
+      height: 145px;
+      animation: squareFadeCycleA 10.5s ease-in-out 4s infinite;
+    }
+    .sq-7 {
+      bottom: 8%;
+      left: 20%;
+      width: 135px;
+      height: 135px;
+      animation: squareFadeCycleC 9.5s ease-in-out 1.2s infinite;
+    }
+    .sq-8 {
+      bottom: 10%;
+      right: 26%;
+      width: 140px;
+      height: 140px;
+      animation: squareFadeCycleB 11.5s ease-in-out 3.5s infinite;
+    }
+
+    .editorial-canvas {
+      max-width: 1380px;
+      margin: 0 auto;
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.05fr 1fr;
+      gap: 36px;
+      align-items: center;
+      min-height: 520px;
+    }
+
+    /* Architectural Guides */
+    .editorial-arch-line-top {
+      position: absolute;
+      top: 16px;
+      left: 36%;
+      right: 4%;
+      height: 1.5px;
+      background: rgba(10, 10, 10, 0.18);
+      z-index: 2;
+    }
+
+    /* Hanging Wireframe Sphere Lantern with Pendulum Sway */
+    .hanging-lantern-wrap {
+      position: absolute;
+      top: 16px;
+      left: 46%;
+      z-index: 5;
+      transform-origin: top center;
+      animation: lanternSwing 6.8s ease-in-out infinite;
+    }
+    @keyframes lanternSwing {
+      0%, 100% { transform: rotate(0deg); }
+      35% { transform: rotate(3deg); }
+      75% { transform: rotate(-3deg); }
+    }
+
+    /* Stepped Geometric Corner Lines in Bottom-Left */
+    .stepped-corner-box {
+      position: absolute;
+      bottom: 14px;
+      left: 14px;
+      z-index: 3;
+      pointer-events: none;
+    }
+
+    /* Botanical Leaves - Positioning & Natural Living Animations (Zero Cut, High Clarity) */
+    .botanical-element {
+      position: absolute;
+      pointer-events: none;
+      z-index: 6;
+      transform-origin: center;
+      will-change: transform;
+      filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.09));
+    }
+
+    @keyframes naturalBloomTL {
+      0% {
+        opacity: 0;
+        transform: scale(0.75) rotate(-6deg);
+      }
+      70% {
+        opacity: 0.98;
+        transform: scale(1.02) rotate(1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes naturalBloomBL {
+      0% {
+        opacity: 0;
+        transform: scale(0.75) rotate(6deg);
+      }
+      70% {
+        opacity: 0.98;
+        transform: scale(1.02) rotate(-1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes naturalBloomR {
+      0% {
+        opacity: 0;
+        transform: scale(0.75) rotate(-5deg);
+      }
+      70% {
+        opacity: 0.98;
+        transform: scale(1.02) rotate(1deg);
+      }
+      100% {
+        opacity: 1;
+        transform: scale(1) rotate(0deg);
+      }
+    }
+
+    @keyframes naturalBreezeSlow {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      35% {
+        transform: rotate(1.8deg);
+      }
+      70% {
+        transform: rotate(-1.4deg);
+      }
+    }
+
+    @keyframes naturalBreezeAlt {
+      0%, 100% {
+        transform: rotate(0deg);
+      }
+      40% {
+        transform: rotate(-1.8deg);
+      }
+      80% {
+        transform: rotate(1.5deg);
+      }
+    }
+
+    /* Top Left Botanical Foliage (Cascades cleanly from top-left under header, zero cut-off) */
+    .botanical-top-left {
+      top: 0;
+      left: 0;
+      width: 220px;
+      height: 215px;
+    }
+    .botanical-top-left .natural-frond-red {
+      transform-origin: top left;
+      animation: naturalBloomTL 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both,
+                 naturalBreezeSlow 7.5s ease-in-out 1.4s infinite;
+    }
+    .botanical-top-left .natural-sprig-black {
+      transform-origin: top left;
+      animation: naturalBloomTL 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both,
+                 naturalBreezeAlt 6.8s ease-in-out 1.6s infinite;
+    }
+
+    /* Bottom Left Botanical Foliage (Placed adjacent to stepped-corner-box, zero collision & zero cut-off) */
+    .botanical-bottom-left {
+      bottom: 0;
+      left: 120px;
+      width: 215px;
+      height: 185px;
+    }
+    .botanical-bottom-left .natural-branch-red {
+      transform-origin: bottom left;
+      animation: naturalBloomBL 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both,
+                 naturalBreezeAlt 7.2s ease-in-out 1.6s infinite;
+    }
+    .botanical-bottom-left .natural-branch-black {
+      transform-origin: bottom left;
+      animation: naturalBloomBL 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.5s both,
+                 naturalBreezeSlow 6.5s ease-in-out 1.8s infinite;
+    }
+
+    /* Right Botanical Foliage (Pristine framing along right border) */
+    .botanical-top-right {
+      top: 15px;
+      right: 0;
+      width: 120px;
+      height: 150px;
+      transform-origin: top right;
+      animation: naturalBloomR 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.6s both,
+                 naturalBreezeSlow 6.2s ease-in-out 1.8s infinite;
+    }
+    .botanical-bottom-right {
+      bottom: 0;
+      right: 0;
+      width: 130px;
+      height: 180px;
+      transform-origin: bottom right;
+      animation: naturalBloomR 1.3s cubic-bezier(0.16, 1, 0.3, 1) 0.75s both,
+                 naturalBreezeAlt 7.4s ease-in-out 2.0s infinite;
+    }
+
+    /* Sparkle Star Twinkle Animation */
+    @keyframes starTwinklePulse {
+      0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+      50% { transform: scale(1.25) rotate(10deg); opacity: 1; }
+    }
+    .sparkle-star {
+      display: inline-block;
+      animation: starTwinklePulse 4s ease-in-out infinite;
+    }
+    .sparkle-pos-title {
+      position: absolute;
+      right: 12%;
+      top: 50%;
+    }
+    .sparkle-pos-bottom {
+      position: absolute;
+      left: 45%;
+      bottom: 24px;
+    }
+    .sparkle-pos-left {
+      position: absolute;
+      left: 60px;
+      bottom: 70px;
+    }
+
+    /* Left Editorial Column */
+    .editorial-left-col {
+      position: relative;
+      z-index: 4;
+      padding-right: 15px;
+    }
+
+    .hero-badge-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--dark-red-soft);
+      border: 1px solid rgba(139, 0, 0, 0.25);
+      color: var(--dark-red);
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      padding: 6px 16px;
+      border-radius: 50px;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .hero-badge-tag .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--dark-red);
+      display: inline-block;
+      box-shadow: 0 0 8px var(--dark-red);
+    }
+
+    .hero-title-massive {
+      font-family: 'Anta', sans-serif !important;
+      font-size: clamp(2.8rem, 5.8vw, 5.2rem);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: -0.5px;
+      color: var(--text-black);
+      text-transform: uppercase;
+      margin-bottom: 22px;
+      position: relative;
+    }
+    .hero-title-massive span.red-word {
+      color: var(--dark-red);
+      display: inline-block;
+    }
+
+    .hero-editorial-desc {
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.96rem;
+      color: #4B5563;
+      max-width: 500px;
+      line-height: 1.7;
+      margin-bottom: 32px;
+      font-weight: 500;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-bottom: 36px;
+    }
+    .btn-hero-primary {
+      background: var(--text-black);
+      color: #FFFFFF !important;
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 15px 34px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid var(--text-black);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+    }
+    .btn-hero-primary:hover {
+      background: var(--dark-red);
+      border-color: var(--dark-red);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 0, 0, 0.35);
+    }
+    .btn-hero-outline {
+      background: #FFFFFF;
+      color: var(--text-black) !important;
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 14px 30px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s;
+      border: 1.5px solid rgba(10, 10, 10, 0.25);
+    }
+    .btn-hero-outline:hover {
+      border-color: var(--dark-red);
+      color: var(--dark-red) !important;
+      background: var(--dark-red-soft);
+      transform: translateY(-2px);
+    }
+
+    .hero-stat-row {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      border-top: 1px solid var(--border-fine);
+      padding-top: 22px;
+      max-width: 500px;
+    }
+    .stat-box h4 {
+      font-family: 'Anta', sans-serif !important;
+      font-size: 1.5rem;
+      font-weight: 900;
+      color: var(--text-black);
+      margin-bottom: 2px;
+    }
+    .stat-box p {
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #6B7280;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+    .stat-separator {
+      width: 1px;
+      height: 32px;
+      background: var(--border-fine);
+    }
+
+    /* Right Photo Collage Structure */
+    .editorial-collage-container {
+      position: relative;
+      display: grid;
+      grid-template-columns: 1.18fr 0.95fr;
+      grid-template-rows: auto auto;
+      gap: 16px;
+      align-items: stretch;
+      padding: 24px 18px 24px 12px;
+    }
+
+    .arch-contour-svg {
+      position: absolute;
+      top: 6px;
+      left: -8px;
+      width: calc(56% + 14px);
+      height: 100%;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .dot-matrix {
+      display: grid;
+      grid-template-columns: repeat(6, 6px);
+      gap: 6px;
+      justify-content: center;
+      margin-bottom: 8px;
+      width: fit-content;
+    }
+    .dot-matrix .dot-node {
+      width: 4px;
+      height: 4px;
+      background: var(--text-black);
+      border-radius: 50%;
+      opacity: 0.9;
+    }
+
+    /* Card 1: Main Left Arch Photo */
+    .collage-card-arch {
+      position: relative;
+      grid-column: 1;
+      grid-row: 1 / span 2;
+      border-top-left-radius: 140px;
+      border-top-right-radius: 8px;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      overflow: hidden;
+      background: #F3F4F6;
+      border: 2.5px solid var(--text-black);
+      aspect-ratio: 0.8;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.1);
+      z-index: 2;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s;
+    }
+    .collage-card-arch:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 24px 45px rgba(0, 0, 0, 0.16);
+    }
+    .collage-card-arch img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .collage-card-arch:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Dark Red Accent Blocks */
+    .collage-accent-red-1 {
+      position: absolute;
+      left: 52%;
+      top: 48%;
+      width: 68px;
+      height: 68px;
+      background: var(--dark-red);
+      z-index: 1;
+      border-radius: 4px;
+      transition: transform 0.3s;
+    }
+    .collage-accent-red-2 {
+      position: absolute;
+      right: 4px;
+      top: 44%;
+      width: 56px;
+      height: 62px;
+      background: var(--dark-red);
+      z-index: 1;
+      border-radius: 4px;
+    }
+
+    /* Card 2: Top Right Arch Photo */
+    .collage-card-top {
+      position: relative;
+      grid-column: 2;
+      grid-row: 1;
+      display: flex;
+      flex-direction: column;
+      z-index: 2;
+    }
+    .collage-top-img-wrap {
+      position: relative;
+      border-top-right-radius: 80px;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 0.95;
+      background: #F3F4F6;
+      border: 2.5px solid var(--text-black);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .collage-card-top:hover .collage-top-img-wrap {
+      transform: translateY(-3px);
+    }
+    .collage-top-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: transform 0.6s;
+    }
+    .collage-card-top:hover .collage-top-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    /* Card 3: Bottom Right Framed Photo */
+    .collage-card-bottom {
+      position: relative;
+      grid-column: 2;
+      grid-row: 2;
+      z-index: 2;
+      margin-top: 6px;
+    }
+    .collage-bottom-img-wrap {
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      aspect-ratio: 0.95;
+      background: #F3F4F6;
+      border: 2.5px solid var(--text-black);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .collage-card-bottom:hover .collage-bottom-img-wrap {
+      transform: translateY(-3px);
+    }
+    .collage-bottom-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+      transition: transform 0.6s;
+    }
+    .collage-card-bottom:hover .collage-bottom-img-wrap img {
+      transform: scale(1.05);
+    }
+
+    /* Architectural Step Frame Line on Bottom Card */
+    .bottom-frame-contour {
+      position: absolute;
+      inset: -10px -10px -10px -10px;
+      border-right: 2px solid var(--text-black);
+      border-bottom: 2px solid var(--text-black);
+      border-bottom-right-radius: 45px;
+      pointer-events: none;
+      z-index: 3;
+    }
+    .bottom-frame-step-corner {
+      position: absolute;
+      bottom: -10px;
+      left: -20px;
+      width: 24px;
+      height: 16px;
+      border-left: 2px solid var(--text-black);
+      border-bottom: 2px solid var(--text-black);
+      pointer-events: none;
+    }
+
+    .banner-live-pill {
+      position: absolute;
+      bottom: -20px;
+      left: 20px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      border: 1.5px solid var(--text-black);
+      border-radius: 30px;
+      padding: 6px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      z-index: 4;
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.72rem;
+      font-weight: 800;
+      color: var(--text-black);
+    }
+
+    /* Dynamic Image Morphing Crossfade */
+    .collage-card-arch img,
+    .collage-top-img-wrap img,
+    .collage-bottom-img-wrap img {
+      transition: opacity 0.4s cubic-bezier(0.25, 1, 0.5, 1), 
+                  transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), 
+                  filter 0.4s ease;
+      will-change: opacity, transform, filter;
+    }
+
+    .image-morphing {
+      opacity: 0.12 !important;
+      filter: blur(5px) !important;
+      transform: scale(1.08) !important;
+    }
+
+    /* Minimal Luxury Carousel Dots */
+    .banner-carousel-indicators {
+      position: absolute;
+      bottom: -32px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 5;
+    }
+    .carousel-dot {
+      width: 22px;
+      height: 4px;
+      border-radius: 4px;
+      background: rgba(10, 10, 10, 0.2);
+      cursor: pointer;
+      transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .carousel-dot:hover {
+      background: var(--dark-red);
+    }
+    .carousel-dot.active {
+      width: 44px;
+      background: var(--dark-red);
+      box-shadow: 0 0 10px rgba(139, 0, 0, 0.5);
+    }
+
+    /* Section Headers */
+    .section-wrap {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 90px 5%;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 20px;
+      border-bottom: 1px solid var(--border-fine);
+      padding-bottom: 20px;
+    }
+    .section-tag {
+      font-family: var(--font-headline);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 2.5px;
+      color: var(--dark-red);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 8px;
+    }
+    .section-title {
+      font-family: var(--font-headline);
+      font-size: clamp(2rem, 4vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #0A0A0A;
+      text-transform: uppercase;
+      margin: 0;
+    }
+
+    /* Dynamic Products Grid */
+    .products-fashion-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 28px;
+    }
+    .fashion-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 0;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+      position: relative;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+    }
+    .fashion-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 22px 46px rgba(0, 0, 0, 0.11);
+      border-color: #0A0A0A;
+    }
+    .card-thumb-wrap {
+      width: 100%;
+      aspect-ratio: 4/5;
+      background: linear-gradient(145deg, #FFFFFF 0%, #F6F6F6 100%);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .card-thumb-wrap img {
+      width: 90%;
+      height: 90%;
+      object-fit: contain;
+      transition: transform 0.4s ease;
+    }
+    .fashion-card:hover .card-thumb-wrap img {
+      transform: scale(1.06);
+    }
+    .card-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: var(--dark-red);
+      color: #FFFFFF;
+      font-family: var(--font-headline);
+      font-size: 0.65rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      z-index: 2;
+    }
+    .card-wish-btn {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 34px;
+      height: 34px;
+      background: #FFFFFF;
+      border-radius: 50%;
+      border: 1px solid var(--border-fine);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      transition: all 0.2s;
+    }
+    .card-wish-btn:hover {
+      border-color: var(--dark-red);
+      transform: scale(1.1);
+    }
+    .card-details {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      justify-content: space-between;
+    }
+    .card-category {
+      font-size: 0.7rem;
+      font-weight: 800;
+      color: var(--dark-red);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .card-name {
+      font-family: var(--font-headline);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #0A0A0A;
+      margin-bottom: 12px;
+      line-height: 1.3;
+    }
+    .card-sizes-strip {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .size-pill {
+      font-size: 0.68rem;
+      font-weight: 700;
+      background: #F3F4F6;
+      border: 1px solid var(--border-fine);
+      padding: 2px 7px;
+      border-radius: 4px;
+      color: #4B5563;
+    }
+    .card-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top: 1px solid var(--border-fine);
+      padding-top: 14px;
+    }
+    .card-price-current {
+      font-family: var(--font-headline);
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #0A0A0A;
+    }
+    .card-price-old {
+      text-decoration: line-through;
+      font-size: 0.78rem;
+      color: #9CA3AF;
+      margin-left: 6px;
+    }
+    .card-add-btn {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .card-add-btn:hover {
+      background: var(--dark-red);
+      transform: scale(1.1);
+    }
+
+    /* Collections 3-Tile Row */
+    .collections-trio {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    .collection-box {
+      background: #F9FAFB;
+      border: 1px solid var(--border-fine);
+      border-radius: 12px;
+      padding: 22px 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 188px;
+      text-decoration: none;
+      color: inherit;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s;
+    }
+    .collection-box:hover {
+      background: #FFFFFF;
+      border-color: #0A0A0A;
+      transform: translateY(-3px);
+      box-shadow: 0 14px 34px rgba(0,0,0,0.06);
+    }
+    .collection-box .num {
+      font-family: var(--font-headline);
+      font-size: 0.68rem;
+      font-weight: 900;
+      letter-spacing: 1.8px;
+      color: var(--dark-red);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .collection-box h3 {
+      font-family: var(--font-headline);
+      font-size: clamp(1.05rem, 1.6vw, 1.3rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      color: #0A0A0A;
+      margin-bottom: 7px;
+      line-height: 1.15;
+    }
+    .collection-box p {
+      font-size: 0.78rem;
+      color: #6B7280;
+      line-height: 1.5;
+    }
+    .collection-box .link-arrow {
+      font-family: var(--font-headline);
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.3px;
+      color: #0A0A0A;
+      text-transform: uppercase;
+      margin-top: 15px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .collection-box:hover .link-arrow {
+      color: var(--dark-red);
+    }
+
+    /* Craftsmanship Editorial Split Banner */
+    .craft-banner {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      border-radius: 24px;
+      padding: 60px 50px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 40px;
+      align-items: center;
+      margin: 40px 0;
+    }
+    .craft-banner h2 {
+      font-family: var(--font-headline);
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      font-weight: 900;
+      text-transform: uppercase;
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+    .craft-banner p {
+      color: #D1D5DB;
+      font-size: 1rem;
+      line-height: 1.7;
+      margin-bottom: 30px;
+    }
+    .craft-features-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+    .craft-feature-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: var(--font-headline);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: #FFFFFF;
+      text-transform: uppercase;
+    }
+    .craft-feature-item i {
+      color: var(--dark-red);
+    }
+
+    /* Footer */
+    footer.luxury-footer {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      padding: 80px 5% 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .footer-grid {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+      gap: 50px;
+      margin-bottom: 60px;
+    }
+    .footer-brand h2 {
+      font-family: var(--font-headline);
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .footer-brand p {
+      color: #9CA3AF;
+      font-size: 0.88rem;
+      line-height: 1.7;
+    }
+    .footer-col h4 {
+      font-family: var(--font-headline);
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      color: #FFFFFF;
+    }
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer-col a {
+      color: #9CA3AF;
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .footer-col a:hover {
+      color: #FFFFFF;
+    }
+    .footer-bottom {
+      max-width: 1400px;
+      margin: 0 auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #6B7280;
+      font-size: 0.78rem;
+      flex-wrap: wrap;
+      gap: 14px;
+    }
+
+    /* ==========================================================
+       RESPONSIVE & MOBILE-FRIENDLY SYSTEM (NO CUTS, NO OVERLAPS)
+       ========================================================== */
+    @media (max-width: 1024px) {
+      .fashion-hero {
+        padding: 125px 4% 50px;
+        min-height: auto;
+      }
+      .editorial-canvas {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        min-height: auto;
+      }
+      .editorial-left-col { padding-right: 0; text-align: left; }
+      .hanging-lantern-wrap { display: none !important; }
+      .editorial-arch-line-top { display: none !important; }
+      .editorial-collage-container { max-width: 540px; margin: 0 auto; width: 100%; }
+      /* Botanical Leaves - Pristine & Fully Visible on Tablet */
+      .botanical-top-left {
+        width: 165px !important;
+        height: 160px !important;
+        top: 96px !important;
+        left: 0 !important;
+        opacity: 1 !important;
+      }
+      .botanical-bottom-left {
+        display: block !important;
+        width: 145px !important;
+        height: 135px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        opacity: 1 !important;
+      }
+      .botanical-top-right {
+        width: 105px !important;
+        height: 125px !important;
+        top: 96px !important;
+        right: 0 !important;
+        opacity: 1 !important;
+      }
+      .botanical-bottom-right {
+        width: 115px !important;
+        height: 145px !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        opacity: 1 !important;
+      }
+      .collections-trio { grid-template-columns: 1fr; }
+      .craft-banner { grid-template-columns: 1fr; padding: 40px 24px; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 768px) {
+      .fashion-hero {
+        padding: 125px 16px 35px !important;
+        overflow: hidden !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin-top: 0 !important;
+      }
+      .hero-large-squares-bg {
+        background-size: 85px 85px !important;
+      }
+      .sq-1 {
+        top: 105px !important;
+        left: 8px !important;
+        width: 85px !important;
+        height: 85px !important;
+      }
+      .sq-2 {
+        top: 130px !important;
+        right: 10px !important;
+        left: auto !important;
+        width: 90px !important;
+        height: 90px !important;
+      }
+      .sq-3 {
+        display: none !important;
+      }
+      .sq-4 {
+        top: 360px !important;
+        left: 8px !important;
+        width: 80px !important;
+        height: 80px !important;
+      }
+      .sq-5 {
+        top: 540px !important;
+        right: 10px !important;
+        left: auto !important;
+        width: 90px !important;
+        height: 90px !important;
+      }
+      .sq-6 {
+        display: none !important;
+      }
+      .sq-7 {
+        bottom: 120px !important;
+        left: 10px !important;
+        width: 80px !important;
+        height: 80px !important;
+      }
+      .sq-8 {
+        bottom: 25px !important;
+        right: 12px !important;
+        width: 85px !important;
+        height: 85px !important;
+      }
+      .editorial-canvas {
+        grid-template-columns: 1fr !important;
+        gap: 24px !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      .editorial-left-col {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding-right: 0 !important;
+      }
+
+      /* Headline - zero cut off, perfect mobile fit */
+      .hero-title-massive {
+        font-size: clamp(1.85rem, 7.8vw, 2.45rem) !important;
+        line-height: 1.05 !important;
+        letter-spacing: -0.5px !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        margin-bottom: 16px !important;
+        max-width: 100% !important;
+      }
+      .hero-badge-tag {
+        font-size: 0.68rem !important;
+        padding: 5px 14px !important;
+        letter-spacing: 1px !important;
+        margin-bottom: 16px !important;
+      }
+      .hero-editorial-desc {
+        font-size: 0.88rem !important;
+        line-height: 1.6 !important;
+        margin-bottom: 22px !important;
+        max-width: 100% !important;
+      }
+
+      /* Buttons - full width & thumb friendly */
+      .hero-cta-group {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px !important;
+        width: 100% !important;
+        margin-bottom: 22px !important;
+      }
+      .btn-hero-primary, .btn-hero-outline {
+        width: 100% !important;
+        justify-content: center !important;
+        padding: 13px 20px !important;
+        font-size: 0.82rem !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+      }
+
+      /* Stats - clean 3 column mobile grid */
+      .hero-stat-row {
+        display: grid !important;
+        grid-template-columns: repeat(3, 1fr) !important;
+        gap: 6px !important;
+        padding-top: 14px !important;
+        width: 100% !important;
+        border-top: 1px solid var(--border-fine) !important;
+      }
+      .stat-separator { display: none !important; }
+      .stat-box { text-align: center !important; }
+      .stat-box h4 { font-size: 1.15rem !important; margin-bottom: 2px !important; }
+      .stat-box p { font-size: 0.62rem !important; letter-spacing: 0.5px !important; }
+
+      /* Botanical Leaves - Pristine Framing on Mobile (Directly under header, zero cut-off, vivid clarity) */
+      .botanical-element {
+        z-index: 6 !important;
+        pointer-events: none !important;
+        opacity: 1 !important;
+        display: block !important;
+        filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.12)) !important;
+      }
+      .botanical-top-left {
+        width: 120px !important;
+        height: 120px !important;
+        top: 96px !important;
+        left: 0 !important;
+        opacity: 1 !important;
+      }
+      .botanical-bottom-left {
+        display: block !important;
+        width: 115px !important;
+        height: 110px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        opacity: 1 !important;
+      }
+      .botanical-top-right {
+        width: 95px !important;
+        height: 110px !important;
+        top: 96px !important;
+        right: 0 !important;
+        opacity: 1 !important;
+      }
+      .botanical-bottom-right {
+        width: 105px !important;
+        height: 125px !important;
+        bottom: 0 !important;
+        right: 0 !important;
+        opacity: 1 !important;
+      }
+      .sparkle-star { display: none !important; }
+      .stepped-corner-box { display: none !important; }
+
+      /* Collage & Images - zero overflow, pristine fit inside cards */
+      .editorial-collage-container {
+        width: 100% !important;
+        max-width: 440px !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+        grid-template-columns: 1.15fr 0.9fr !important;
+        gap: 10px !important;
+        box-sizing: border-box !important;
+      }
+      .collage-card-arch {
+        border-top-left-radius: 65px !important;
+        border-width: 2px !important;
+        aspect-ratio: 0.8 !important;
+        max-height: 290px !important;
+        overflow: hidden !important;
+      }
+      .collage-top-img-wrap {
+        border-top-right-radius: 40px !important;
+        border-width: 2px !important;
+        aspect-ratio: 0.95 !important;
+        max-height: 140px !important;
+        overflow: hidden !important;
+      }
+      .collage-bottom-img-wrap {
+        border-width: 2px !important;
+        aspect-ratio: 0.95 !important;
+        max-height: 140px !important;
+        overflow: hidden !important;
+      }
+      .arch-contour-svg { display: none !important; }
+      .bottom-frame-contour, .bottom-frame-step-corner { display: none !important; }
+
+      .collage-accent-red-1 {
+        width: 32px !important;
+        height: 32px !important;
+        left: 48% !important;
+        top: 48% !important;
+      }
+      .collage-accent-red-2 {
+        width: 26px !important;
+        height: 32px !important;
+        right: 2px !important;
+        top: 45% !important;
+      }
+
+      /* Indicators and pill inside natural document flow on mobile */
+      .banner-live-pill {
+        position: relative !important;
+        bottom: auto !important;
+        left: auto !important;
+        margin: 14px auto 0 !important;
+        width: fit-content !important;
+        max-width: 100% !important;
+        font-size: 0.68rem !important;
+        padding: 5px 12px !important;
+      }
+      .banner-carousel-indicators {
+        position: relative !important;
+        bottom: auto !important;
+        right: auto !important;
+        margin: 10px auto 0 !important;
+        justify-content: center !important;
+        width: 100% !important;
+      }
+
+      .footer-grid { grid-template-columns: 1fr !important; }
+    }
+
+    @media (max-width: 420px) {
+      .fashion-hero {
+        padding: 120px 14px 30px !important;
+      }
+      .botanical-top-left {
+        width: 105px !important;
+        height: 105px !important;
+        top: 92px !important;
+        left: 0 !important;
+      }
+      .botanical-bottom-left {
+        width: 100px !important;
+        height: 95px !important;
+        bottom: 0 !important;
+        left: 0 !important;
+      }
+      .botanical-top-right {
+        width: 85px !important;
+        height: 98px !important;
+        top: 92px !important;
+        right: 0 !important;
+      }
+      .botanical-bottom-right {
+        width: 90px !important;
+        height: 105px !important;
+        bottom: 0 !important;
+        right: 0 !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="#new-drop" class="active">NEW DROP</a></li>
+      <li><a href="shop.html">SHOP ALL</a></li>
+      <li><a href="#collections">COLLECTIONS</a></li>
+      <li><a href="customize.html">CUSTOMIZE</a></li>
+      <li><a href="offers.html">OFFERS</a></li>
+      <li><a href="reviews.html">REVIEWS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="login.html" class="nav-icon-btn" title="Account" aria-label="My Account">
+        <i data-lucide="user" style="width: 17px; height: 17px;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link active">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="#new-drop" onclick="closeMobileDrawer()" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+      <a href="reviews.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">07</span>
+          <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+          <span>REVIEWS</span>
+        </div>
+      </a>
+    </div>
+  </div>
+
+  <main>
+    <!-- ================================================================
+         1. EDITORIAL LOOKBOOK HERO BANNER (DARK RED, BLACK & WHITE)
+         ================================================================ -->
+    <section class="fashion-hero">
+      <!-- Creative Large Architectural Squares Background (Loku Kotu) with Ambient Fade In/Out -->
+      <div class="hero-large-squares-bg" aria-hidden="true">
+        <div class="large-square sq-1">
+          <span class="sq-corner tl">+</span>
+          <span class="sq-corner br">+</span>
+          <span class="sq-tag">01 // REF</span>
+        </div>
+        <div class="large-square sq-2 sq-red-tint">
+          <span class="sq-corner tr">+</span>
+          <span class="sq-corner bl">+</span>
+          <span class="sq-tag">ARCHIVE</span>
+        </div>
+        <div class="large-square sq-3">
+          <span class="sq-corner tl">+</span>
+          <span class="sq-corner br">+</span>
+          <span class="sq-tag">220 GSM</span>
+        </div>
+        <div class="large-square sq-4 sq-dashed">
+          <span class="sq-corner tr">+</span>
+          <span class="sq-tag">DTF • HD</span>
+        </div>
+        <div class="large-square sq-5 sq-red-tint">
+          <span class="sq-corner bl">+</span>
+          <span class="sq-corner tr">+</span>
+          <span class="sq-tag">05 // LUX</span>
+        </div>
+        <div class="large-square sq-6">
+          <span class="sq-corner tl">+</span>
+          <span class="sq-tag">STUDIO</span>
+        </div>
+        <div class="large-square sq-7 sq-dashed">
+          <span class="sq-corner br">+</span>
+          <span class="sq-corner tl">+</span>
+        </div>
+        <div class="large-square sq-8 sq-red-tint">
+          <span class="sq-corner bl">+</span>
+          <span class="sq-tag">2026</span>
+        </div>
+      </div>
+
+      <!-- Architectural Guides Across Banner -->
+      <div class="editorial-arch-line-top"></div>
+
+      <!-- Hanging Wireframe Sphere Lantern (with gentle pendulum swing) -->
+      <div class="hanging-lantern-wrap">
+        <svg width="60" height="115" viewBox="0 0 60 115" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="30" y1="0" x2="30" y2="42" stroke="#0A0A0A" stroke-width="1.3"/>
+          <circle cx="30" cy="42" r="2.5" fill="#8B0000"/>
+          <circle cx="30" cy="74" r="28" stroke="#0A0A0A" stroke-width="1.3"/>
+          <ellipse cx="30" cy="74" rx="18" ry="28" stroke="#0A0A0A" stroke-width="1"/>
+          <ellipse cx="30" cy="74" rx="8" ry="28" stroke="#0A0A0A" stroke-width="0.9"/>
+          <line x1="30" y1="46" x2="30" y2="102" stroke="#8B0000" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- Stepped Geometric Corner Contour (Bottom-Left) -->
+      <div class="stepped-corner-box">
+        <svg width="120" height="70" viewBox="0 0 120 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 0,38 L 46,38 L 46,68 M 22,38 L 22,68 L 78,68" stroke="#0A0A0A" stroke-width="1.2"/>
+        </svg>
+      </div>
+
+      <!-- ==========================================================
+           NATURAL BOTANICAL LEAVES (KOLA ATHU) WITH ORGANIC VEINS & BREEZE (ZERO-CUT, CRISP DEFINITION)
+           ========================================================== -->
+      <!-- Top Left Natural Botanical Foliage -->
+      <div class="botanical-element botanical-top-left">
+        <!-- Natural Dark Red Palm/Fern Weeping Frond -->
+        <svg class="natural-frond-red" viewBox="-12 -12 235 230" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; display: block; overflow: visible;">
+          <defs>
+            <linearGradient id="frondGradRed" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#A50000"/>
+              <stop offset="100%" stop-color="#750000"/>
+            </linearGradient>
+            <linearGradient id="frondGradBlack" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#242424"/>
+              <stop offset="100%" stop-color="#0A0A0A"/>
+            </linearGradient>
+          </defs>
+
+          <!-- Natural Arching Stem -->
+          <path d="M 0,0 C 45,35 90,85 155,175" stroke="#8B0000" stroke-width="2.8" stroke-linecap="round"/>
+
+          <!-- Organic Leaflets with Natural Taper and Distinct Midrib Veins -->
+          <path d="M 16,12 C 26,18 36,46 14,56 C 26,48 38,28 32,20 Z" fill="url(#frondGradRed)"/>
+          <path d="M 20,18 Q 26,36 15,54" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+
+          <path d="M 30,26 C 44,34 54,66 26,80 C 42,70 56,48 48,36 Z" fill="url(#frondGradRed)"/>
+          <path d="M 35,34 Q 45,56 28,78" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+
+          <path d="M 46,42 C 64,52 74,90 38,106 C 58,92 78,66 66,52 Z" fill="url(#frondGradRed)"/>
+          <path d="M 52,52 Q 65,77 40,104" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+
+          <path d="M 64,62 C 86,74 98,116 52,134 C 76,118 100,88 88,72 Z" fill="url(#frondGradRed)"/>
+          <path d="M 72,74 Q 88,103 54,132" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+
+          <path d="M 84,85 C 108,98 120,144 68,165 C 96,145 124,112 110,95 Z" fill="url(#frondGradRed)"/>
+          <path d="M 92,98 Q 110,131 70,162" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+
+          <path d="M 108,110 C 132,125 138,172 90,192 C 118,170 144,136 132,120 Z" fill="url(#frondGradRed)"/>
+          <path d="M 116,122 Q 130,154 94,188" stroke="rgba(255,255,255,0.75)" stroke-width="1.1" stroke-linecap="round"/>
+
+          <!-- Inner Side Graceful Leaflets with Crisp Midribs -->
+          <path d="M 18,6 C 30,10 50,14 58,2 C 48,12 32,14 24,11 Z" fill="url(#frondGradRed)"/>
+          <path d="M 22,8 Q 36,11 52,4" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 32,18 C 48,24 74,28 84,14 C 70,26 48,28 40,24 Z" fill="url(#frondGradRed)"/>
+          <path d="M 38,21 Q 54,25 78,16" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 48,32 C 66,40 98,44 110,28 C 92,42 66,45 58,38 Z" fill="url(#frondGradRed)"/>
+          <path d="M 54,35 Q 76,41 102,30" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 66,48 C 88,58 126,62 140,42 C 118,58 86,64 76,56 Z" fill="url(#frondGradRed)"/>
+          <path d="M 72,52 Q 98,60 132,45" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 86,68 C 110,80 152,82 168,60 C 142,78 108,86 98,76 Z" fill="url(#frondGradRed)"/>
+          <path d="M 92,72 Q 120,80 158,64" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 110,92 C 134,105 178,106 192,82 C 166,102 130,108 120,98 Z" fill="url(#frondGradRed)"/>
+          <path d="M 116,96 Q 144,104 182,86" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 134,120 C 154,134 190,132 200,110 C 178,128 148,132 140,124 Z" fill="url(#frondGradRed)"/>
+          <path d="M 140,123 Q 164,130 190,114" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Natural Deep Black Botanical Branch -->
+        <svg class="natural-sprig-black" viewBox="-10 -10 145 170" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 75%; height: 75%; position: absolute; top: 0; left: 25%; display: block; overflow: visible;">
+          <path d="M 0,0 C 25,30 55,70 90,135" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round"/>
+          <!-- Organic Leaflets with Stalks and Silver Veins -->
+          <path d="M 18,14 C 12,24 20,38 32,28 C 36,20 28,10 18,14 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 19,17 Q 24,25 28,24" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 28,30 C 40,32 48,46 38,54 C 30,52 24,38 28,30 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 29,33 Q 36,40 35,49" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 38,48 C 30,60 40,76 54,64 C 58,54 48,42 38,48 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 39,51 Q 40,62 47,59" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 52,68 C 66,70 76,86 64,96 C 54,92 48,78 52,68 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 54,71 Q 61,79 61,89" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 64,88 C 56,102 68,118 84,106 C 88,94 76,82 64,88 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 66,91 Q 69,102 78,101" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 80,110 C 94,114 104,130 92,140 C 82,136 76,122 80,110 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 82,113 Q 89,122 89,133" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 90,135 C 92,145 102,154 108,144 C 108,136 98,130 90,135 Z" fill="url(#frondGradBlack)"/>
+        </svg>
+      </div>
+
+      <!-- Bottom Left Natural Botanical Foliage -->
+      <div class="botanical-element botanical-bottom-left">
+        <!-- Natural Dark Red Branch -->
+        <svg class="natural-branch-red" viewBox="-10 -10 165 175" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; display: block; overflow: visible;">
+          <path d="M 0,150 C 35,115 65,85 110,40" stroke="#8B0000" stroke-width="2.6" stroke-linecap="round"/>
+          <path d="M 22,132 C 14,118 30,102 44,114 C 42,126 30,136 22,132 Z" fill="url(#frondGradRed)"/>
+          <path d="M 25,129 Q 32,119 39,116" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 40,110 C 56,108 66,90 52,80 C 40,84 34,100 40,110 Z" fill="url(#frondGradRed)"/>
+          <path d="M 43,105 Q 52,95 56,84" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 58,88 C 50,72 68,54 84,68 C 82,82 68,92 58,88 Z" fill="url(#frondGradRed)"/>
+          <path d="M 61,84 Q 70,71 78,68" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 80,64 C 98,62 108,42 94,32 C 80,36 74,54 80,64 Z" fill="url(#frondGradRed)"/>
+          <path d="M 83,59 Q 94,49 97,36" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+
+          <path d="M 110,40 C 114,24 134,16 138,30 C 132,42 118,48 110,40 Z" fill="url(#frondGradRed)"/>
+          <path d="M 112,36 Q 123,27 131,24" stroke="rgba(255,255,255,0.75)" stroke-width="1" stroke-linecap="round"/>
+        </svg>
+
+        <!-- Natural Deep Black Botanical Branch -->
+        <svg class="natural-branch-black" viewBox="-10 -10 165 175" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 80%; height: 80%; position: absolute; bottom: 0; left: 25%; display: block; overflow: visible;">
+          <path d="M 0,150 C 40,120 70,85 105,25" stroke="#0A0A0A" stroke-width="2.2" stroke-linecap="round"/>
+          <path d="M 28,126 C 38,118 52,126 48,138 C 38,142 26,134 28,126 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 31,127 Q 40,125 43,134" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 44,102 C 34,92 46,78 58,88 C 58,98 48,106 44,102 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 46,99 Q 47,89 53,88" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 62,80 C 74,72 88,80 84,94 C 74,98 62,88 62,80 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 65,81 Q 74,79 78,89" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 78,56 C 68,44 80,32 94,42 C 92,52 82,60 78,56 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 80,53 Q 82,43 87,42" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 98,34 C 110,26 122,34 118,46 C 108,50 98,42 98,34 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 100,33 Q 107,31 111,40" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 105,25 C 108,12 120,8 124,18 C 120,26 112,30 105,25 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 107,23 Q 113,13 118,14" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+        </svg>
+      </div>
+
+      <!-- Top Right Natural Black Sprig -->
+      <div class="botanical-element botanical-top-right">
+        <svg viewBox="-10 -10 125 145" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; display: block; overflow: visible;">
+          <path d="M 95,0 C 75,40 50,75 25,115" stroke="#0A0A0A" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M 78,22 C 68,32 58,26 64,16 C 72,12 80,16 78,22 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 76,20 Q 70,24 65,18" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 62,48 C 52,40 54,28 66,32 C 70,40 68,50 62,48 Z" fill="url(#frondGradRed)"/>
+          <path d="M 63,46 Q 59,38 62,32" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 52,72 C 40,80 34,70 42,60 C 48,58 56,64 52,72 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 50,70 Q 44,72 40,64" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 36,96 C 26,90 28,78 38,82 C 42,90 40,98 36,96 Z" fill="url(#frondGradRed)"/>
+          <path d="M 37,94 Q 32,88 35,82" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 25,115 C 16,118 14,128 22,126 C 28,124 28,118 25,115 Z" fill="url(#frondGradBlack)"/>
+        </svg>
+      </div>
+
+      <!-- Bottom Right Natural Black Climbing Branch -->
+      <div class="botanical-element botanical-bottom-right">
+        <svg viewBox="-10 -10 130 190" fill="none" xmlns="http://www.w3.org/2000/svg" style="width: 100%; height: 100%; display: block; overflow: visible;">
+          <path d="M 95,170 C 70,115 50,65 30,12" stroke="#0A0A0A" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M 80,138 C 66,134 68,118 80,122 C 88,128 86,140 80,138 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 82,135 Q 74,128 78,124" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 65,106 C 54,116 42,108 48,96 C 58,94 66,100 65,106 Z" fill="url(#frondGradRed)"/>
+          <path d="M 62,104 Q 54,108 50,100" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 54,72 C 42,66 44,52 56,56 C 62,62 60,74 54,72 Z" fill="url(#frondGradBlack)"/>
+          <path d="M 52,70 Q 48,62 52,57" stroke="rgba(255,255,255,0.65)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 40,40 C 30,48 20,40 26,30 C 34,28 42,34 40,40 Z" fill="url(#frondGradRed)"/>
+          <path d="M 38,38 Q 30,41 28,34" stroke="rgba(255,255,255,0.75)" stroke-width="0.9" stroke-linecap="round"/>
+
+          <path d="M 30,12 C 24,5 32,2 38,6 C 38,11 34,14 30,12 Z" fill="url(#frondGradBlack)"/>
+        </svg>
+      </div>
+
+      <!-- ==========================================================
+           MAIN BANNER CANVAS CONTENT (PREVIOUS HEADING LINES + ANTA)
+           ========================================================== -->
+      <div class="editorial-canvas">
+        <!-- Left Column: Previous Headings & CTA -->
+        <div class="editorial-left-col">
+          <!-- Official Archive Badge -->
+          <div class="hero-badge-tag">
+            <span class="dot"></span>
+            PYTHON RUNWAY ARCHIVE • 2026
+          </div>
+
+          <!-- Previous Massive Headline -->
+          <h1 class="hero-title-massive">
+            REDEFINING<br>
+            CONTEMPORARY<br>
+            <span class="red-word">STREETWEAR.</span>
+
+            <!-- Sparkle Star Accent -->
+            <span class="sparkle-star sparkle-pos-title">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 12,0 Q 12,12 24,12 Q 12,12 12,24 Q 12,12 0,12 Q 12,12 12,0 Z" fill="#0A0A0A"/>
+              </svg>
+            </span>
+          </h1>
+
+          <!-- Editorial Description -->
+          <p class="hero-editorial-desc">
+            Engineered with 220 GSM heavyweight combed cotton. Bespoke high-definition DTF graphics, tailored dropped-shoulder cuts, and uncompromised luxury comfort crafted in Sri Lanka.
+          </p>
+
+          <!-- Action Buttons -->
+          <div class="hero-cta-group">
+            <a href="#new-drop" class="btn-hero-primary">
+              <i data-lucide="arrow-down" style="width: 16px;"></i> SHOP NEW DROP
+            </a>
+            <a href="customize.html" class="btn-hero-outline">
+              <i data-lucide="palette" style="width: 16px;"></i> CUSTOM ORDERS
+            </a>
+          </div>
+
+          <!-- Bottom Sparkles -->
+          <span class="sparkle-star sparkle-pos-bottom">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M 12,0 Q 12,12 24,12 Q 12,12 12,24 Q 12,12 0,12 Q 12,12 12,0 Z" fill="#8B0000"/>
+            </svg>
+          </span>
+
+          <span class="sparkle-star sparkle-pos-left">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <line x1="12" y1="0" x2="12" y2="24" stroke="#0A0A0A" stroke-width="1.3"/>
+              <line x1="0" y1="12" x2="24" y2="12" stroke="#0A0A0A" stroke-width="1.3"/>
+              <circle cx="12" cy="12" r="2.5" fill="#8B0000"/>
+            </svg>
+          </span>
+
+          <!-- Specs Metrics 3-Strip -->
+          <div class="hero-stat-row">
+            <div class="stat-box">
+              <h4>220 GSM</h4>
+              <p>Heavy Cotton</p>
+            </div>
+            <div class="stat-separator"></div>
+            <div class="stat-box">
+              <h4>BESPOKE</h4>
+              <p>DTF Art Prints</p>
+            </div>
+            <div class="stat-separator"></div>
+            <div class="stat-box">
+              <h4>ISLANDWIDE</h4>
+              <p>Express Courier</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- ==========================================================
+             RIGHT COLUMN: 3 CRYSTAL-CLEAR IMAGES IN EXACT SHAPES & BORDERS
+             ========================================================== -->
+        <div class="editorial-collage-container" id="banner-collage-box">
+          <!-- Architectural Outer Contour Arch for Card 1 -->
+          <svg class="arch-contour-svg" viewBox="0 0 260 330" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M 0,320 L 0,135 A 135,135 0 0,1 135,0 L 260,0" stroke="#0A0A0A" stroke-width="1.5"/>
+          </svg>
+
+          <!-- Solid Dark Red Accent Blocks -->
+          <div class="collage-accent-red-1"></div>
+          <div class="collage-accent-red-2"></div>
+
+          <!-- Card 1: Main Left Arch Shape (Rotates with Image 1, 2, 3) -->
+          <div class="collage-card-arch" title="Click to rotate look">
+            <img src="banner-user-1.webp" alt="Python Streetwear Runway Arch" id="collage-img-1" onerror="this.src='https://uptownsrilanka.com/uploads/82702337bb3ed3a8ebe8ad09c9be963b.webp'">
+          </div>
+
+          <!-- Card 2: Top Right Arch Shape (Rotates with Image 2, 3, 1) -->
+          <div class="collage-card-top" title="Click to rotate look">
+            <!-- 6x2 Dot Matrix Grid Above Top Card -->
+            <div class="dot-matrix" style="align-self: flex-start; margin-left: 8px;">
+              <span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span>
+              <span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span><span class="dot-node"></span>
+            </div>
+            <div class="collage-top-img-wrap">
+              <img src="banner-user-2.webp" alt="Python Streetwear Model Top" id="collage-img-2" onerror="this.src='https://socalledclothing.com/cdn/shop/files/white-model_6235aae5-40da-49ac-a4e4-dcc53c71c53e.webp?v=1786298116&width=1200'">
+            </div>
+          </div>
+
+          <!-- Card 3: Bottom Right Framed Shape (Rotates with Image 3, 1, 2) -->
+          <div class="collage-card-bottom" title="Click to rotate look">
+            <div class="bottom-frame-contour"></div>
+            <div class="bottom-frame-step-corner"></div>
+            <div class="collage-bottom-img-wrap">
+              <img src="banner-user-3.jpg" alt="Python Streetwear Eagle Model Bottom" id="collage-img-3" onerror="this.src='https://clothingtrives.com/cdn/shop/files/Trives_eagle_Embroidered_Tee.jpg?v=1757824479&width=533'">
+            </div>
+          </div>
+
+          <!-- Floating Archive Live Pill (Dynamic script.js connection) -->
+          <div class="banner-live-pill" id="hero-live-pill">
+            <span style="width: 7px; height: 7px; border-radius: 50%; background: var(--dark-red); display: inline-block;"></span>
+            <img src="T Shirt.png" alt="Python Spotlight Item" id="hero-spotlight-img" style="width: 20px; height: 20px; border-radius: 50%; object-fit: contain; background: #F3F4F6;" onerror="this.src='logo.png'">
+            <span id="hero-spotlight-title">HEAVYWEIGHT ARCHIVE TEE</span>
+            <span style="color: var(--dark-red); font-weight: 800;" id="hero-spotlight-price">Rs. 2,400</span>
+            <span id="hero-spotlight-sub" style="display: none;">220 GSM Combed Cotton</span>
+          </div>
+
+          <!-- Minimalist Lookbook Rotation Indicators -->
+          <div class="banner-carousel-indicators" id="banner-indicators">
+            <span class="carousel-dot active" onclick="rotateBannerTo(0)" title="Look 1"></span>
+            <span class="carousel-dot" onclick="rotateBannerTo(1)" title="Look 2"></span>
+            <span class="carousel-dot" onclick="rotateBannerTo(2)" title="Look 3"></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         2. LIVE THE NEW DROP SECTION (Real-Time Database Driven)
+         ================================================================ -->
+    <section class="section-wrap" id="new-drop">
+      <div class="section-head">
+        <div>
+          <span class="section-tag">EXCLUSIVE RELEASES</span>
+          <h2 class="section-title">THE NEW DROP</h2>
+        </div>
+        <a href="shop.html" class="btn-hero-outline" style="padding: 10px 20px; font-size: 0.78rem;">
+          VIEW FULL CATALOG <i data-lucide="arrow-right" style="width: 15px;"></i>
+        </a>
+      </div>
+
+      <!-- Dynamic Grid Hook: Populated live from Firebase Firestore via script.js -->
+      <div class="products-fashion-grid" id="new-drop-grid">
+        <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
+          <div style="width: 32px; height: 32px; border: 3px solid var(--border-fine); border-top: 3px solid var(--dark-red); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 14px;"></div>
+          <p style="font-size: 0.9rem; color: var(--text-muted); font-weight: 600;">Connecting to Firebase Database & Loading Collection...</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         3. CURATED COLLECTIONS 3-TRIO
+         ================================================================ -->
+    <section class="section-wrap" id="collections" style="background: #F9FAFB; border-top: 1px solid var(--border-fine); border-bottom: 1px solid var(--border-fine); max-width: 100%;">
+      <div style="max-width: 1400px; margin: 0 auto;">
+        <div class="section-head">
+          <div>
+            <span class="section-tag">THE PYTHON WORLD</span>
+            <h2 class="section-title">BEYOND THE DROP</h2>
+          </div>
+        </div>
+
+        <div class="collections-trio">
+          <a href="shop.html" class="collection-box">
+            <div>
+              <span class="num">01 / ARCHIVE</span>
+              <h3>SHOP THE ARCHIVE</h3>
+              <p>Every live piece, in every available colourway and size. The complete Python collection in one place.</p>
+            </div>
+            <div class="link-arrow">EXPLORE THE ARCHIVE →</div>
+          </a>
+
+          <a href="customize.html" class="collection-box">
+            <div>
+              <span class="num">02 / BESPOKE</span>
+              <h3>DESIGN YOUR OWN</h3>
+              <p>Upload your artwork, choose the garment and colour, and let the Python studio build your one-off piece.</p>
+            </div>
+            <div class="link-arrow">ENTER THE STUDIO →</div>
+          </a>
+
+          <a href="reviews.html" class="collection-box">
+            <div>
+              <span class="num">03 / COMMUNITY</span>
+              <h3>CLIENT REVIEWS</h3>
+              <p>Real fit notes, fabric feedback and styling thoughts from the people wearing Python every day.</p>
+            </div>
+            <div class="link-arrow">READ THE REVIEWS →</div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ================================================================
+         4. CRAFTSMANSHIP BANNER ("MORE THAN A T-SHIRT")
+         ================================================================ -->
+    <section class="section-wrap">
+      <div class="craft-banner">
+        <div>
+          <span style="font-family: var(--font-headline); font-size: 0.75rem; font-weight: 800; letter-spacing: 2.5px; color: var(--dark-red); text-transform: uppercase;">ENGINEERED IN SRI LANKA</span>
+          <h2>CRAFTED FOR<br>DISTINCTION.</h2>
+          <p>
+            Every Python garment is built to preserve structure, withstand daily wear, and deliver an elevated streetwear silhouette that never washes out or twists at the seams.
+          </p>
+
+          <div class="craft-features-grid">
+            <div class="craft-feature-item">
+              <i data-lucide="layers"></i> 220 GSM Heavyweight
+            </div>
+            <div class="craft-feature-item">
+              <i data-lucide="printer"></i> High-Density DTF
+            </div>
+            <div class="craft-feature-item">
+              <i data-lucide="shield-check"></i> Fade-Proof Prints
+            </div>
+            <div class="craft-feature-item">
+              <i data-lucide="refresh-cw"></i> 7-Day Exchange
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align: center;">
+          <a href="customize.html" class="btn-hero-primary" style="background: var(--dark-red); border-color: var(--dark-red); padding: 18px 40px;">
+            <i data-lucide="palette"></i> ORDER BESPOKE TEE
+          </a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- Luxury Editorial Footer -->
+  <footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="font-size: 1rem; padding: 14px 18px; border-radius: 8px; margin-bottom: 20px;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+  <script src="firebase-config.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    'use strict';
+
+    // Renders the Homepage dynamic New Drop grid from the active products
+    function renderHomeProducts() {
+      const grid = document.getElementById('new-drop-grid');
+      if (!grid) return;
+
+      if (!Array.isArray(products) || products.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #F9FAFB; border-radius: 16px; border: 1.5px dashed var(--border-fine);">
+            <i data-lucide="layers" style="width: 44px; height: 44px; color: var(--dark-red); margin: 0 auto 14px;"></i>
+            <h3 style="font-family: var(--font-headline); font-size: 1.25rem; font-weight: 900; color: #0A0A0A; margin-bottom: 8px;">CURATING NEW COLLECTION</h3>
+            <p style="color: #6B7280; font-size: 0.9rem; max-width: 460px; margin: 0 auto 20px; line-height: 1.6;">
+              New seasonal heavyweight drops arriving soon. Browse our complete streetwear catalog today!
+            </p>
+            <a href="shop.html" class="btn-hero-primary" style="font-size: 0.78rem; padding: 12px 24px;">
+              <i data-lucide="shopping-bag"></i> EXPLORE CATALOG
+            </a>
+          </div>
+        `;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        return;
+      }
+
+      // Render the live products
+      grid.innerHTML = products.filter(p => !p.isDeleted).slice(0, 8).map(p => {
+        const displayPrice = getProductDisplayPrice(p);
+        const displayOldPrice = getProductDisplayOldPrice(p);
+        const img = getProductImages(p)[0];
+        const sizeKeys = getProductSizes(p);
+        const colours = getProductColors(p);
+        const wished = typeof isInWishlist === 'function' ? isInWishlist(p.id) : false;
+        const stockOut = p.stock === 0 || p.stockStatus === 'out_of_stock';
+
+        return `
+          <div class="fashion-card home-product-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
+            <div class="card-thumb-wrap">
+              ${p.badge ? `<span class="card-badge">${escapeProductHtml(p.badge)}</span>` : ''}
+              <button class="card-wish-btn" onclick="event.stopPropagation(); handleCardWishlistToggle('${p.id}', this)" title="Wishlist">
+                <i data-lucide="heart" style="width: 16px; height: 16px; ${wished ? 'color: var(--dark-red); fill: var(--dark-red);' : 'color: #0A0A0A;'}"></i>
+              </button>
+              <img src="${img}" alt="${escapeProductHtml(p.name)}" loading="lazy" onerror="this.src='logo.png'">
+              ${stockOut ? '<span class="home-stock-out">OUT OF STOCK</span>' : ''}
+            </div>
+
+            <div class="card-details">
+              <div>
+                <div class="card-category">${p.badge ? escapeProductHtml(p.badge) : 'PYTHON ARCHIVE'}</div>
+                <h3 class="card-name">${escapeProductHtml(p.name)}</h3>
+                <div class="card-sizes-strip">
+                  ${sizeKeys.slice(0, 7).map(s => `<span class="size-pill">${escapeProductHtml(s)}</span>`).join('')}
+                </div>
+                ${colours.length ? `
+                <div class="card-colour-row" onclick="event.stopPropagation()">
+                  <div class="card-colour-dots">
+                    ${colours.slice(0, 6).map((color, idx) => `
+                      <button type="button" class="card-color-dot ${idx === 0 ? 'active' : ''}" data-color="${escapeProductHtml(color)}" data-label="${escapeProductHtml(getColorLabel(color, p))}" style="background:${escapeProductHtml(color)}" title="${escapeProductHtml(getColorLabel(color, p))}" aria-label="Select ${escapeProductHtml(getColorLabel(color, p))}" onclick="event.stopPropagation(); selectCardColor(this)"></button>
+                    `).join('')}
+                    ${colours.length > 6 ? `<span class="card-color-more">+${colours.length - 6}</span>` : ''}
+                  </div>
+                  <span class="card-colour-label">${escapeProductHtml(getColorLabel(colours[0], p))}</span>
+                </div>` : ''}
+              </div>
+
+              <div class="card-foot">
+                <div class="card-price-line">
+                  <span class="card-price-current">Rs. ${Number(displayPrice).toLocaleString()}</span>
+                  ${displayOldPrice ? `<span class="card-price-old">Rs. ${Number(displayOldPrice).toLocaleString()}</span>` : ''}
+                </div>
+                <button class="card-add-btn" ${stockOut ? 'disabled' : ''} onclick="event.stopPropagation(); ${stockOut ? '' : `addCardToCart(event, '${p.id}')`}" title="${stockOut ? 'Out of stock' : 'Quick Add'}">
+                  <i data-lucide="shopping-bag" style="width: 15px; height: 15px;"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Update hero spotlight card with the top product if available
+      const topProd = products.find(p => !p.isDeleted);
+      if (topProd) {
+        const topImg = getProductImages(topProd)[0];
+        const heroImg = document.getElementById('hero-spotlight-img');
+        const heroTitle = document.getElementById('hero-spotlight-title');
+        const heroSub = document.getElementById('hero-spotlight-sub');
+        const heroPrice = document.getElementById('hero-spotlight-price');
+        if (heroImg) heroImg.src = topImg;
+        if (heroTitle) heroTitle.innerText = topProd.name;
+        if (heroSub) heroSub.innerText = (topProd.gsm || 'SIGNATURE HEAVYWEIGHT') + ' • PYTHON ARCHIVE';
+        if (heroPrice) heroPrice.innerText = 'Rs. ' + getProductDisplayPrice(topProd).toLocaleString();
+      }
+
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    }
+
+    // Search Modal Handlers
+    function openSearchModal() {
+      const modal = document.getElementById('search-modal');
+      if (modal) {
+        modal.classList.add('open');
+        const inp = document.getElementById('modal-search-input');
+        if (inp) { inp.value = ''; inp.focus(); }
+        handleInstantSearch('');
+      }
+    }
+
+    function closeSearchModal() {
+      const modal = document.getElementById('search-modal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function handleInstantSearch(q) {
+      const container = document.getElementById('search-results-grid');
+      if (!container) return;
+      const cleanQ = q.toLowerCase().trim();
+      const matches = cleanQ === '' 
+        ? products.slice(0, 4) 
+        : products.filter(p => p.name.toLowerCase().includes(cleanQ) || (p.category && p.category.toLowerCase().includes(cleanQ)));
+
+      if (matches.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 30px; color: #6B7280;">No products found matching your search.</div>';
+        return;
+      }
+
+      container.innerHTML = matches.map(p => {
+        const img = (Array.isArray(p.images) && p.images[0]) ? p.images[0] : (p.image || 'T Shirt.png');
+        return `
+          <div onclick="window.location.href='product-detail.html?id=${p.id}'" style="display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; border: 1px solid var(--border-fine); border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseenter="this.style.background='#F9FAFB'" onmouseleave="this.style.background='white'">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="${img}" style="width: 44px; height: 44px; object-fit: contain; border-radius: 6px; background: #F3F4F6;" onerror="this.src='logo.png'">
+              <div>
+                <div style="font-family: var(--font-headline); font-weight: 800; font-size: 0.88rem; color: #0A0A0A;">${p.name}</div>
+                <div style="font-size: 0.74rem; color: #6B7280;">${p.category || 'Streetwear'}</div>
+              </div>
+            </div>
+            <div style="font-family: var(--font-headline); font-weight: 900; color: var(--dark-red); font-size: 0.95rem;">
+              Rs. ${(p.price || 0).toLocaleString()}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ================================================================
+    // CREATIVE LOOKBOOK ROTATING BANNER CAROUSEL
+    // ================================================================
+    const bannerRotationImages = [
+      { local: 'banner-user-1.webp', fallback: 'https://uptownsrilanka.com/uploads/82702337bb3ed3a8ebe8ad09c9be963b.webp', title: 'Uptown Luxury Collection' },
+      { local: 'banner-user-2.webp', fallback: 'https://socalledclothing.com/cdn/shop/files/white-model_6235aae5-40da-49ac-a4e4-dcc53c71c53e.webp?v=1786298116&width=1200', title: 'Heavyweight Drop Shoulder White' },
+      { local: 'banner-user-3.jpg', fallback: 'https://clothingtrives.com/cdn/shop/files/Trives_eagle_Embroidered_Tee.jpg?v=1757824479&width=533', title: 'Trives Eagle Embroidered Streetwear' }
+    ];
+
+    let bannerCycleIndex = 0;
+    let bannerRotationTimer = null;
+    let isBannerHovered = false;
+
+    // Cloud sync: Apply updated banner images from database/ImgBB
+    function applyCustomBannerImages(images) {
+      if (!Array.isArray(images) || images.length < 3) return;
+      let changed = false;
+      images.forEach((imgUrl, idx) => {
+        if (imgUrl && bannerRotationImages[idx] && bannerRotationImages[idx].local !== imgUrl) {
+          bannerRotationImages[idx].local = imgUrl;
+          bannerRotationImages[idx].fallback = imgUrl;
+          changed = true;
+        }
+      });
+      if (changed) {
+        rotateBannerTo(bannerCycleIndex);
+      }
+    }
+
+    function initBannerCloudSync() {
+      // 1. Instant local storage cache load
+      try {
+        const cached = localStorage.getItem('python_banner_settings');
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          if (parsed && Array.isArray(parsed.images)) {
+            applyCustomBannerImages(parsed.images);
+          }
+        }
+      } catch (e) {
+        console.warn('Banner local cache error:', e);
+      }
+
+      // 2. Real-time Firebase Firestore listener
+      if (typeof db !== 'undefined' && db) {
+        db.collection('settings').doc('banner').onSnapshot(doc => {
+          if (doc.exists && doc.data() && Array.isArray(doc.data().images)) {
+            const cloudImages = doc.data().images;
+            applyCustomBannerImages(cloudImages);
+            try {
+              localStorage.setItem('python_banner_settings', JSON.stringify({
+                images: cloudImages,
+                updatedAt: Date.now()
+              }));
+            } catch (e) {}
+          }
+        }, err => {
+          console.warn('Banner Firestore listener warning:', err);
+        });
+      }
+    }
+
+    function applyCardMorph(imgEl, newSrc, delayMs) {
+      if (!imgEl) return;
+      setTimeout(() => {
+        imgEl.classList.add('image-morphing');
+        setTimeout(() => {
+          imgEl.src = newSrc;
+          imgEl.classList.remove('image-morphing');
+        }, 340);
+      }, delayMs);
+    }
+
+    function rotateBannerTo(cycleStep) {
+      bannerCycleIndex = cycleStep % 3;
+      const card1 = document.getElementById('collage-img-1');
+      const card2 = document.getElementById('collage-img-2');
+      const card3 = document.getElementById('collage-img-3');
+
+      const src1 = bannerRotationImages[(0 + bannerCycleIndex) % 3].local;
+      const src2 = bannerRotationImages[(1 + bannerCycleIndex) % 3].local;
+      const src3 = bannerRotationImages[(2 + bannerCycleIndex) % 3].local;
+
+      // Staggered wave transition across the 3 cards
+      applyCardMorph(card1, src1, 0);
+      applyCardMorph(card2, src2, 130);
+      applyCardMorph(card3, src3, 260);
+
+      // Update indicator dots
+      const dots = document.querySelectorAll('.carousel-dot');
+      dots.forEach((dot, idx) => {
+        if (idx === bannerCycleIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    }
+
+    function startBannerAutoRotation() {
+      if (bannerRotationTimer) clearInterval(bannerRotationTimer);
+      bannerRotationTimer = setInterval(() => {
+        if (!isBannerHovered) {
+          rotateBannerTo(bannerCycleIndex + 1);
+        }
+      }, 3800);
+    }
+
+    function initBannerRotation() {
+      const collageBox = document.getElementById('banner-collage-box');
+      if (collageBox) {
+        collageBox.addEventListener('mouseenter', () => isBannerHovered = true);
+        collageBox.addEventListener('mouseleave', () => isBannerHovered = false);
+        // Clicking on collage cards rotates to the next look
+        const cards = collageBox.querySelectorAll('.collage-card-arch, .collage-card-top, .collage-card-bottom');
+        cards.forEach(c => {
+          c.style.cursor = 'pointer';
+          c.addEventListener('click', () => {
+            rotateBannerTo(bannerCycleIndex + 1);
+          });
+        });
+      }
+      initBannerCloudSync();
+      startBannerAutoRotation();
+    }
+
+    // Run on load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderHomeProducts();
+      initBannerRotation();
+      if (typeof lucide !== 'undefined') lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

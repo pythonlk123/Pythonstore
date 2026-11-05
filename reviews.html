@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>READ REVIEWS | PYTHON 2026 ARCHIVE</title>
+    <meta name="description" content="Read verified service reviews and product reviews for PYTHON streetwear. See what real customers say before you buy.">
+    <link rel="icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        /* ---------- Hero ---------- */
+        .reviews-hero {
+            padding: 140px 5% 34px;
+            text-align: center;
+            background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+            border-bottom: 1px solid var(--border-fine);
+        }
+        .reviews-hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px;
+            border-radius: 50px;
+            background: rgba(139, 0, 0, 0.08);
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            color: var(--dark-red);
+            font-size: 0.72rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+        }
+        .reviews-hero h1 {
+            font-family: var(--font-headline);
+            font-size: clamp(2rem, 5vw, 3.1rem);
+            font-weight: 900;
+            color: #0A0A0A;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin: 0 0 10px;
+            line-height: 1.15;
+        }
+        .reviews-hero h1 span { color: var(--dark-red); }
+        .reviews-hero p {
+            font-size: 0.94rem;
+            color: #6B7280;
+            max-width: 620px;
+            margin: 0 auto;
+            letter-spacing: 0.3px;
+            line-height: 1.65;
+        }
+        .reviews-hero-actions {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 22px;
+        }
+        .reviews-hero-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 11px 22px;
+            border-radius: 50px;
+            font-family: var(--font-headline);
+            font-size: 0.74rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.25s ease;
+            border: 1px solid transparent;
+        }
+        .reviews-hero-btn.primary {
+            background: var(--dark-red);
+            color: #FFFFFF;
+            box-shadow: 0 8px 22px rgba(139, 0, 0, 0.22);
+        }
+        .reviews-hero-btn.primary:hover {
+            background: var(--dark-red-hover);
+            transform: translateY(-2px);
+        }
+        .reviews-hero-btn.outline {
+            background: #FFFFFF;
+            color: #0A0A0A;
+            border-color: var(--border-fine);
+        }
+        .reviews-hero-btn.outline:hover {
+            border-color: #0A0A0A;
+            transform: translateY(-2px);
+        }
+
+        /* ---------- Layout ---------- */
+        .reviews-container {
+            max-width: 1120px;
+            margin: 30px auto 70px;
+            padding: 0 4%;
+        }
+
+        /* ---------- Service / Product Tabs ---------- */
+        .review-type-tabs {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .review-type-tab {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-align: left;
+            padding: 15px 17px;
+            border: 1px solid var(--border-fine);
+            border-radius: 16px;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Anta', sans-serif;
+            box-shadow: 0 3px 14px rgba(0, 0, 0, 0.025);
+            min-width: 0;
+        }
+        .review-type-tab:hover {
+            border-color: rgba(139, 0, 0, 0.35);
+            transform: translateY(-1px);
+        }
+        .review-type-tab.active {
+            border-color: var(--dark-red);
+            background: rgba(139, 0, 0, 0.035);
+            box-shadow: 0 8px 24px rgba(139, 0, 0, 0.09);
+        }
+        .review-type-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--dark-red-soft);
+            color: var(--dark-red);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+        .review-type-tab.active .review-type-icon {
+            background: var(--dark-red);
+            color: #FFFFFF;
+        }
+        .review-type-text { min-width: 0; display: block; }
+        .review-type-text strong {
+            display: block;
+            font-size: 0.76rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #0A0A0A;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .review-type-text small {
+            display: block;
+            font-size: 0.68rem;
+            color: #6B7280;
+            font-weight: 600;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .review-type-tab.active .review-type-text small { color: var(--dark-red); }
+        .review-type-count {
+            margin-left: auto;
+            flex-shrink: 0;
+            min-width: 28px;
+            height: 26px;
+            padding: 0 8px;
+            border-radius: 50px;
+            background: #F3F4F6;
+            color: #4B5563;
+            font-size: 0.7rem;
+            font-weight: 900;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .review-type-tab.active .review-type-count {
+            background: var(--dark-red);
+            color: #FFFFFF;
+        }
+
+        /* ---------- Dashboard ---------- */
+        .reviews-dashboard {
+            display: grid;
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1.35fr);
+            gap: 18px;
+            margin-bottom: 22px;
+        }
+        .rating-overview-card,
+        .rating-distribution-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-fine);
+            border-radius: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.035);
+            padding: 26px 24px;
+        }
+        .rating-overview-label {
+            font-size: 0.66rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--dark-red);
+            margin-bottom: 8px;
+        }
+        .average-rating-num {
+            color: #0A0A0A;
+            font-size: 3.4rem;
+            font-weight: 900;
+            line-height: 1;
+        }
+        .stars-display {
+            color: var(--dark-red);
+            font-size: 1.15rem;
+            line-height: 1.3;
+            margin: 4px 0 8px;
+        }
+        .total-reviews-count {
+            font-weight: 700;
+            color: #6B7280;
+            font-size: 0.8rem;
+        }
+        .rating-context {
+            display: inline-block;
+            margin-top: 9px;
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--dark-red);
+            background: rgba(139, 0, 0, 0.06);
+            border: 1px solid rgba(139, 0, 0, 0.14);
+            padding: 3px 10px;
+            border-radius: 50px;
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .rating-distribution-card {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 10px;
+        }
+        .distribution-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .dist-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 2px;
+            width: 36px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #4B5563;
+            flex-shrink: 0;
+        }
+        .dist-label i, .dist-label svg { color: var(--dark-red); }
+        .dist-bar-bg {
+            flex: 1;
+            height: 8px;
+            border-radius: 50px;
+            background: #F3F4F6;
+            overflow: hidden;
+        }
+        .dist-bar-fill {
+            height: 100%;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #8B0000, #B30000);
+            transition: width 0.4s ease;
+        }
+        .dist-count {
+            width: 28px;
+            text-align: right;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #6B7280;
+            flex-shrink: 0;
+        }
+
+        /* ---------- Toolbar ---------- */
+        .reviews-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            background: #FFFFFF;
+            border: 1px solid var(--border-fine);
+            border-radius: 14px;
+            padding: 12px 16px;
+            box-shadow: 0 3px 16px rgba(0, 0, 0, 0.03);
+            margin-bottom: 24px;
+        }
+        .reviews-toolbar-group {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+            min-width: 0;
+        }
+        .reviews-toolbar-label {
+            font-size: 0.66rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--dark-red);
+        }
+        .reviews-select {
+            padding: 8px 34px 8px 13px;
+            border: 1px solid var(--border-fine);
+            background-color: #F9FAFB;
+            color: #0A0A0A;
+            border-radius: 50px;
+            outline: none;
+            font-family: 'Anta', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236B7280' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 13px center;
+            max-width: 100%;
+        }
+        .reviews-select:hover,
+        .reviews-select:focus {
+            border-color: var(--dark-red);
+            background-color: #FFFFFF;
+        }
+
+        /* ---------- Feed ---------- */
+        .reviews-feed-column {
+            max-width: 880px;
+            margin: 0 auto;
+        }
+        .feed-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .feed-title {
+            font-family: var(--font-headline);
+            font-size: 1.2rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0A0A0A;
+            margin: 0;
+        }
+        .feed-subtitle {
+            font-size: 0.78rem;
+            color: #6B7280;
+            font-weight: 600;
+            margin: 3px 0 0;
+        }
+        .reviews-feed-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .review-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border-fine);
+            border-radius: 16px;
+            padding: 16px 18px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.03);
+            backdrop-filter: none;
+            -webkit-backdrop-filter: none;
+        }
+        .review-card:hover {
+            transform: none;
+            border-color: var(--border-fine);
+        }
+        .review-card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .reviewer-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+        .reviewer-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: var(--dark-red);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 0.82rem;
+            flex-shrink: 0;
+        }
+        .reviewer-details { min-width: 0; }
+        .reviewer-details h4 {
+            font-size: 0.86rem;
+            font-weight: 800;
+            color: #0A0A0A;
+            margin: 0;
+            line-height: 1.25;
+            overflow-wrap: anywhere;
+        }
+        .review-date {
+            display: block;
+            font-size: 0.68rem;
+            color: #6B7280;
+            font-weight: 600;
+            margin-top: 1px;
+        }
+        .review-card-stars {
+            color: var(--dark-red);
+            font-size: 0.88rem;
+            line-height: 1.3;
+            white-space: nowrap;
+        }
+        .star-glyph { color: #8B0000; }
+        .star-glyph.empty { color: #D1D5DB; }
+        .review-product-line {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+        }
+        .review-product-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            text-decoration: none;
+            padding: 3px 9px;
+            border-radius: 50px;
+            background: rgba(139, 0, 0, 0.07);
+            border: 1px solid rgba(139, 0, 0, 0.16);
+            color: var(--dark-red);
+            max-width: 100%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        .review-product-tag:hover {
+            background: var(--dark-red);
+            border-color: var(--dark-red);
+            color: #FFFFFF;
+        }
+        .review-product-tag.service {
+            background: #F3F4F6;
+            border-color: #E5E7EB;
+            color: #4B5563;
+        }
+        .review-comment {
+            font-size: 0.84rem;
+            line-height: 1.6;
+            color: #374151;
+            margin: 9px 0 0;
+            white-space: pre-line;
+            overflow-wrap: anywhere;
+        }
+        .review-device {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            margin-top: 9px;
+            font-size: 0.65rem;
+            font-weight: 600;
+            color: #9CA3AF;
+        }
+        .you-tag {
+            display: inline-block;
+            margin-left: 4px;
+            font-size: 0.54rem;
+            font-weight: 900;
+            letter-spacing: 0.7px;
+            color: #FFFFFF;
+            background: var(--dark-red);
+            border-radius: 50px;
+            padding: 2px 6px;
+            vertical-align: middle;
+        }
+        .no-reviews-placeholder {
+            background: #FFFFFF;
+            border: 1px dashed var(--border-fine);
+            border-radius: 16px;
+            text-align: center;
+            padding: 38px 18px;
+            color: #6B7280;
+        }
+        .no-reviews-placeholder i { color: #D1D5DB; width: 38px; height: 38px; margin-bottom: 10px; }
+        .no-reviews-placeholder h4 {
+            font-family: var(--font-headline);
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            color: #0A0A0A;
+            margin: 0 0 5px;
+        }
+        .no-reviews-placeholder p { margin: 0 0 14px; font-size: 0.8rem; }
+        .empty-write-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 9px 18px;
+            border-radius: 50px;
+            background: var(--dark-red);
+            color: #FFFFFF;
+            text-decoration: none;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+        .empty-write-link:hover { background: var(--dark-red-hover); }
+
+        /* ---------- Bottom CTA ---------- */
+        .reviews-cta {
+            margin: 34px auto 0;
+            max-width: 880px;
+            text-align: center;
+            background: #0A0A0A;
+            border: 1px solid #1F1F1F;
+            border-radius: 22px;
+            padding: 30px 22px;
+        }
+        .reviews-cta h3 {
+            font-family: var(--font-headline);
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #FFFFFF;
+            margin: 0 0 6px;
+        }
+        .reviews-cta p {
+            font-size: 0.8rem;
+            color: #9CA3AF;
+            margin: 0 0 16px;
+        }
+
+        /* ---------- Mobile ---------- */
+        @media (max-width: 768px) {
+            .reviews-hero { padding: 116px 4% 26px; }
+            .reviews-container { margin: 22px auto 54px; }
+            .reviews-dashboard { grid-template-columns: 1fr; gap: 12px; }
+            .rating-overview-card, .rating-distribution-card { padding: 20px 18px; border-radius: 16px; }
+            .average-rating-num { font-size: 2.9rem; }
+            .reviews-toolbar { padding: 11px 12px; gap: 9px; }
+            .reviews-toolbar-group { width: 100%; }
+            .reviews-toolbar-group .reviews-select { flex: 1; width: 100%; }
+            .review-card { padding: 14px 14px; }
+            .reviewer-avatar { width: 32px; height: 32px; font-size: 0.74rem; }
+            .reviewer-details h4 { font-size: 0.82rem; }
+            .review-comment { font-size: 0.81rem; }
+            .review-card-stars { font-size: 0.8rem; }
+            .reviews-cta { padding: 24px 16px; }
+        }
+        @media (max-width: 460px) {
+            .review-type-tabs { grid-template-columns: 1fr; }
+            .review-type-tab { padding: 13px 14px; }
+            .review-type-icon { width: 38px; height: 38px; }
+            .review-type-text strong { font-size: 0.72rem; }
+            .review-card-top { gap: 6px; }
+            .review-card-stars { margin-left: 42px; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Marquee -->
+    <header class="site-header">
+<div class="announcement-bar">
+        <div class="announcement-track">
+            <div class="announcement-content">
+                <span class="dot"></span>
+                <span>PYTHON ARCHIVE 2026</span>
+                <span class="announcement-divider">•</span>
+                <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+                <span class="announcement-divider">•</span>
+                <span>ISLANDWIDE EXPRESS DELIVERY</span>
+                <span class="announcement-divider">•</span>
+                <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+                <span class="announcement-divider">•</span>
+                <span>CASH ON DELIVERY AVAILABLE</span>
+            </div>
+            <div class="announcement-content" aria-hidden="true">
+                <span class="dot"></span>
+                <span>PYTHON ARCHIVE 2026</span>
+                <span class="announcement-divider">•</span>
+                <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+                <span class="announcement-divider">•</span>
+                <span>ISLANDWIDE EXPRESS DELIVERY</span>
+                <span class="announcement-divider">•</span>
+                <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+                <span class="announcement-divider">•</span>
+                <span>CASH ON DELIVERY AVAILABLE</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Minimal Navbar -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Python Logo">
+            <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+        </a>
+
+        <ul class="nav-links">
+            <li><a href="index.html#new-drop">NEW DROP</a></li>
+            <li><a href="shop.html">SHOP ALL</a></li>
+            <li><a href="index.html#collections">COLLECTIONS</a></li>
+            <li><a href="customize.html">CUSTOMIZE</a></li>
+            <li><a href="offers.html">OFFERS</a></li>
+            <li><a href="reviews.html" class="active">REVIEWS</a></li>
+        </ul>
+
+        <div class="nav-icons">
+            <a href="shop.html" class="nav-icon-btn" title="Search Products" aria-label="Search">
+                <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+            </a>
+            <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account">
+                <i data-lucide="user" style="width: 17px; height: 17px;"></i>
+            </a>
+            <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+                <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+                <span id="wishlist-count" class="nav-badge">0</span>
+            </a>
+            <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart">
+                <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+                <span id="cart-count" class="nav-badge">0</span>
+            </a>
+            <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+            </button>
+        </div>
+    </nav>
+</header>
+
+    <!-- Mobile Drawer Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="logo.png" alt="Python Logo" class="drawer-logo">
+                <div>
+                    <span class="drawer-title">PYTHON</span>
+                    <span class="drawer-subtitle">ARCHIVE 2026</span>
+                </div>
+            </div>
+            <button class="close-menu" id="close-menu" aria-label="Close Menu">
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
+
+        <div class="drawer-quick-actions">
+            <a href="shop.html" class="drawer-action-btn">
+                <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+                <span>Search</span>
+            </a>
+            <a href="wishlist.html" class="drawer-action-btn">
+                <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+                <span>Wishlist</span>
+            </a>
+            <a href="cart.html" class="drawer-action-btn">
+                <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+                <span>Cart</span>
+            </a>
+            <a href="profile.html" class="drawer-action-btn">
+                <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+                <span>Account</span>
+            </a>
+        </div>
+
+        <div class="drawer-section-label">NAVIGATION</div>
+        <div class="drawer-links-group">
+            <a href="index.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">01</span>
+                    <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+                    <span>HOME</span>
+                </div>
+            </a>
+            <a href="index.html#new-drop" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">02</span>
+                    <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+                    <span>NEW DROP</span>
+                </div>
+            </a>
+            <a href="shop.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">03</span>
+                    <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+                    <span>SHOP ALL</span>
+                </div>
+            </a>
+            <a href="customize.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">04</span>
+                    <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+                    <span>CUSTOM PRINT</span>
+                </div>
+            </a>
+            <a href="offers.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">05</span>
+                    <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                    <span>OFFERS</span>
+                </div>
+            </a>
+            <a href="track-order.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">06</span>
+                    <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+                    <span>TRACK ORDER</span>
+                </div>
+            </a>
+            <a href="reviews.html" class="drawer-link active">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">07</span>
+                    <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+                    <span>REVIEWS</span>
+                </div>
+            </a>
+        </div>
+    </div>
+
+    <!-- Hero -->
+    <header class="reviews-hero">
+        <div class="reviews-hero-badge">
+            <i data-lucide="badge-check" style="width: 14px; height: 14px;"></i>
+            VERIFIED CUSTOMER FEEDBACK
+        </div>
+        <h1>READ <span>REVIEWS</span></h1>
+        <p>See what real customers say about our service and products. Choose a category below and read honest feedback before you order.</p>
+        <div class="reviews-hero-actions">
+            <a href="write-review.html" class="reviews-hero-btn primary">
+                <i data-lucide="pen-line" style="width: 15px; height: 15px;"></i>
+                WRITE A REVIEW
+            </a>
+            <a href="shop.html" class="reviews-hero-btn outline">
+                <i data-lucide="shopping-bag" style="width: 15px; height: 15px;"></i>
+                SHOP THE ARCHIVE
+            </a>
+        </div>
+    </header>
+
+    <main class="reviews-container">
+        <!-- Service / Product Tabs -->
+        <div class="review-type-tabs" role="tablist" aria-label="Review category">
+            <button type="button" class="review-type-tab active" id="tab-service" data-tab="service" onclick="setReviewTab('service')" role="tab" aria-selected="true">
+                <span class="review-type-icon"><i data-lucide="headphones" style="width:19px;height:19px;"></i></span>
+                <span class="review-type-text">
+                    <strong>SERVICE REVIEWS</strong>
+                    <small>Delivery, packaging & support</small>
+                </span>
+                <span class="review-type-count" id="service-tab-count">0</span>
+            </button>
+            <button type="button" class="review-type-tab" id="tab-product" data-tab="product" onclick="setReviewTab('product')" role="tab" aria-selected="false">
+                <span class="review-type-icon"><i data-lucide="shirt" style="width:19px;height:19px;"></i></span>
+                <span class="review-type-text">
+                    <strong>PRODUCT REVIEWS</strong>
+                    <small>Fit, fabric & print quality</small>
+                </span>
+                <span class="review-type-count" id="product-tab-count">0</span>
+            </button>
+        </div>
+
+        <!-- Rating summary -->
+        <section class="reviews-dashboard">
+            <div class="rating-overview-card">
+                <div class="rating-overview-label" id="rating-overview-label">SERVICE RATING</div>
+                <div class="average-rating-num" id="avg-rating">0.0</div>
+                <div class="stars-display" id="avg-stars"></div>
+                <div class="total-reviews-count" id="total-reviews-label">Based on 0 reviews</div>
+                <div class="rating-context" id="rating-context">Service feedback</div>
+            </div>
+
+            <div class="rating-distribution-card">
+                <div class="distribution-row">
+                    <span class="dist-label">5 <i data-lucide="star" style="width:13px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-5" style="width: 0%;"></div></div>
+                    <span class="dist-count" id="count-5">0</span>
+                </div>
+                <div class="distribution-row">
+                    <span class="dist-label">4 <i data-lucide="star" style="width:13px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-4" style="width: 0%;"></div></div>
+                    <span class="dist-count" id="count-4">0</span>
+                </div>
+                <div class="distribution-row">
+                    <span class="dist-label">3 <i data-lucide="star" style="width:13px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-3" style="width: 0%;"></div></div>
+                    <span class="dist-count" id="count-3">0</span>
+                </div>
+                <div class="distribution-row">
+                    <span class="dist-label">2 <i data-lucide="star" style="width:13px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-2" style="width: 0%;"></div></div>
+                    <span class="dist-count" id="count-2">0</span>
+                </div>
+                <div class="distribution-row">
+                    <span class="dist-label">1 <i data-lucide="star" style="width:13px;fill:currentColor;"></i></span>
+                    <div class="dist-bar-bg"><div class="dist-bar-fill" id="bar-1" style="width: 0%;"></div></div>
+                    <span class="dist-count" id="count-1">0</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Product filter + sort -->
+        <div class="reviews-toolbar">
+            <div class="reviews-toolbar-group" id="product-filter-group" style="display: none;">
+                <span class="reviews-toolbar-label">PRODUCT</span>
+                <select class="reviews-select" id="product-filter" onchange="renderReviews()">
+                    <option value="all">All Products</option>
+                </select>
+            </div>
+            <div class="reviews-toolbar-group" style="margin-left:auto;">
+                <span class="reviews-toolbar-label">SORT</span>
+                <select class="reviews-select" id="sort-select" onchange="renderReviews()">
+                    <option value="newest">Newest First</option>
+                    <option value="highest">Highest Rating</option>
+                    <option value="lowest">Lowest Rating</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- Feed -->
+        <div class="reviews-feed-column">
+            <div class="feed-header">
+                <div>
+                    <h3 class="feed-title" id="feed-title">SERVICE REVIEWS</h3>
+                    <p class="feed-subtitle" id="feed-subtitle">Feedback about delivery, packaging and customer support.</p>
+                </div>
+            </div>
+
+            <div class="reviews-feed-container" id="reviews-feed">
+                <div class="no-reviews-placeholder">
+                    <i data-lucide="message-square" style="width:38px;height:38px;"></i>
+                    <h4>NO REVIEWS YET</h4>
+                    <p>Be the first to share your experience!</p>
+                    <a href="write-review.html?type=service" class="empty-write-link">
+                        <i data-lucide="pen-line" style="width:13px;height:13px;"></i> WRITE A REVIEW
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom CTA -->
+        <div class="reviews-cta">
+            <h3>READY TO SHARE YOUR EXPERIENCE?</h3>
+            <p>Your feedback helps other customers choose with confidence.</p>
+            <a href="write-review.html" class="reviews-hero-btn primary">
+                <i data-lucide="pen-line" style="width: 15px; height: 15px;"></i>
+                WRITE A REVIEW
+            </a>
+        </div>
+    </main>
+
+    <!-- Luxury Editorial Footer -->
+    <footer class="luxury-footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <h2>PYTHON</h2>
+                <p>
+                    Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+                </p>
+            </div>
+
+            <div class="footer-col">
+                <h4>STOREFRONT</h4>
+                <ul>
+                    <li><a href="shop.html">Shop All</a></li>
+                    <li><a href="index.html#new-drop">New Releases</a></li>
+                    <li><a href="customize.html">Custom Orders</a></li>
+                    <li><a href="offers.html">Special Offers</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>CLIENT SERVICES</h4>
+                <ul>
+                    <li><a href="track-order.html">Track Order</a></li>
+                    <li><a href="reviews.html">Customer Reviews</a></li>
+                    <li><a href="profile.html">Member Account</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>VIP CONCIERGE</h4>
+                <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+                <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+                    <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+                </a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+            <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+        </div>
+    </footer>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        let allReviews = [];
+        let knownProducts = [];
+        let activeTab = 'service';
+        let pendingProductId = null;
+        let loggedInEmail = null;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const productParam = params.get('product') || params.get('id');
+            const tabParam = params.get('tab');
+
+            if (productParam) {
+                activeTab = 'product';
+                pendingProductId = String(productParam);
+            } else if (tabParam === 'product' || tabParam === 'service') {
+                activeTab = tabParam;
+            }
+
+            try {
+                const cached = (typeof readStoredUser === 'function') ? readStoredUser() : null;
+                loggedInEmail = cached ? (cached.email || null) : null;
+            } catch (e) {}
+
+            applyTabUI();
+            loadProductCatalog();
+            loadReviewsFromDb();
+
+            if (typeof auth !== 'undefined' && auth && typeof auth.onAuthStateChanged === 'function') {
+                auth.onAuthStateChanged((user) => {
+                    if (user && user.email) {
+                        loggedInEmail = user.email;
+                        renderReviews();
+                    }
+                });
+            }
+        });
+
+        /* ---------- Tabs ---------- */
+        function applyTabUI() {
+            document.querySelectorAll('.review-type-tab').forEach((btn) => {
+                const isActive = btn.dataset.tab === activeTab;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+
+            const productGroup = document.getElementById('product-filter-group');
+            if (productGroup) productGroup.style.display = activeTab === 'product' ? 'flex' : 'none';
+
+            const overviewLabel = document.getElementById('rating-overview-label');
+            if (overviewLabel) {
+                overviewLabel.innerText = activeTab === 'service' ? 'SERVICE RATING' : 'PRODUCT RATING';
+            }
+        }
+
+        function setReviewTab(tab) {
+            if (tab !== 'service' && tab !== 'product') return;
+            if (activeTab === tab) return;
+            activeTab = tab;
+            applyTabUI();
+
+            try {
+                const url = new URL(window.location.href);
+                url.searchParams.set('tab', tab);
+                if (tab !== 'product') url.searchParams.delete('product');
+                window.history.replaceState(null, '', url);
+            } catch (e) {}
+
+            renderReviews();
+        }
+
+        /* ---------- Products ---------- */
+        function dedupeProducts(list) {
+            const seen = new Set();
+            return list
+                .filter((p) => {
+                    if (!p || !p.id || !p.name) return false;
+                    if (seen.has(String(p.id))) return false;
+                    seen.add(String(p.id));
+                    return true;
+                })
+                .map((p) => ({ id: String(p.id), name: p.name }))
+                .sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        function buildProductOptions() {
+            const select = document.getElementById('product-filter');
+            if (!select) return;
+
+            const previous = select.value || 'all';
+            select.innerHTML = '<option value="all">All Products</option>';
+
+            knownProducts.forEach((p) => {
+                const option = document.createElement('option');
+                option.value = 'product:' + p.id;
+                option.textContent = p.name;
+                select.appendChild(option);
+            });
+
+            if (pendingProductId && !knownProducts.some((p) => p.id === String(pendingProductId))) {
+                const option = document.createElement('option');
+                option.value = 'product:' + pendingProductId;
+                option.textContent = 'Product #' + pendingProductId;
+                select.appendChild(option);
+            }
+
+            const target = pendingProductId ? ('product:' + String(pendingProductId)) : previous;
+            if ([...select.options].some((o) => o.value === target)) {
+                select.value = target;
+            }
+            pendingProductId = null;
+        }
+
+        function loadProductCatalog() {
+            if (typeof products !== 'undefined' && Array.isArray(products)) {
+                products.filter((p) => p && !p.isDeleted).forEach((p) => {
+                    if (p.id != null && p.name) knownProducts.push({ id: String(p.id), name: p.name });
+                });
+            }
+            knownProducts = dedupeProducts(knownProducts);
+            buildProductOptions();
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('products').get().then((snapshot) => {
+                    snapshot.forEach((doc) => {
+                        const data = doc.data() || {};
+                        if (!data.isDeleted && data.name) {
+                            knownProducts.push({ id: String(doc.id), name: data.name });
+                        }
+                    });
+                    knownProducts = dedupeProducts(knownProducts);
+                    buildProductOptions();
+                    renderReviews();
+                }).catch(() => {});
+            }
+        }
+
+        function mergeProductsFromReviews(reviews) {
+            let changed = false;
+            reviews.forEach((r) => {
+                if (r.reviewType === 'product' && r.productId && !knownProducts.some((p) => p.id === String(r.productId))) {
+                    knownProducts.push({
+                        id: String(r.productId),
+                        name: r.productName || ('Product #' + r.productId)
+                    });
+                    changed = true;
+                }
+            });
+            if (changed) {
+                knownProducts = dedupeProducts(knownProducts);
+                buildProductOptions();
+            }
+        }
+
+        /* ---------- Review data ---------- */
+        function getDeviceType() {
+            const width = window.innerWidth;
+            if (width < 768) return 'Mobile Phone';
+            if (width < 1024) return 'Tablet';
+            return 'Desktop / Laptop';
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return String(text)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        function getStarsHtml(rating) {
+            const rounded = Math.round(Number(rating) || 0);
+            let html = '';
+            for (let i = 1; i <= 5; i++) {
+                html += `<span class="star-glyph ${i <= rounded ? '' : 'empty'}">${i <= rounded ? '&#9733;' : '&#9734;'}</span>`;
+            }
+            return html;
+        }
+
+        function normalizeReview(id, data) {
+            let date = new Date();
+            if (data.timestamp) {
+                if (data.timestamp.seconds) {
+                    date = new Date(data.timestamp.seconds * 1000);
+                } else if (typeof data.timestamp.toDate === 'function') {
+                    try { date = data.timestamp.toDate(); } catch (e) {}
+                } else {
+                    date = new Date(data.timestamp);
+                }
+            }
+            if (isNaN(date.getTime())) date = new Date();
+
+            let reviewType = data.reviewType;
+            if (reviewType !== 'service' && reviewType !== 'product') {
+                reviewType = data.productId ? 'product' : 'service';
+            }
+
+            return {
+                id: id,
+                name: data.name || 'Anonymous',
+                rating: Number(data.rating) || 0,
+                comment: data.comment || '',
+                date: date,
+                email: data.email || '',
+                device: data.device || getDeviceType(),
+                reviewType: reviewType,
+                productId: reviewType === 'product' && data.productId ? String(data.productId) : '',
+                productName: reviewType === 'product' ? (data.productName || '') : ''
+            };
+        }
+
+        function readLocalReviews() {
+            try {
+                return JSON.parse(localStorage.getItem('local_customer_reviews')) || [];
+            } catch (e) {
+                return [];
+            }
+        }
+
+        function appendLocalReviews(target, fallbackReviews) {
+            fallbackReviews.forEach((item, index) => {
+                target.push(normalizeReview('local_' + index, item));
+            });
+        }
+
+        function loadReviewsFromDb() {
+            const fallbackReviews = readLocalReviews();
+
+            const finish = (reviews) => {
+                allReviews = reviews;
+                mergeProductsFromReviews(allReviews);
+                updateTabCounts();
+                renderReviews();
+            };
+
+            if (typeof db !== 'undefined' && db) {
+                db.collection('reviews').get().then((snapshot) => {
+                    const reviews = [];
+                    snapshot.forEach((doc) => {
+                        reviews.push(normalizeReview(doc.id, doc.data()));
+                    });
+                    appendLocalReviews(reviews, fallbackReviews);
+                    finish(reviews);
+                }).catch((err) => {
+                    console.warn('Could not load reviews from Firestore:', err);
+                    const reviews = [];
+                    appendLocalReviews(reviews, fallbackReviews);
+                    finish(reviews);
+                });
+            } else {
+                const reviews = [];
+                appendLocalReviews(reviews, fallbackReviews);
+                finish(reviews);
+            }
+        }
+
+        function updateTabCounts() {
+            const serviceCount = allReviews.filter((r) => r.reviewType === 'service').length;
+            const productCount = allReviews.filter((r) => r.reviewType === 'product').length;
+            const serviceEl = document.getElementById('service-tab-count');
+            const productEl = document.getElementById('product-tab-count');
+            if (serviceEl) serviceEl.innerText = serviceCount;
+            if (productEl) productEl.innerText = productCount;
+        }
+
+        /* ---------- Rendering ---------- */
+        function getVisibleReviews() {
+            let visible = allReviews.filter((r) => r.reviewType === activeTab);
+
+            if (activeTab === 'product') {
+                const filterEl = document.getElementById('product-filter');
+                const filter = filterEl ? filterEl.value : 'all';
+                if (filter && filter.indexOf('product:') === 0) {
+                    const productId = filter.slice('product:'.length);
+                    visible = visible.filter((r) => String(r.productId) === productId);
+                }
+            }
+            return visible;
+        }
+
+        function renderReviews() {
+            const feed = document.getElementById('reviews-feed');
+            if (!feed) return;
+
+            const visible = getVisibleReviews();
+            const sortVal = document.getElementById('sort-select') ? document.getElementById('sort-select').value : 'newest';
+            const filterEl = document.getElementById('product-filter');
+            const filter = filterEl ? filterEl.value : 'all';
+            const total = visible.length;
+
+            let sum = 0;
+            const counts = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
+            visible.forEach((r) => {
+                sum += Number(r.rating) || 0;
+                if (counts[r.rating] !== undefined) counts[r.rating]++;
+            });
+            const avg = total ? (sum / total) : 0;
+
+            const avgEl = document.getElementById('avg-rating');
+            const starsEl = document.getElementById('avg-stars');
+            const totalEl = document.getElementById('total-reviews-label');
+            const contextEl = document.getElementById('rating-context');
+            if (avgEl) avgEl.innerText = total ? avg.toFixed(1) : '0.0';
+            if (starsEl) starsEl.innerHTML = getStarsHtml(avg);
+            if (totalEl) totalEl.innerText = `Based on ${total} review${total === 1 ? '' : 's'}`;
+
+            let feedTitle = 'SERVICE REVIEWS';
+            let feedSubtitle = 'Feedback about delivery, packaging and customer support.';
+            let contextLabel = 'Service feedback';
+
+            if (activeTab === 'product') {
+                feedTitle = 'PRODUCT REVIEWS';
+                feedSubtitle = 'Ratings and feedback for individual pieces from the archive.';
+                contextLabel = 'All product feedback';
+
+                if (filter.indexOf('product:') === 0) {
+                    const productId = filter.slice('product:'.length);
+                    const product = knownProducts.find((p) => p.id === productId);
+                    const label = (product && product.name)
+                        || (visible[0] && visible[0].productName)
+                        || ('Product #' + productId);
+                    feedTitle = label.toUpperCase() + ' REVIEWS';
+                    feedSubtitle = 'Ratings and feedback for this specific piece.';
+                    contextLabel = label;
+                }
+            }
+
+            const feedTitleEl = document.getElementById('feed-title');
+            const feedSubtitleEl = document.getElementById('feed-subtitle');
+            if (feedTitleEl) feedTitleEl.innerText = feedTitle;
+            if (feedSubtitleEl) feedSubtitleEl.innerText = feedSubtitle;
+            if (contextEl) contextEl.innerText = contextLabel;
+
+            for (let i = 1; i <= 5; i++) {
+                const count = counts[i];
+                const pct = total ? ((count / total) * 100).toFixed(0) : 0;
+                const countEl = document.getElementById(`count-${i}`);
+                const barEl = document.getElementById(`bar-${i}`);
+                if (countEl) countEl.innerText = count;
+                if (barEl) barEl.style.width = `${pct}%`;
+            }
+
+            if (total === 0) {
+                const productSuffix = (activeTab === 'product' && filter.indexOf('product:') === 0)
+                    ? '&product=' + encodeURIComponent(filter.slice('product:'.length))
+                    : '';
+                feed.innerHTML = `
+                    <div class="no-reviews-placeholder">
+                        <i data-lucide="message-square" style="width:38px;height:38px;"></i>
+                        <h4>NO ${activeTab === 'service' ? 'SERVICE' : 'PRODUCT'} REVIEWS YET</h4>
+                        <p>Be the first to share your experience!</p>
+                        <a href="write-review.html?type=${activeTab}${productSuffix}" class="empty-write-link">
+                            <i data-lucide="pen-line" style="width:13px;height:13px;"></i> WRITE A REVIEW
+                        </a>
+                    </div>
+                `;
+                if (typeof lucide !== 'undefined') lucide.createIcons();
+                return;
+            }
+
+            if (sortVal === 'newest') {
+                visible.sort((a, b) => b.date - a.date);
+            } else if (sortVal === 'highest') {
+                visible.sort((a, b) => b.rating - a.rating || b.date - a.date);
+            } else if (sortVal === 'lowest') {
+                visible.sort((a, b) => a.rating - b.rating || b.date - a.date);
+            }
+
+            feed.innerHTML = visible.map((r) => {
+                const avatarChar = escapeHtml((r.name || 'A').charAt(0).toUpperCase());
+                const formattedDate = r.date.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                const isMine = loggedInEmail && r.email && r.email.toLowerCase() === String(loggedInEmail).toLowerCase();
+
+                const typeTag = r.reviewType === 'product'
+                    ? `<a class="review-product-tag" href="product-detail.html?id=${encodeURIComponent(r.productId)}">
+                           <i data-lucide="shirt" style="width:11px;height:11px;"></i>
+                           ${escapeHtml(r.productName || 'Product Review')}
+                       </a>`
+                    : `<span class="review-product-tag service">SERVICE REVIEW</span>`;
+
+                return `
+                    <article class="review-card">
+                        <div class="review-card-top">
+                            <div class="reviewer-profile">
+                                <div class="reviewer-avatar">${avatarChar}</div>
+                                <div class="reviewer-details">
+                                    <h4>${escapeHtml(r.name)}${isMine ? ' <span class="you-tag">YOU</span>' : ''}</h4>
+                                    <span class="review-date">${formattedDate}</span>
+                                </div>
+                            </div>
+                            <div class="review-card-stars">${getStarsHtml(r.rating)}</div>
+                        </div>
+                        <div class="review-product-line">${typeTag}</div>
+                        <p class="review-comment">${escapeHtml(r.comment)}</p>
+                        <div class="review-device">
+                            <i data-lucide="tablet-smartphone" style="width:12px;height:12px;"></i>
+                            <span>via ${escapeHtml(r.device)}</span>
+                        </div>
+                    </article>
+                `;
+            }).join('');
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+    </script>
+</body>
+
+</html>

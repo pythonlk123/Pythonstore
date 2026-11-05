@@ -1,0 +1,1538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ORDER HISTORY | PYTHON 2026 ARCHIVE</title>
+  <link rel="icon" href="logo.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Anta&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    body {
+      font-family: 'Anta', sans-serif !important;
+      background: #FFFFFF !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+    .oh-container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 0 4%;
+    }
+    .oh-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+    .oh-header h2 {
+      font-family: 'Anta', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #0A0A0A;
+      margin: 0;
+    }
+    .oh-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 50px;
+      border: 1px solid var(--border-fine);
+      background: #FFFFFF;
+      color: #374151;
+      font-size: 0.78rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .oh-back-btn:hover {
+      border-color: #0A0A0A;
+      color: #0A0A0A;
+    }
+    .order-card {
+      background: #FFFFFF;
+      border: 1px solid var(--border-fine);
+      border-radius: 20px;
+      padding: 24px;
+      margin-bottom: 20px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+    }
+  </style>
+
+  <style>
+    :root {
+      --dark-red: #8B0000;
+      --dark-red-hover: #A00000;
+      --obsidian: #0A0A0A;
+      --surface-white: #FFFFFF;
+      --bg-light: #F8F9FA;
+      --border-light: #E5E7EB;
+      --text-main: #0A0A0A;
+      --text-muted: #64748B;
+    }
+
+    body {
+      font-family: 'Anta', 'Plus Jakarta Sans', sans-serif !important;
+      background: #FAFAFA !important;
+      color: #0A0A0A !important;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden !important;
+    }
+
+    .py-oh-main {
+      padding-top: 140px;
+      padding-bottom: 80px;
+      min-height: 85vh;
+    }
+
+    .py-oh-container {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+
+    /* Header */
+    .py-oh-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 18px;
+      border-bottom: 1px solid var(--border-light);
+      padding-bottom: 22px;
+    }
+
+    .py-oh-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 900;
+      letter-spacing: 2.5px;
+      color: var(--dark-red);
+      text-transform: uppercase;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .py-oh-title {
+      font-family: 'Anta', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--obsidian);
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .text-crimson { color: var(--dark-red); }
+
+    .py-oh-subtitle {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin: 8px 0 0;
+      max-width: 580px;
+      line-height: 1.5;
+    }
+
+    .py-oh-header-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .py-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 18px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border-light);
+      background: #FFFFFF;
+      color: #1E293B;
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .py-btn-secondary:hover {
+      border-color: var(--obsidian);
+      color: var(--obsidian);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    }
+
+    .py-btn-danger {
+      color: #DC2626 !important;
+      border-color: rgba(220, 38, 38, 0.25) !important;
+      background: rgba(220, 38, 38, 0.04) !important;
+    }
+    .py-btn-danger:hover {
+      background: rgba(220, 38, 38, 0.1) !important;
+      border-color: #DC2626 !important;
+    }
+
+    .py-btn-primary {
+      background: linear-gradient(135deg, var(--dark-red) 0%, #6E0000 100%);
+      color: #FFFFFF;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 13px 26px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-size: 0.86rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 6px 20px rgba(139, 0, 0, 0.25);
+      transition: all 0.2s ease;
+    }
+    .py-btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 26px rgba(139, 0, 0, 0.35);
+    }
+
+    /* Filter Bar */
+    .py-filter-bar {
+      display: flex;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 8px;
+      margin-bottom: 26px;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
+    .py-filter-bar::-webkit-scrollbar { display: none; }
+
+    .py-filter-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: 50px;
+      border: 1.5px solid var(--border-light);
+      background: #FFFFFF;
+      color: #475569;
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+      font-family: 'Anta', sans-serif;
+    }
+    .py-filter-pill:hover {
+      border-color: var(--obsidian);
+      color: var(--obsidian);
+    }
+    .py-filter-pill.active {
+      background: var(--obsidian);
+      color: #FFFFFF;
+      border-color: var(--obsidian);
+      box-shadow: 0 4px 14px rgba(10, 10, 10, 0.2);
+    }
+
+    .py-pill-count {
+      font-size: 0.72rem;
+      font-weight: 900;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: rgba(100, 116, 139, 0.15);
+      color: inherit;
+    }
+    .py-filter-pill.active .py-pill-count {
+      background: rgba(255, 255, 255, 0.25);
+      color: #FFFFFF;
+    }
+
+    /* State Boxes */
+    .py-state-box {
+      background: #FFFFFF;
+      border: 1.5px solid var(--border-light);
+      border-radius: 24px;
+      padding: 50px 24px;
+      text-align: center;
+      box-shadow: 0 6px 24px rgba(0,0,0,0.03);
+    }
+
+    .py-spinner {
+      width: 44px;
+      height: 44px;
+      border: 3.5px solid #F1F5F9;
+      border-top: 3.5px solid var(--dark-red);
+      border-radius: 50%;
+      animation: pySpin 0.7s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes pySpin { to { transform: rotate(360deg); } }
+
+    .py-empty-icon-wrap {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: rgba(139, 0, 0, 0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 10px;
+    }
+
+    /* Order Cards List */
+    .py-orders-list {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    /* Individual Order Card */
+    .py-order-card {
+      background: #FFFFFF;
+      border-radius: 22px;
+      border: 1.5px solid var(--border-light);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.04);
+      overflow: hidden;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+      font-family: 'Anta', 'Plus Jakarta Sans', sans-serif;
+    }
+    .py-order-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 34px rgba(0,0,0,0.08);
+      border-color: #CBD5E1;
+    }
+
+    /* Card Top Bar - Clean Professional Luxury */
+    .py-card-header {
+      background: #FAFAFA;
+      color: #0A0A0A;
+      padding: 18px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      border-bottom: 1px solid #E5E7EB;
+    }
+
+    .py-card-id-block {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .py-card-id-label {
+      font-size: 0.66rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #9CA3AF;
+      font-family: 'Anta', sans-serif;
+    }
+    .py-card-id-val {
+      font-size: 1.05rem;
+      font-weight: 900;
+      letter-spacing: 0.5px;
+      color: #0A0A0A;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .py-card-date {
+      font-size: 0.76rem;
+      color: #6B7280;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+      font-weight: 500;
+    }
+
+    .py-card-status-block {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .py-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+      text-transform: uppercase;
+    }
+    .status-confirmed  { background: rgba(59, 130, 246, 0.1); color: #2563EB; border: 1px solid rgba(59, 130, 246, 0.25); }
+    .status-packed     { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.25); }
+    .status-shipped    { background: rgba(139, 92, 246, 0.1); color: #7C3AED; border: 1px solid rgba(139, 92, 246, 0.25); }
+    .status-delivered  { background: rgba(34, 197, 94, 0.1);  color: #16A34A; border: 1px solid rgba(34, 197, 94, 0.25); }
+    .status-cancelled  { background: rgba(239, 68, 68, 0.1);  color: #DC2626; border: 1px solid rgba(239, 68, 68, 0.25); }
+    .status-pending    { background: rgba(245, 158, 11, 0.1); color: #D97706; border: 1px solid rgba(245, 158, 11, 0.25); }
+    .status-processing { background: rgba(139, 92, 246, 0.1); color: #7C3AED; border: 1px solid rgba(139, 92, 246, 0.25); }
+
+    .py-pm-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #374151;
+      background: #F3F4F6;
+      border: 1px solid #E5E7EB;
+      padding: 5px 12px;
+      border-radius: 50px;
+    }
+
+    /* Card Body */
+    .py-card-body {
+      padding: 20px 22px;
+    }
+
+    /* Items Section */
+    .py-items-heading {
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .py-items-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .py-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 14px;
+      background: #F8FAFC;
+      border: 1px solid #EEF2F6;
+      border-radius: 14px;
+    }
+
+    .py-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .py-item-thumb {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      object-fit: cover;
+      border: 1px solid #E2E8F0;
+      flex-shrink: 0;
+      background: #FFFFFF;
+    }
+
+    .py-item-details {
+      min-width: 0;
+      flex: 1;
+    }
+    .py-item-name {
+      font-weight: 800;
+      font-size: 0.9rem;
+      color: #0A0A0A;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      margin-bottom: 3px;
+    }
+    .py-item-meta {
+      display: flex;
+      gap: 8px;
+      font-size: 0.76rem;
+      color: #64748B;
+      flex-wrap: wrap;
+    }
+    .py-meta-tag {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      padding: 1px 7px;
+      border-radius: 6px;
+      font-weight: 700;
+    }
+
+    .py-item-price {
+      text-align: right;
+      flex-shrink: 0;
+    }
+    .py-item-total {
+      font-weight: 900;
+      font-size: 0.96rem;
+      color: #0A0A0A;
+      font-family: 'Anta', 'JetBrains Mono', monospace;
+    }
+    .py-item-unit {
+      font-size: 0.72rem;
+      color: #94A3B8;
+    }
+
+    /* Details Grid (Address & Info) */
+    .py-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      padding: 14px 16px;
+      background: #F8FAFC;
+      border: 1px solid #EEF2F6;
+      border-radius: 14px;
+      margin-bottom: 18px;
+      font-size: 0.84rem;
+    }
+
+    .py-detail-box-label {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #64748B;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    .py-detail-box-val {
+      font-weight: 700;
+      color: #1E293B;
+      line-height: 1.45;
+    }
+
+    /* Totals Breakdown */
+    .py-totals-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 14px 18px;
+      margin-bottom: 18px;
+    }
+
+    .py-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.84rem;
+      padding: 4px 0;
+      color: #475569;
+    }
+    .py-total-grand {
+      border-top: 1.5px solid #0A0A0A;
+      padding-top: 10px;
+      margin-top: 8px;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+    .py-grand-label {
+      font-size: 0.95rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: #0A0A0A;
+    }
+    .py-grand-val {
+      font-size: 1.35rem;
+      font-weight: 900;
+      color: var(--dark-red);
+      font-family: 'Anta', 'JetBrains Mono', monospace;
+    }
+
+    /* Card Footer Actions */
+    .py-card-footer {
+      background: #F8FAFC;
+      border-top: 1px solid #E2E8F0;
+      padding: 14px 22px;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .py-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-invoice {
+      background: #0A0A0A;
+      color: #FFFFFF;
+      border: 1.5px solid #0A0A0A;
+    }
+    .btn-invoice:hover {
+      background: var(--dark-red);
+      border-color: var(--dark-red);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(139, 0, 0, 0.25);
+    }
+
+    .btn-support {
+      background: #FFFFFF;
+      color: #15803D;
+      border: 1.5px solid #86EFAC;
+    }
+    .btn-support:hover {
+      background: #DCFCE7;
+      border-color: #22C55E;
+    }
+
+    .btn-track {
+      background: #FFFFFF;
+      color: #1E293B;
+      border: 1.5px solid #CBD5E1;
+    }
+    .btn-track:hover {
+      border-color: #0A0A0A;
+      color: #0A0A0A;
+    }
+
+    .btn-delete {
+      background: #FFFFFF;
+      color: #DC2626;
+      border: 1.5px solid #FECACA;
+      cursor: pointer;
+    }
+    .btn-delete:hover {
+      background: #FEF2F2;
+      border-color: #DC2626;
+      color: #B91C1C;
+    }
+
+    /* ═══ MOBILE RESPONSIVE ═══ */
+    @media (max-width: 680px) {
+      .py-oh-main {
+        padding-top: 110px;
+        padding-bottom: 50px;
+      }
+      .py-oh-container {
+        padding: 0 14px;
+      }
+      .py-oh-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 14px;
+      }
+      .py-oh-title {
+        font-size: 1.7rem;
+      }
+      .py-oh-header-actions {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .py-oh-header-actions button,
+      .py-oh-header-actions a {
+        flex: 1;
+        justify-content: center;
+      }
+      .py-card-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 14px 16px;
+        gap: 10px;
+      }
+      .py-card-status-block {
+        width: 100%;
+        justify-content: space-between;
+      }
+      .py-card-body {
+        padding: 14px 16px;
+      }
+      .py-details-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        padding: 12px;
+      }
+      .py-item-row {
+        padding: 10px 10px;
+      }
+      .py-item-thumb {
+        width: 42px;
+        height: 42px;
+      }
+      .py-item-name {
+        font-size: 0.84rem;
+      }
+      .py-card-footer {
+        flex-direction: column;
+        padding: 12px 16px;
+      }
+      .py-action-btn {
+        width: 100%;
+        padding: 11px 16px;
+      }
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+
+</head>
+<body>
+  <!-- Top Marquee -->
+  <header class="site-header">
+<div class="announcement-bar">
+    <div class="announcement-track">
+      <div class="announcement-content">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+      <div class="announcement-content" aria-hidden="true">
+        <span class="dot"></span>
+        <span>PYTHON ARCHIVE 2026</span>
+        <span class="announcement-divider">•</span>
+        <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+        <span class="announcement-divider">•</span>
+        <span>ISLANDWIDE EXPRESS DELIVERY</span>
+        <span class="announcement-divider">•</span>
+        <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+        <span class="announcement-divider">•</span>
+        <span>CASH ON DELIVERY AVAILABLE</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Floating Minimal Navbar -->
+  <nav id="navbar">
+    <a href="index.html" class="logo">
+      <img src="logo.png" alt="Python Logo">
+      <span style="font-family: var(--font-headline); font-weight: 900; letter-spacing: 3px; color: #0A0A0A;">PYTHON</span>
+    </a>
+
+    <ul class="nav-links">
+      <li><a href="index.html#new-drop" class="">NEW DROP</a></li>
+      <li><a href="shop.html" class="">SHOP ALL</a></li>
+      <li><a href="index.html#collections" class="">COLLECTIONS</a></li>
+      <li><a href="customize.html" class="">CUSTOMIZE</a></li>
+      <li><a href="offers.html" class="">OFFERS</a></li>
+    </ul>
+
+    <div class="nav-icons">
+      <!-- Search Trigger -->
+      <button class="nav-icon-btn" onclick="openSearchModal()" title="Search Products" aria-label="Search">
+        <i data-lucide="search" style="width: 17px; height: 17px;"></i>
+      </button>
+
+      <!-- Account Link -->
+      <a href="profile.html" class="nav-icon-btn" title="Account" aria-label="My Account" style="border-color: #0A0A0A; background: #0A0A0A; color: #FFFFFF;">
+        <i data-lucide="user" style="width: 17px; height: 17px; stroke: #FFFFFF;"></i>
+      </a>
+
+      <!-- Wishlist with Live Counter -->
+      <a href="wishlist.html" class="nav-icon-btn" title="Wishlist" aria-label="Wishlist">
+        <i data-lucide="heart" style="width: 17px; height: 17px;"></i>
+        <span id="wishlist-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Cart with Live Counter -->
+      <a href="cart.html" class="nav-icon-btn" title="Cart" aria-label="Cart" style="">
+        <i data-lucide="shopping-bag" style="width: 17px; height: 17px; "></i>
+        <span id="cart-count" class="nav-badge">0</span>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="nav-icon-btn" id="mobile-menu-btn" aria-label="Open Menu">
+        <i data-lucide="menu" style="width: 19px; height: 19px;"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="menu-overlay" id="menu-overlay"></div>
+  <div class="mobile-menu" id="mobile-menu">
+    <div class="drawer-header">
+      <div class="drawer-brand">
+        <img src="logo.png" alt="Python Logo" class="drawer-logo">
+        <div>
+          <span class="drawer-title">PYTHON</span>
+          <span class="drawer-subtitle">ARCHIVE 2026</span>
+        </div>
+      </div>
+      <button class="close-menu" id="close-menu" aria-label="Close Menu">
+        <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+      </button>
+    </div>
+
+    <div class="drawer-quick-actions">
+      <button onclick="closeMobileDrawer(); openSearchModal();" class="drawer-action-btn">
+        <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+        <span>Search</span>
+      </button>
+      <a href="wishlist.html" class="drawer-action-btn">
+        <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+        <span>Wishlist</span>
+      </a>
+      <a href="cart.html" class="drawer-action-btn ">
+        <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+        <span>Cart</span>
+      </a>
+    </div>
+
+    <div class="drawer-section-label">NAVIGATION</div>
+    <div class="drawer-links-group">
+      <a href="index.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">01</span>
+          <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+          <span>HOME</span>
+        </div>
+      </a>
+      <a href="index.html#new-drop" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">02</span>
+          <i data-lucide="sparkles" style="width: 18px; height: 18px;"></i>
+          <span>NEW DROP</span>
+        </div>
+      </a>
+      <a href="shop.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">03</span>
+          <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+          <span>SHOP ALL</span>
+        </div>
+      </a>
+      <a href="customize.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">04</span>
+          <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+          <span>CUSTOM PRINT</span>
+        </div>
+      </a>
+      <a href="offers.html" class="drawer-link ">
+        <div class="drawer-link-left">
+          <span class="drawer-num">05</span>
+          <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+          <span>OFFERS</span>
+        </div>
+      </a>
+      <a href="track-order.html" class="drawer-link">
+        <div class="drawer-link-left">
+          <span class="drawer-num">06</span>
+          <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+          <span>TRACK ORDER</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <main class="section py-oh-main">
+    <div class="py-oh-container">
+      
+      <!-- Page Header -->
+      <div class="py-oh-header">
+        <div>
+          <span class="py-oh-eyebrow">YOUR ACCOUNT</span>
+          <h1 class="py-oh-title">ORDER <span class="text-crimson">HISTORY</span></h1>
+          <p class="py-oh-subtitle">Track, view details, and download official invoices for all your bespoke orders.</p>
+        </div>
+        <div class="py-oh-header-actions">
+          <button onclick="clearAllUserOrders()" class="py-btn-secondary py-btn-danger" title="Clear your local history">
+            <i data-lucide="trash-2" style="width: 15px; height: 15px;"></i>
+            <span>Clear History</span>
+          </button>
+          <a href="profile.html" class="py-btn-secondary">
+            <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
+            <span>My Profile</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Filter Tabs / Pills -->
+      <div class="py-filter-bar">
+        <button class="py-filter-pill active" data-filter="all" onclick="setOrderFilter('all')">
+          All Orders <span class="py-pill-count" id="count-all">0</span>
+        </button>
+        <button class="py-filter-pill" data-filter="pending" onclick="setOrderFilter('pending')">
+          Pending <span class="py-pill-count" id="count-pending">0</span>
+        </button>
+        <button class="py-filter-pill" data-filter="confirmed" onclick="setOrderFilter('confirmed')">
+          Confirmed <span class="py-pill-count" id="count-confirmed">0</span>
+        </button>
+        <button class="py-filter-pill" data-filter="packed" onclick="setOrderFilter('packed')">
+          Packed <span class="py-pill-count" id="count-packed">0</span>
+        </button>
+        <button class="py-filter-pill" data-filter="shipped" onclick="setOrderFilter('shipped')">
+          Shipped <span class="py-pill-count" id="count-shipped">0</span>
+        </button>
+        <button class="py-filter-pill" data-filter="delivered" onclick="setOrderFilter('delivered')">
+          Delivered <span class="py-pill-count" id="count-delivered">0</span>
+        </button>
+        <button class="py-filter-pill" data-filter="cancelled" onclick="setOrderFilter('cancelled')">
+          Cancelled <span class="py-pill-count" id="count-cancelled">0</span>
+        </button>
+      </div>
+
+      <!-- Loading State -->
+      <div id="loading-spinner" class="py-state-box">
+        <div class="py-spinner"></div>
+        <div style="font-weight: 800; font-size: 1.05rem; margin-top: 14px; color: #0A0A0A;">Loading your bespoke orders...</div>
+        <div style="font-size: 0.85rem; color: #64748B; margin-top: 4px;">Connecting to secure order archive</div>
+      </div>
+
+      <!-- Empty State -->
+      <div id="no-orders-view" class="py-state-box" style="display: none;">
+        <div class="py-empty-icon-wrap">
+          <i data-lucide="package-open" style="width: 44px; height: 44px; stroke: #8B0000;"></i>
+        </div>
+        <h3 style="font-weight: 900; font-size: 1.35rem; color: #0A0A0A; margin: 16px 0 6px;">No Orders Found</h3>
+        <p style="color: #64748B; max-width: 440px; font-size: 0.9rem; line-height: 1.5; margin: 0 auto 24px;" id="empty-state-msg">
+          You haven't placed any orders yet. Discover our latest heavyweight drops and bespoke customizations.
+        </p>
+        <a href="shop.html" class="py-btn-primary" style="display: inline-flex; align-items: center; gap: 8px;">
+          <i data-lucide="shopping-bag" style="width: 17px; height: 17px;"></i>
+          <span>EXPLORE STOREFRONT</span>
+        </a>
+      </div>
+
+      <!-- Orders Container -->
+      <div id="orders-history-list" class="py-orders-list" style="display: none;">
+        <!-- Dynamically rendered order cards -->
+      </div>
+
+    </div>
+  </main>
+
+<footer class="luxury-footer">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <h2>PYTHON</h2>
+        <p>
+          Sri Lanka's premier avant-garde streetwear brand. Built for those who demand heavyweight quality and unapologetic attitude.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>STOREFRONT</h4>
+        <ul>
+          <li><a href="shop.html">Shop All</a></li>
+          <li><a href="index.html#new-drop">New Releases</a></li>
+          <li><a href="customize.html">Custom Orders</a></li>
+          <li><a href="offers.html">Special Offers</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CLIENT SERVICES</h4>
+        <ul>
+          <li><a href="track-order.html">Track Order</a></li>
+          <li><a href="reviews.html">Customer Reviews</a></li>
+          <li><a href="profile.html">Member Account</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>VIP CONCIERGE</h4>
+        <p style="color: #9CA3AF; font-size: 0.85rem; margin-bottom: 14px;">Instant WhatsApp support for bespoke orders and size consultations:</p>
+        <a href="https://wa.me/94757218786" target="_blank" class="btn-hero-outline" style="padding: 10px 18px; font-size: 0.78rem; border-color: #333; color: #FFF; background: #161616; text-decoration: none; display: inline-flex; align-items: center; gap: 8px; border-radius: 50px;">
+          <i data-lucide="message-circle" style="color: #25D366; width: 16px;"></i> WhatsApp Support
+        </a>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 PYTHON STREETWEAR. ALL RIGHTS RESERVED.</div>
+      <div>220 GSM HEAVYWEIGHT COTTON • COLOMBO, SRI LANKA</div>
+    </div>
+  </footer>
+
+  <!-- Search Modal -->
+  <div class="modal-overlay" id="search-modal" onclick="closeSearchModal()">
+    <div class="modal-card" onclick="event.stopPropagation()" style="max-width: 600px;">
+      <div class="modal-header">
+        <h3 style="font-family: var(--font-headline); font-weight: 900; margin: 0;">Search Storefront</h3>
+        <button class="modal-close" onclick="closeSearchModal()">&times;</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" id="modal-search-input" placeholder="Search by design, fit, keyword..." oninput="handleInstantSearch(this.value)" class="form-control" style="width: 100%; font-size: 1rem; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-fine); margin-bottom: 20px; font-family: 'Anta', sans-serif;">
+        <div id="search-results-grid" style="display: flex; flex-direction: column; gap: 10px; max-height: 380px; overflow-y: auto;">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+      let allUserOrders = [];
+      let currentFilter = 'all';
+
+      // ── Status Config ──
+      const STATUS_CONFIG = {
+        confirmed:  { label: 'Confirmed',  emoji: '✅', class: 'status-confirmed' },
+        shipped:    { label: 'Shipped',    emoji: '🚚', class: 'status-shipped' },
+        delivered:  { label: 'Delivered',  emoji: '📦', class: 'status-delivered' },
+        cancelled:  { label: 'Cancelled',  emoji: '❌', class: 'status-cancelled' },
+        pending:    { label: 'Pending',    emoji: '⏳', class: 'status-pending' },
+        processing: { label: 'Processing', emoji: '⚙️', class: 'status-processing' },
+        packed:     { label: 'Packed',     emoji: '📦', class: 'status-packed' }
+      };
+
+      function setOrderFilter(filter) {
+        currentFilter = filter || 'all';
+        document.querySelectorAll('.py-filter-pill').forEach(btn => {
+          if (btn.dataset.filter === currentFilter) {
+            btn.classList.add('active');
+          } else {
+            btn.classList.remove('active');
+          }
+        });
+        renderOrders();
+      }
+
+      function updatePillCounts() {
+        const counts = { all: allUserOrders.length, pending: 0, confirmed: 0, packed: 0, shipped: 0, delivered: 0, cancelled: 0 };
+        allUserOrders.forEach(o => {
+          const st = (o.status || 'pending').toLowerCase();
+          if (counts[st] !== undefined) counts[st]++;
+          else if (st === 'processing') counts.packed++;
+          else counts.pending++;
+        });
+        Object.keys(counts).forEach(k => {
+          const el = document.getElementById('count-' + k);
+          if (el) el.innerText = counts[k];
+        });
+      }
+
+      function buildInvoiceUrl(o) {
+        try {
+          const invData = {
+            id: o.id || o.docId || 'PS-ORD-00000000',
+            name: o.userName || o.name || 'Valued Customer',
+            phone: o.userPhone || o.phone || '',
+            email: o.userEmail || o.email || '',
+            streetAddress: o.streetAddress || '',
+            city: o.city || '',
+            district: o.district || '',
+            postal: o.postal || '',
+            address: o.userAddress || o.address || '',
+            notes: o.notes || '',
+            date: o.date || new Date().toLocaleDateString(),
+            time: o.time || '',
+            items: (o.items || []).map(it => ({
+              name: it.name || '',
+              size: it.size || 'Free',
+              color: it.color || '',
+              price: it.price || 0,
+              quantity: it.quantity || 1,
+              image: it.image || 'logo.png'
+            })),
+            subtotal: o.subtotal || o.total || 0,
+            delivery: o.delivery !== undefined ? o.delivery : (o.deliveryFee !== undefined ? o.deliveryFee : 500),
+            total: o.total || 0,
+            redeemedPoints: o.redeemedPoints || 0,
+            pointsDiscount: o.pointsDiscount || 0,
+            pointsEarned: o.pointsEarned || 0,
+            paymentMethod: o.paymentMethod || 'Cash on Delivery',
+            status: o.status || 'confirmed'
+          };
+          const jsonStr = JSON.stringify(invData);
+          const encoded = btoa(unescape(encodeURIComponent(jsonStr)));
+          return 'invoice.html?data=' + encodeURIComponent(encoded);
+        } catch(e) {
+          return 'invoice.html';
+        }
+      }
+
+      function renderOrders() {
+        const listEl = document.getElementById('orders-history-list');
+        const emptyEl = document.getElementById('no-orders-view');
+        const spinner = document.getElementById('loading-spinner');
+
+        if (spinner) spinner.style.display = 'none';
+
+        const filtered = allUserOrders.filter(o => {
+          if (currentFilter === 'all') return true;
+          const st = (o.status || 'pending').toLowerCase();
+          return st === currentFilter;
+        });
+
+        if (filtered.length === 0) {
+          if (listEl) listEl.style.display = 'none';
+          if (emptyEl) {
+            emptyEl.style.display = 'block';
+            const msgEl = document.getElementById('empty-state-msg');
+            if (msgEl) {
+              msgEl.innerText = currentFilter === 'all'
+                ? "You haven't placed any orders yet. Discover our latest heavyweight drops and bespoke customizations."
+                : 'No ' + currentFilter + ' orders found. Check your other order statuses using the filters above.';
+            }
+          }
+          return;
+        }
+
+        if (emptyEl) emptyEl.style.display = 'none';
+        if (listEl) {
+          listEl.style.display = 'flex';
+          listEl.innerHTML = filtered.map(o => {
+            const statusKey = (o.status || 'pending').toLowerCase();
+            const orderStatus = statusKey;
+            const statusConf = STATUS_CONFIG[statusKey] || STATUS_CONFIG.pending;
+            const orderId = o.id || o.docId || 'PS-ORD-00000000';
+            const orderDate = o.date || 'Recent';
+            const orderTime = o.time ? (' • ' + o.time) : '';
+            const items = Array.isArray(o.items) ? o.items : [];
+            const subtotal = o.subtotal !== undefined ? o.subtotal : items.reduce((sum, it) => sum + ((it.price || 0) * (it.quantity || 1)), 0);
+            const deliveryFee = o.delivery !== undefined ? o.delivery : (o.deliveryFee !== undefined ? o.deliveryFee : 500);
+            const grandTotal = o.total !== undefined ? o.total : (subtotal + deliveryFee);
+            const invoiceLink = buildInvoiceUrl(o);
+            const waMsg = encodeURIComponent('Hi Python Store, I would like to inquire about my order ' + orderId + ' (Total: Rs. ' + grandTotal.toLocaleString() + '.00).');
+            const waUrl = 'https://wa.me/94757218786?text=' + waMsg;
+
+            const itemsHtml = items.map(it => {
+              const qty = it.quantity || 1;
+              const price = it.price || 0;
+              const lineTotal = price * qty;
+              const img = it.image || 'logo.png';
+              const size = it.size || 'Free';
+              const color = it.color || 'Classic';
+
+              return `
+                <div class="py-item-row">
+                  <div class="py-item-left">
+                    <img src="${img}" alt="${it.name}" class="py-item-thumb" onerror="this.src='logo.png'">
+                    <div class="py-item-details">
+                      <div class="py-item-name">${it.name}</div>
+                      <div class="py-item-meta">
+                        <span class="py-meta-tag">Size: ${size}</span>
+                        <span class="py-meta-tag">${color}</span>
+                        <span class="py-meta-tag">Qty: ${qty}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="py-item-price">
+                    <div class="py-item-total">Rs. ${lineTotal.toLocaleString()}.00</div>
+                    <div class="py-item-unit">Rs. ${price.toLocaleString()} ea</div>
+                  </div>
+                </div>
+              `;
+            }).join('');
+
+            return `
+              <article class="py-order-card" id="card-${orderId}">
+                <!-- Card Header -->
+                <div class="py-card-header">
+                  <div class="py-card-id-block">
+                    <span class="py-card-id-label">OFFICIAL ORDER ID</span>
+                    <span class="py-card-id-val">${orderId}</span>
+                    <span class="py-card-date">
+                      <i data-lucide="calendar" style="width: 12px; height: 12px;"></i>
+                      <span>${orderDate}${orderTime}</span>
+                    </span>
+                  </div>
+                  <div class="py-card-status-block">
+                    <span class="py-status-pill ${statusConf.class}">
+                      <span>${statusConf.emoji}</span>
+                      <span>${statusConf.label}</span>
+                    </span>
+                    <span class="py-pm-badge">${o.paymentMethod || 'Cash on Delivery'}</span>
+                  </div>
+                </div>
+
+                <!-- Card Body -->
+                <div class="py-card-body">
+                  <!-- Items Section -->
+                  <div class="py-items-heading">
+                    <span>ORDERED ITEMS (${items.length})</span>
+                    <span>PRICE DETAILS</span>
+                  </div>
+                  <div class="py-items-list">
+                    ${itemsHtml}
+                  </div>
+
+                  <!-- Shipping & Customer Info Box -->
+                  <div class="py-details-grid">
+                    <div>
+                      <div class="py-detail-box-label">
+                        <i data-lucide="user" style="width: 12px; height: 12px;"></i>
+                        <span>Recipient & Contact</span>
+                      </div>
+                      <div class="py-detail-box-val">${o.userName || o.name || 'Valued Customer'}</div>
+                      <div style="color: #64748B; font-size: 0.78rem; margin-top: 2px;">${o.userPhone || o.phone || 'Phone not provided'}</div>
+                    </div>
+                    <div>
+                      <div class="py-detail-box-label">
+                        <i data-lucide="map-pin" style="width: 12px; height: 12px;"></i>
+                        <span>Delivery Address</span>
+                      </div>
+                      <div class="py-detail-box-val">${o.streetAddress || o.userAddress || o.address || 'Islandwide Delivery'}</div>
+                      <div style="color: #64748B; font-size: 0.78rem; margin-top: 2px;">
+                        ${[o.city, o.district, o.postal].filter(Boolean).join(' • ')}
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Totals Breakdown -->
+                  <div class="py-totals-box">
+                    <div class="py-total-row">
+                      <span>Items Subtotal:</span>
+                      <strong style="color: #0A0A0A;">Rs. ${subtotal.toLocaleString()}.00</strong>
+                    </div>
+                    <div class="py-total-row">
+                      <span>Delivery Fee:</span>
+                      <strong style="color: ${deliveryFee === 0 ? '#16A34A' : '#0A0A0A'};">
+                        ${deliveryFee === 0 ? 'FREE DELIVERY' : ('Rs. ' + Number(deliveryFee).toLocaleString() + '.00')}
+                      </strong>
+                    </div>
+                    ${(o.pointsDiscount && o.pointsDiscount > 0) ? `
+                      <div class="py-total-row" style="color: var(--dark-red); font-weight: 700;">
+                        <span>Club Points Discount (${o.redeemedPoints || 0} pts):</span>
+                        <span>-Rs. ${Number(o.pointsDiscount).toLocaleString()}.00</span>
+                      </div>
+                    ` : ''}
+                    ${(o.pointsEarned && o.pointsEarned > 0) ? `
+                      <div class="py-total-row" style="color: #D97706; font-weight: 700;">
+                        <span>Club Points Earned:</span>
+                        <span>+${o.pointsEarned} pts</span>
+                      </div>
+                    ` : ''}
+                    <div class="py-total-grand">
+                      <span class="py-grand-label">Grand Total:</span>
+                      <span class="py-grand-val">Rs. ${grandTotal.toLocaleString()}.00</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Footer Action Buttons -->
+                <div class="py-card-footer">
+                  <a href="${waUrl}" target="_blank" class="py-action-btn btn-support">
+                    <i data-lucide="message-circle" style="width: 15px; height: 15px;"></i>
+                    <span>Order Support</span>
+                  </a>
+                  <a href="track-order.html?order=${encodeURIComponent(orderId)}" class="py-action-btn btn-track">
+                    <i data-lucide="truck" style="width: 15px; height: 15px;"></i>
+                    <span>Track Status</span>
+                  </a>
+                  <a href="${invoiceLink}" target="_blank" class="py-action-btn btn-invoice">
+                    <i data-lucide="printer" style="width: 15px; height: 15px;"></i>
+                    <span>View / Print E-Invoice</span>
+                  </a>
+                </div>
+              </article>
+            `;
+          }).join('');
+        }
+
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+
+      function loadUserOrders(email) {
+        const cleanEmail = (email || '').trim().toLowerCase();
+        if (!cleanEmail) {
+          allUserOrders = [];
+          updatePillCounts();
+          renderOrders();
+          return;
+        }
+
+        const firestoreDb = (typeof db !== 'undefined' && db) ? db : (window.db || null);
+
+        if (firestoreDb && cleanEmail !== 'guest') {
+          // Firestore-primary: show loading state immediately
+          allUserOrders = [];
+          const listEl = document.getElementById('py-order-list');
+          if (listEl) {
+            listEl.innerHTML = `
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;gap:16px;color:#64748B;">
+                <div style="width:36px;height:36px;border:3px solid #E2E8F0;border-top-color:#0A0A0A;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+                <span style="font-size:0.88rem;font-weight:700;letter-spacing:1px;">LOADING YOUR ORDERS...</span>
+              </div>
+            `;
+          }
+
+          firestoreDb.collection('orders')
+            .where('userEmail', '==', cleanEmail)
+            .get()
+            .then(snapshot => {
+              const dbList = [];
+              snapshot.forEach(doc => {
+                dbList.push(Object.assign({ docId: doc.id }, doc.data()));
+              });
+
+              // Firestore is authoritative. Also check if any local orders have no docId (not yet synced)
+              const localOrders = JSON.parse(localStorage.getItem('python_orders') || '[]');
+              const userLocalOrders = localOrders.filter(o => {
+                const e = (o.userEmail || o.email || '').trim().toLowerCase();
+                return e === cleanEmail;
+              });
+
+              const dbIds = new Set(dbList.map(o => o.id).filter(Boolean));
+              const unsyncedLocal = userLocalOrders.filter(o => o.id && !dbIds.has(o.id));
+
+              const mergedMap = new Map();
+              dbList.forEach(o => {
+                const k = o.id || o.docId;
+                if (k) mergedMap.set(k, o);
+              });
+              unsyncedLocal.forEach(o => {
+                const k = o.id || o.docId;
+                if (k && !mergedMap.has(k)) mergedMap.set(k, o);
+              });
+
+              allUserOrders = Array.from(mergedMap.values());
+              allUserOrders.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+
+              // Sync docIds back to localStorage for future delete operations
+              try {
+                let localAll = JSON.parse(localStorage.getItem('python_orders') || '[]');
+                let changed = false;
+                allUserOrders.forEach(o => {
+                  if (o.docId && o.id) {
+                    const li = localAll.findIndex(l => l.id === o.id);
+                    if (li !== -1 && !localAll[li].docId) {
+                      localAll[li].docId = o.docId;
+                      changed = true;
+                    }
+                  }
+                });
+                if (changed) localStorage.setItem('python_orders', JSON.stringify(localAll));
+              } catch(e) {}
+
+              updatePillCounts();
+              renderOrders();
+            })
+            .catch(err => {
+              console.warn('Firestore fetch failed, falling back to localStorage:', err);
+              // Fallback: use only this user's local orders
+              const localOrders = JSON.parse(localStorage.getItem('python_orders') || '[]');
+              const userLocalOrders = localOrders.filter(o => {
+                const e = (o.userEmail || o.email || '').trim().toLowerCase();
+                return e === cleanEmail;
+              });
+              allUserOrders = userLocalOrders;
+              allUserOrders.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+              updatePillCounts();
+              renderOrders();
+            });
+        } else {
+          // Offline or guest — local only, strictly filtered
+          const localOrders = JSON.parse(localStorage.getItem('python_orders') || '[]');
+          const userLocalOrders = localOrders.filter(o => {
+            const e = (o.userEmail || o.email || '').trim().toLowerCase();
+            return e === cleanEmail;
+          });
+          allUserOrders = userLocalOrders;
+          allUserOrders.sort((a, b) => (b.date || '').localeCompare(a.date || ''));
+          updatePillCounts();
+          renderOrders();
+        }
+      }
+
+      // ── Authentication & Initial Load ──
+      let _lastLoadedEmail = null;
+
+      document.addEventListener('DOMContentLoaded', () => {
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+
+        // 1. Check local session first (instant — no blank screen)
+        let storedUser = null;
+        try {
+          storedUser = JSON.parse(localStorage.getItem('python_user') || 'null');
+        } catch(e) {}
+
+        if (storedUser && storedUser.email) {
+          _lastLoadedEmail = storedUser.email.trim().toLowerCase();
+          loadUserOrders(storedUser.email);
+        }
+
+        // 2. Listen to Firebase Auth — fires once, reload only if email differs
+        const authInst = (typeof auth !== 'undefined' && auth) ? auth : (window.auth || null);
+        if (authInst) {
+          authInst.onAuthStateChanged(user => {
+            if (user && user.email) {
+              const authEmail = user.email.trim().toLowerCase();
+              if (authEmail !== _lastLoadedEmail) {
+                _lastLoadedEmail = authEmail;
+                loadUserOrders(user.email);
+              } else {
+                // Same user — Firestore is already loading from storedUser trigger
+                // But if no storedUser loaded yet, trigger now
+                if (!storedUser) {
+                  _lastLoadedEmail = authEmail;
+                  loadUserOrders(user.email);
+                }
+              }
+            } else if (!storedUser) {
+              window.location.href = 'login.html';
+            }
+          });
+        } else if (!storedUser) {
+          window.location.href = 'login.html';
+        }
+      });
+
+      function clearAllUserOrders() {
+        if (!confirm('Are you sure you want to permanently delete ALL your orders?\nThis will remove them from both your history and our database. This cannot be undone.')) {
+          return;
+        }
+        let storedUser = null;
+        try { storedUser = JSON.parse(localStorage.getItem('python_user') || 'null'); } catch(e) {}
+        const authInst2 = (typeof auth !== 'undefined' && auth) ? auth : (window.auth || null);
+        const authEmail = authInst2 && authInst2.currentUser ? authInst2.currentUser.email : null;
+        const email = authEmail || (storedUser ? storedUser.email : '');
+
+        // Delete from Firestore
+        const firestoreDb = (typeof db !== 'undefined' && db) ? db : (window.db || null);
+        if (firestoreDb && email) {
+          const docIds = allUserOrders.map(o => o.docId).filter(Boolean);
+          const batch = firestoreDb.batch();
+          docIds.forEach(docId => {
+            batch.delete(firestoreDb.collection('orders').doc(docId));
+          });
+          batch.commit().catch(err => console.warn('Firestore batch delete notice:', err));
+        }
+
+        // Delete from localStorage
+        let localOrders = JSON.parse(localStorage.getItem('python_orders') || '[]');
+        if (email) {
+          localOrders = localOrders.filter(o => (o.userEmail || o.email || '').toLowerCase() !== email.toLowerCase());
+        } else {
+          localOrders = [];
+        }
+        localStorage.setItem('python_orders', JSON.stringify(localOrders));
+
+        allUserOrders = [];
+        updatePillCounts();
+        renderOrders();
+      }
+
+      // ---- Delete Order from History ----
+      function deleteOrderFromHistory(orderId, docId) {
+        if (!confirm('Delete Order #' + orderId + '?\nThis will permanently remove it from your order history and our database.')) return;
+
+        const firestoreDb = (typeof db !== 'undefined' && db) ? db : (window.db || null);
+
+        // Find docId from allUserOrders if not passed
+        const ord = allUserOrders.find(o => (o.id || o.docId) === orderId || o.id === orderId);
+        const realDocId = docId || (ord && ord.docId) || null;
+
+        const doDelete = () => {
+          // Remove from allUserOrders
+          allUserOrders = allUserOrders.filter(o => (o.id || o.docId) !== orderId && o.docId !== realDocId);
+
+          // Remove from localStorage
+          try {
+            let localOrders = JSON.parse(localStorage.getItem('python_orders') || '[]');
+            localOrders = localOrders.filter(o => o.id !== orderId && o.docId !== realDocId);
+            localStorage.setItem('python_orders', JSON.stringify(localOrders));
+          } catch(e) {}
+
+          updatePillCounts();
+          renderOrders();
+
+          // Show toast
+          const toast = document.createElement('div');
+          toast.style.cssText = 'position:fixed;top:20px;right:20px;padding:12px 18px;background:#0A0A0A;color:#fff;border-radius:10px;font-size:0.84rem;font-weight:700;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,0.3);display:flex;align-items:center;gap:8px;';
+          toast.innerHTML = '<span style="font-size:1.1em;">🗑️</span> Order #' + orderId + ' deleted successfully.';
+          document.body.appendChild(toast);
+          setTimeout(() => { if (toast.parentNode) toast.parentNode.removeChild(toast); }, 3000);
+        };
+
+        if (firestoreDb && realDocId) {
+          firestoreDb.collection('orders').doc(realDocId).delete()
+            .then(doDelete)
+            .catch(err => {
+              alert('Error deleting from database: ' + err.message);
+            });
+        } else {
+          doDelete();
+        }
+      }
+
+      // ---- Update Order Status ----
+      function updateOrderStatusFromCard(orderId, newStatus) {
+        if (!confirm('Update order #' + orderId + ' status to "' + newStatus + '"?')) return;
+
+        // Update in localStorage
+        let orders = JSON.parse(localStorage.getItem('python_orders') || '[]');
+        const idx = orders.findIndex(o => (o.id || o.docId) === orderId || o.id === orderId);
+        if (idx !== -1) {
+          orders[idx].status = newStatus;
+          localStorage.setItem('python_orders', JSON.stringify(orders));
+        }
+
+        // Update in allUserOrders
+        const uIdx = allUserOrders.findIndex(o => (o.id || o.docId) === orderId || o.id === orderId);
+        if (uIdx !== -1) {
+          allUserOrders[uIdx].status = newStatus;
+        }
+
+        // Update in Firestore if docId known
+        if (typeof db !== 'undefined' && db) {
+          const ord = allUserOrders.find(o => (o.id || o.docId) === orderId);
+          if (ord && ord.docId) {
+            db.collection('orders').doc(ord.docId).update({ status: newStatus }).catch(console.warn);
+          }
+        }
+
+        updatePillCounts();
+        renderOrders();
+        showOrderStatusUpdate(orderId, newStatus);
+      }
+
+      function updateOrderStatus(orderId, newStatus) {
+        updateOrderStatusFromCard(orderId, newStatus);
+      }
+
+      function showOrderStatusUpdate(orderId, newStatus) {
+        const statusLabels = { pending: 'Pending', confirmed: 'Confirmed', processing: 'Processing', packed: 'Packed', shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled' };
+        const statusColors = { pending: '#f59e0b', confirmed: '#22c55e', processing: '#8b5cf6', packed: '#f59e0b', shipped: '#3b82f6', delivered: '#16a34a', cancelled: '#ef4444' };
+        const color = statusColors[newStatus] || '#6b7280';
+        const label = statusLabels[newStatus] || newStatus;
+
+        const feedback = document.createElement('div');
+        feedback.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 12px 18px; background: rgba(0,0,0,0.85); color: #fff; border-radius: 8px; font-size: 0.85rem; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.3);';
+        feedback.innerHTML = '<i data-lucide="check-circle" style="width:16px;height:16px;margin-right:6px;stroke:#fff;"></i> Order #' + orderId + ' status updated to <strong>' + label + '</strong>';
+        document.body.appendChild(feedback);
+
+        setTimeout(() => { if (feedback.parentNode) feedback.parentNode.removeChild(feedback); }, 3000);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+</script>
+</body>
+</html>

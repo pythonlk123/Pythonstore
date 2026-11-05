@@ -1,0 +1,1789 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Order | Roohira Collection</title>
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="account-ui.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+    <script src="firebase-config.js"></script>
+
+
+    <script>
+        // Force light mode unconditionally
+        localStorage.setItem('theme', 'light');
+        document.documentElement.setAttribute('data-theme', 'light');
+    </script>
+
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-color: #FAF7F2;
+            color: #1A0F0A;
+        }
+
+        main {
+            flex: 1;
+        }
+
+        /* Page container */
+        .track-hero {
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 118px 18px 64px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+
+        .track-title {
+            font-family: var(--font-sans, 'Plus Jakarta Sans', sans-serif);
+            font-size: clamp(1.7rem, 4vw, 2.5rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            line-height: 1.12;
+            margin: 0 0 10px;
+            color: #1A0F0A;
+        }
+
+        .track-subtitle {
+            color: #6B5B52;
+            font-size: 0.95rem;
+            max-width: 580px;
+            margin: 0 auto 20px;
+            line-height: 1.6;
+        }
+
+        /* Search box */
+        .track-search-container {
+            max-width: 640px;
+            margin: 0 auto 18px;
+            position: relative;
+        }
+
+        .track-search-glass {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            background: #ffffff;
+            border: 1.5px solid #E8DFD5;
+            border-radius: 14px;
+            padding: 6px 6px 6px 16px;
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .track-search-glass:focus-within {
+            border-color: #24140E;
+            box-shadow: 0 0 0 3px rgba(26, 15, 10, 0.08);
+        }
+
+        .track-search-glass input {
+            flex: 1;
+            min-width: 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: #1A0F0A;
+            font-size: 1rem;
+            font-weight: 500;
+            padding: 12px 8px;
+            font-family: inherit;
+        }
+
+        .track-search-glass input::placeholder {
+            color: #9B8D83;
+            font-weight: 400;
+        }
+
+        .track-btn {
+            background: #24140E;
+            color: #ffffff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.92rem;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            white-space: nowrap;
+            transition: background 0.2s ease, transform 0.15s ease;
+        }
+
+        .track-btn:hover { background: #1A0F0A; }
+        .track-btn:active { transform: scale(0.98); }
+        .track-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        /* Feature chips */
+        .tracking-features-strip {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin: 16px auto 0;
+            max-width: 780px;
+        }
+
+        .feature-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #24140E;
+            background: #ffffff;
+            border: 1px solid #E8DFD5;
+            border-radius: 10px;
+            padding: 9px 13px;
+            white-space: nowrap;
+        }
+
+        .feature-item i {
+            color: #24140E;
+            width: 16px;
+            height: 16px;
+            flex-shrink: 0;
+        }
+
+        /* Result wrapper */
+        .track-result-wrapper {
+            margin: 26px 0 0;
+            display: none;
+            animation: fadeIn 0.35s ease-out forwards;
+            text-align: left;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .track-card {
+            background: #ffffff;
+            border: 1px solid #E8DFD5;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 1px 2px rgba(26, 15, 10, 0.04), 0 10px 30px -18px rgba(26, 15, 10, 0.16);
+            text-align: left;
+        }
+
+        .track-header-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 18px;
+            padding-bottom: 22px;
+            border-bottom: 1px solid #E8DFD5;
+        }
+
+        .track-id-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #F3ECE1;
+            border: 1px solid #E8DFD5;
+            color: #24140E;
+            padding: 5px 12px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+            margin-bottom: 8px;
+        }
+
+        /* Status pills */
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            border: 1px solid transparent;
+            white-space: nowrap;
+        }
+
+        .status-pill.status-pending {
+            background: #F3ECE1;
+            color: #6B5B52;
+            border-color: #E8DFD5;
+        }
+
+        .status-pill.status-transit {
+            background: #E1F5FE;
+            color: #0277BD;
+            border-color: #B3E5FC;
+        }
+
+        .status-pill.status-out {
+            background: #F3ECE1;
+            color: #885B33;
+            border-color: #D9C6AE;
+        }
+
+        .status-pill.status-delivered {
+            background: #E8F5E9;
+            color: #2E7D32;
+            border-color: #A5D6A7;
+        }
+
+        .status-pill.status-cancelled,
+        .status-pill.status-returned {
+            background: #FFEBEE;
+            color: #C62828;
+            border-color: #FCA5A5;
+        }
+
+        /* Stepper */
+        .tracking-stepper-container {
+            margin: 34px 0 28px;
+            position: relative;
+        }
+
+        .tracking-stepper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            margin: 0 12px;
+        }
+
+        .stepper-progress-line {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            height: 3px;
+            background: #E8DFD5;
+            z-index: 1;
+            border-radius: 2px;
+        }
+
+        .stepper-progress-active {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background: #24140E;
+            border-radius: 2px;
+            transition: width 0.6s ease;
+        }
+
+        .step-node {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            width: 92px;
+            min-width: 0;
+        }
+
+        .step-icon-wrap {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: #FAF7F2;
+            border: 1.5px solid #E8DFD5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #9B8D83;
+            transition: all 0.3s ease;
+        }
+
+        .step-node.completed .step-icon-wrap {
+            background: #2E7D32;
+            border-color: #2E7D32;
+            color: #ffffff;
+        }
+
+        .step-node.active .step-icon-wrap {
+            background: #24140E;
+            border-color: #24140E;
+            color: #ffffff;
+        }
+
+        .step-label {
+            margin-top: 9px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: #6B5B52;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        .step-node.completed .step-label,
+        .step-node.active .step-label {
+            color: #1A0F0A;
+        }
+
+        .step-node.active .step-label {
+            color: #24140E;
+        }
+
+        .step-time {
+            font-size: 0.7rem;
+            color: #9B8D83;
+            margin-top: 2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+        }
+
+        /* Detail cards */
+        .track-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(255px, 1fr));
+            gap: 16px;
+            margin-top: 28px;
+        }
+
+        .detail-box {
+            background: #FAF7F2;
+            border: 1px solid #E8DFD5;
+            border-radius: 14px;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .detail-box-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #24140E;
+        }
+
+        .detail-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 14px;
+            font-size: 0.86rem;
+            padding-bottom: 9px;
+            border-bottom: 1px solid #F0EAE2;
+        }
+
+        .detail-item-row:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .detail-label {
+            color: #6B5B52;
+            white-space: nowrap;
+        }
+
+        .detail-val {
+            font-weight: 700;
+            color: #1A0F0A;
+            text-align: right;
+            font-size: 0.9rem;
+            overflow-wrap: anywhere;
+        }
+
+        /* Timeline */
+        .history-timeline {
+            margin-top: 28px;
+            padding-top: 24px;
+            border-top: 1px solid #E8DFD5;
+        }
+
+        .history-title {
+            font-size: 1rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #1A0F0A;
+        }
+
+        .timeline-list {
+            position: relative;
+            padding-left: 24px;
+        }
+
+        .timeline-list::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background: #E8DFD5;
+        }
+
+        .timeline-event {
+            position: relative;
+            margin-bottom: 16px;
+        }
+
+        .timeline-event:last-child {
+            margin-bottom: 0;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -24px;
+            top: 4px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #ffffff;
+            border: 2px solid #9B8D83;
+        }
+
+        .timeline-event:first-child .timeline-dot {
+            background: #24140E;
+            border-color: #24140E;
+        }
+
+        .timeline-event-content {
+            background: #FAF7F2;
+            border: 1px solid #E8DFD5;
+            border-radius: 10px;
+            padding: 12px 16px;
+        }
+
+        .timeline-event-title {
+            font-weight: 700;
+            font-size: 0.94rem;
+            color: #1A0F0A;
+            margin-bottom: 4px;
+        }
+
+        .timeline-event-meta {
+            font-size: 0.74rem;
+            color: #6B5B52;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Loader */
+        .track-loader {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .track-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid #E8DFD5;
+            border-top-color: #24140E;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Error */
+        .track-error-box {
+            display: none;
+            background: #FFEBEE;
+            border: 1px solid #FCA5A5;
+            color: #C62828;
+            padding: 18px 22px;
+            border-radius: 14px;
+            max-width: 620px;
+            margin: 20px auto;
+            text-align: center;
+            font-size: 0.92rem;
+            animation: fadeIn 0.3s ease;
+        }
+
+        /* Courier reference */
+        .courier-official-badge {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.78rem;
+            color: #6B5B52;
+            margin-top: 20px;
+            justify-content: center;
+            padding-top: 15px;
+            border-top: 1px solid #E8DFD5;
+            flex-wrap: wrap;
+        }
+
+        .courier-official-badge a {
+            color: #24140E;
+            text-decoration: underline;
+            font-weight: 600;
+        }
+
+        /* Refresh button */
+        .action-refresh-btn {
+            background: #ffffff;
+            border: 1.5px solid #E8DFD5;
+            color: #24140E;
+            padding: 7px 14px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .action-refresh-btn:hover {
+            background: #24140E;
+            border-color: #24140E;
+            color: #ffffff;
+        }
+
+        /* Language switcher */
+        .lang-switcher-wrap {
+            display: inline-flex;
+            align-items: center;
+            background: #F3ECE1;
+            border: 1px solid #E8DFD5;
+            border-radius: 30px;
+            padding: 4px;
+            margin: 4px auto 20px;
+            gap: 4px;
+        }
+
+        .lang-btn {
+            background: transparent;
+            border: none;
+            color: #6B5B52;
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 7px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .lang-btn.active {
+            background: #24140E;
+            color: #ffffff;
+        }
+
+        .lang-btn:hover:not(.active) {
+            color: #1A0F0A;
+            background: #ffffff;
+        }
+
+        /* Extra help options */
+        .track-help-wrap {
+            margin: 34px 0 0;
+            text-align: left;
+        }
+
+        .track-help-title {
+            text-align: center;
+            font-size: 0.76rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: #6B5B52;
+            margin-bottom: 14px;
+        }
+
+        .track-help-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 14px;
+        }
+
+        .track-help-card {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            background: #ffffff;
+            border: 1px solid #E8DFD5;
+            border-radius: 14px;
+            text-decoration: none;
+            color: #1A0F0A;
+            transition: 0.2s;
+            min-width: 0;
+        }
+
+        .track-help-card:hover {
+            border-color: #9B8D83;
+            box-shadow: 0 10px 24px -16px rgba(26, 15, 10, 0.22);
+            transform: translateY(-2px);
+        }
+
+        .track-help-ic {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #F3ECE1;
+            color: #24140E;
+            border: 1px solid #E8DFD5;
+        }
+
+        .track-help-ic svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .track-help-card .hc-title {
+            display: block;
+            font-size: 0.88rem;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .track-help-card .hc-sub {
+            display: block;
+            font-size: 0.74rem;
+            color: #6B5B52;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .track-hero {
+                padding: 100px 14px 52px;
+            }
+            .track-card {
+                padding: 20px 16px;
+            }
+            .tracking-stepper {
+                margin: 0;
+            }
+            .step-node {
+                width: 20%;
+            }
+            .step-icon-wrap {
+                width: 34px;
+                height: 34px;
+            }
+            .step-icon-wrap svg {
+                width: 15px;
+                height: 15px;
+            }
+            .step-label {
+                font-size: 0.6rem;
+            }
+            .step-time {
+                display: none;
+            }
+            .stepper-progress-line {
+                top: 16px;
+                left: 10%;
+                right: 10%;
+            }
+            .detail-item-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 3px;
+            }
+            .detail-val {
+                text-align: left;
+            }
+            .track-help-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .track-search-glass {
+                flex-wrap: wrap;
+                border-radius: 14px;
+                padding: 10px;
+            }
+            .track-search-glass input {
+                width: 100%;
+                padding: 10px 6px;
+            }
+            .track-btn {
+                width: 100%;
+                margin-top: 4px;
+            }
+            .track-title {
+                font-size: 1.5rem;
+            }
+            .feature-item {
+                font-size: 0.72rem;
+                padding: 7px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Navbar with Theme Toggle Button -->
+    <nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Roohira Collection Logo">
+            <div class="brand-text">
+                <span style="font-family: var(--font-serif); font-size: 1.35rem; font-weight: 700; color: var(--espresso); letter-spacing: 0.03em;">ROOHIRA</span>
+                <small style="font-family: var(--font-sans); font-size: 0.55rem; letter-spacing: 0.28em; text-transform: uppercase; color: var(--gold-dark); font-weight: 600;">COLLECTION</small>
+            </div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="track-order.html" class="active">Track Order</a></li>
+            <li><a href="customize.html">Design Studio</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="https://www.instagram.com/" target="_blank"><i data-lucide="instagram"></i></a>
+            <a href="https://web.facebook.com/roohiraonline" target="_blank"><i data-lucide="facebook"></i></a>
+            <a href="profile.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #1A0F0A; color: #ffffff; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn" class="side-menu-trigger" title="All Pages & Menu"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="close-menu" id="close-menu"><i data-lucide="x"></i></div>
+        <div style="padding: 0 0.5rem 1rem; border-bottom: 2px solid #1A120B; margin-bottom: 0.5rem;">
+            <h3 style="font-family: var(--font-serif); font-size: 1.15rem; color: #000000; margin: 0; font-weight: 700;">Navigation &amp; Pages</h3>
+            <span style="font-size: 0.72rem; color: #6D5D53; text-transform: uppercase; letter-spacing: 1px;">Roohira Collection</span>
+        </div>
+        <a href="index.html"><i data-lucide="home" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Home</a>
+        <a href="shop.html"><i data-lucide="shopping-bag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Shop All</a>
+        <a href="track-order.html"><i data-lucide="truck" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Track Order</a>
+        <a href="customize.html"><i data-lucide="palette" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Design Studio</a>
+        <a href="dtf.html"><i data-lucide="printer" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> DTF Print Service</a>
+        <a href="offers.html"><i data-lucide="tag" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Offers &amp; Discounts</a>
+        <a href="reviews.html"><i data-lucide="star" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Customer Reviews</a>
+        <a href="wishlist.html"><i data-lucide="heart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Wishlist</a>
+        <a href="cart.html"><i data-lucide="shopping-cart" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Cart</a>
+        <a href="profile.html"><i data-lucide="user" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> My Account</a>
+        <a href="login.html"><i data-lucide="log-in" style="width: 17px; height: 17px; margin-right: 10px; display: inline-block; vertical-align: middle;"></i> Login / Register</a>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+        <section class="track-hero">
+            <h1 class="track-title" id="txt-page-title">Track Your Order</h1>
+            <p class="track-subtitle" id="txt-page-subtitle">Enter your Waybill / Tracking ID or Order Number to retrieve live courier status and delivery updates.</p>
+
+            <!-- Language Switcher -->
+            <div class="lang-switcher-wrap">
+                <button type="button" class="lang-btn active" id="lang-en" onclick="setLanguage('en')">English</button>
+                <button type="button" class="lang-btn" id="lang-si" onclick="setLanguage('si')">සිංහල</button>
+                <button type="button" class="lang-btn" id="lang-ta" onclick="setLanguage('ta')">தமிழ்</button>
+            </div>
+
+            <div class="track-search-container" style="margin-top: 25px;">
+                <form id="tracking-form" onsubmit="handleTrackSearch(event)">
+                    <div class="track-search-glass">
+                        <i data-lucide="search" style="color: #6B5B52; width: 20px; height: 20px; min-width: 20px;"></i>
+                        <input type="text" id="track-input" placeholder="Enter Waybill ID or Order Number" required autocomplete="off">
+                        <button type="submit" class="track-btn" id="track-btn-submit">
+                            <span id="txt-btn-track">Track</span>
+                            <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Features Strip -->
+            <div class="tracking-features-strip">
+                <div class="feature-item">
+                    <i data-lucide="shield-check"></i>
+                    <span id="txt-feat-1">Official TransExpress Sync</span>
+                </div>
+                <div class="feature-item">
+                    <i data-lucide="zap"></i>
+                    <span id="txt-feat-2">Real-Time Status Updates</span>
+                </div>
+                <div class="feature-item">
+                    <i data-lucide="map-pin"></i>
+                    <span id="txt-feat-3">Island-wide Tracking</span>
+                </div>
+            </div>
+
+            <!-- Loading State -->
+            <div class="track-loader" id="track-loader">
+                <div class="track-spinner"></div>
+                <p style="color: var(--text-muted); font-weight: 600; font-size: 0.9rem;" id="txt-loader-msg">Connecting to courier network and searching TransExpress status...</p>
+            </div>
+
+            <!-- Error Notification (Shown when invalid ID is searched) -->
+            <div class="track-error-box" id="track-error-box">
+                <div style="display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 4px; font-weight: 700;">
+                    <i data-lucide="alert-triangle" style="width: 20px; height: 20px;"></i>
+                    <span id="txt-err-title">Tracking ID Not Found</span>
+                </div>
+                <div id="track-error-msg">Invalid Tracking ID or Waybill Number. Please check your order confirmation details.</div>
+            </div>
+
+            <!-- Tracking Result Section -->
+            <div class="track-result-wrapper" id="track-result-wrapper">
+                <div class="track-card">
+                    <!-- Top Header -->
+                    <div class="track-header-row">
+                        <div>
+                            <div class="track-id-badge">
+                                <i data-lucide="package" style="width: 14px; height: 14px;"></i>
+                                <span id="res-tracking-id">-</span>
+                            </div>
+                            <div style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin: 4px 0;">
+                                <h2 style="font-size: 1.4rem; font-weight: 800; margin: 0;" id="res-recipient-name">-</h2>
+                                <span id="res-customer-phone-badge" style="display: inline-flex; align-items: center; gap: 5px; background: #F3ECE1; color: #24140E; border: 1px solid #E8DFD5; padding: 3px 10px; border-radius: 20px; font-size: 0.82rem; font-weight: 700; font-family: 'Times New Roman', Times, serif;">
+                                    <i data-lucide="phone" style="width: 12px; height: 12px;"></i>
+                                    <span id="res-customer-phone-top">-</span>
+                                </span>
+                            </div>
+                            <p style="color: var(--text-muted); font-size: 0.85rem;" id="res-destination">-</p>
+                        </div>
+                        <div style="text-align: right; display: flex; flex-direction: column; align-items: flex-end; gap: 8px;">
+                            <div class="status-pill status-transit" id="res-status-pill">
+                                <i data-lucide="truck" style="width: 16px; height: 16px;" id="res-status-icon"></i>
+                                <span id="res-status-text">-</span>
+                            </div>
+                            <button class="action-refresh-btn" onclick="refreshCurrentTracking()">
+                                <i data-lucide="rotate-cw" style="width: 13px; height: 13px;"></i>
+                                <span id="txt-btn-refresh">Refresh Status</span>
+                            </button>
+                            <p style="font-size: 0.76rem; color: var(--text-muted); margin: 0;" id="res-last-updated">Last Sync: Just now</p>
+                        </div>
+                    </div>
+
+                    <!-- Visual Stepper Progress (Clean Flat) -->
+                    <div class="tracking-stepper-container">
+                        <div class="tracking-stepper">
+                            <div class="stepper-progress-line">
+                                <div class="stepper-progress-active" id="stepper-bar" style="width: 20%;"></div>
+                            </div>
+
+                            <!-- Step 1 -->
+                            <div class="step-node" id="step-1">
+                                <div class="step-icon-wrap">
+                                    <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="step-label" id="step-lbl-1">Order Placed</div>
+                                <div class="step-time" id="step-time-1">-</div>
+                            </div>
+
+                            <!-- Step 2 -->
+                            <div class="step-node" id="step-2">
+                                <div class="step-icon-wrap">
+                                    <i data-lucide="box" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="step-label" id="step-lbl-2">Picked Up</div>
+                                <div class="step-time" id="step-time-2">-</div>
+                            </div>
+
+                            <!-- Step 3 -->
+                            <div class="step-node" id="step-3">
+                                <div class="step-icon-wrap">
+                                    <i data-lucide="truck" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="step-label" id="step-lbl-3">In Transit</div>
+                                <div class="step-time" id="step-time-3">-</div>
+                            </div>
+
+                            <!-- Step 4 -->
+                            <div class="step-node" id="step-4">
+                                <div class="step-icon-wrap">
+                                    <i data-lucide="navigation" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="step-label" id="step-lbl-4">Out for Delivery</div>
+                                <div class="step-time" id="step-time-4">-</div>
+                            </div>
+
+                            <!-- Step 5 -->
+                            <div class="step-node" id="step-5">
+                                <div class="step-icon-wrap">
+                                    <i data-lucide="check-circle-2" style="width: 18px; height: 18px;"></i>
+                                </div>
+                                <div class="step-label" id="step-lbl-5">Delivered</div>
+                                <div class="step-time" id="step-time-5">-</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Details Grid -->
+                    <div class="track-grid">
+                        <!-- Box 1: Shipment Info -->
+                        <div class="detail-box">
+                            <div class="detail-box-header">
+                                <i data-lucide="info" style="width: 15px; height: 15px;"></i>
+                                <span id="lbl-box-1">Shipment Information</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-courier">Courier Partner:</span>
+                                <span class="detail-val" style="color: #24140E;">TransExpress Logistics</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-waybill">Waybill Number:</span>
+                                <span class="detail-val" id="res-waybill-val">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-order-ref">Order Ref No:</span>
+                                <span class="detail-val" id="res-order-no-val">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-order-date">Order Date:</span>
+                                <span class="detail-val" id="res-order-date-val">-</span>
+                            </div>
+                        </div>
+
+                        <!-- Box 2: Delivery & Hub -->
+                        <div class="detail-box">
+                            <div class="detail-box-header">
+                                <i data-lucide="map-pin" style="width: 15px; height: 15px;"></i>
+                                <span id="lbl-box-2">Delivery & Branch</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-dest-city">Destination City:</span>
+                                <span class="detail-val" id="res-city-val">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-branch">Assigned Branch:</span>
+                                <span class="detail-val" id="res-branch-val">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-rider">Delivery Rider:</span>
+                                <span class="detail-val" id="res-rider-val">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-est-delivery">Est. Delivery:</span>
+                                <span class="detail-val" id="res-est-delivery" style="color: #2E7D32;">1 - 3 Days</span>
+                            </div>
+                        </div>
+
+                        <!-- Box 3: Payment & COD -->
+                        <div class="detail-box">
+                            <div class="detail-box-header">
+                                <i data-lucide="wallet" style="width: 15px; height: 15px;"></i>
+                                <span id="lbl-box-3">Payment & Summary</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-payment-method">Payment Method:</span>
+                                <span class="detail-val" id="res-payment-method">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-cod-amount">COD Amount to Pay:</span>
+                                <span class="detail-val" id="res-cod-amount" style="font-size: 1rem; color: #1A0F0A;">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-items-desc">Items Description:</span>
+                                <span class="detail-val" id="res-items-desc">-</span>
+                            </div>
+                            <div class="detail-item-row">
+                                <span class="detail-label" id="lbl-weight">Package Weight:</span>
+                                <span class="detail-val" id="res-weight-val">0.5 kg</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Activity / Event History Timeline -->
+                    <div class="history-timeline">
+                        <div class="history-title">
+                            <i data-lucide="history" style="color: #6B5B52; width: 18px; height: 18px;"></i>
+                            <span id="lbl-history-title">Tracking History & Activity Log</span>
+                        </div>
+
+                        <div class="timeline-list" id="tracking-timeline-list">
+                            <!-- Injected via JS -->
+                        </div>
+                    </div>
+
+                    <!-- Official Courier Reference -->
+                    <div class="courier-official-badge">
+                        <i data-lucide="shield-check" style="width: 14px; height: 14px; color: #2E7D32;"></i>
+                        <span id="lbl-courier-sync">Live Sync Powered by TransExpress Courier Network.</span>
+                        <a id="direct-courier-link" href="https://tracking.transexpress.lk/tracking" target="_blank" rel="noopener">Open TransExpress &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Extra options / help -->
+            <div class="track-help-wrap">
+                <div class="track-help-title">More Options</div>
+                <div class="track-help-grid">
+                    <a class="track-help-card" href="order-history.html">
+                        <span class="track-help-ic"><i data-lucide="package"></i></span>
+                        <span>
+                            <span class="hc-title">My Orders</span>
+                            <span class="hc-sub">View your order history</span>
+                        </span>
+                    </a>
+                    <a class="track-help-card" href="https://wa.me/94757218786" target="_blank" rel="noopener">
+                        <span class="track-help-ic"><i data-lucide="message-circle"></i></span>
+                        <span>
+                            <span class="hc-title">Need Help?</span>
+                            <span class="hc-sub">Chat on WhatsApp</span>
+                        </span>
+                    </a>
+                    <a class="track-help-card" href="shop.html">
+                        <span class="track-help-ic"><i data-lucide="shopping-bag"></i></span>
+                        <span>
+                            <span class="hc-title">Continue Shopping</span>
+                            <span class="hc-sub">Browse the collection</span>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Navbar counts (read from the same storage keys as the rest of the site) -->
+    <script>
+        (function () {
+            try {
+                var c = JSON.parse(localStorage.getItem('roohira_cart')) || [];
+                var total = c.reduce(function (s, i) { return s + (i.quantity || 1); }, 0);
+                var cc = document.getElementById('cart-count');
+                if (cc) cc.textContent = total;
+            } catch (e) {}
+            try {
+                var w = JSON.parse(localStorage.getItem('roohira_wishlist')) || [];
+                var wc = document.getElementById('wishlist-count');
+                if (wc) wc.textContent = w.length;
+            } catch (e) {}
+        })();
+    </script>
+
+    <!-- Logic Script -->
+    <script>
+        let currentActiveTrackingId = null;
+        let currentTrackingData = null;
+        let currentLanguage = localStorage.getItem('roohira_track_lang') || 'en';
+
+        // Translations Dictionary (English, Sinhala, Tamil)
+        const i18n = {
+            en: {
+                pageTitle: "Track Your Order",
+                pageSubtitle: "Enter your Waybill / Tracking ID or Order Number to retrieve live courier status and delivery updates.",
+                inputPlaceholder: "Enter Waybill ID or Order Number",
+                btnTrack: "Track",
+                btnRefresh: "Refresh Status",
+                feat1: "Official TransExpress Sync",
+                feat2: "Real-Time Status Updates",
+                feat3: "Island-wide Tracking",
+                loaderMsg: "Connecting to courier network and searching TransExpress status...",
+                errTitle: "Tracking ID Not Found",
+                errDefault: "Invalid Tracking ID or Waybill Number. Please check your order confirmation details.",
+                errPrefix: "❌ Shipment not found for ",
+                errSuffix: ". Please check your Waybill ID or Order Number and try again.",
+                lastSyncPrefix: "Last Sync: ",
+                estDelivery: "1 - 3 Days",
+                box1: "Shipment Information",
+                courier: "Courier Partner:",
+                waybill: "Waybill Number:",
+                orderRef: "Order Ref No:",
+                orderDate: "Order Date:",
+                box2: "Delivery & Branch",
+                destCity: "Destination City:",
+                branch: "Assigned Branch:",
+                custContact: "Customer Contact:",
+                rider: "Delivery Rider:",
+                riderUnassigned: "Assigned upon dispatch",
+                estDel: "Est. Delivery:",
+                box3: "Payment & Summary",
+                payMethod: "Payment Method:",
+                codAmt: "COD Amount to Pay:",
+                itemsDesc: "Items Description:",
+                weight: "Package Weight:",
+                historyTitle: "Tracking History & Activity Log",
+                courierSync: "Live Sync Powered by TransExpress Courier Network.",
+                statuses: {
+                    "Delivered": "Delivered",
+                    "Out for Delivery": "Out for Delivery",
+                    "In Transit": "In Transit",
+                    "Picked Up": "Picked Up",
+                    "Processing": "Processing",
+                    "Order Placed": "Order Placed",
+                    "Received at Shuttle": "Received at Shuttle Hub",
+                    "Collected at Sorting Center": "Collected at Sorting Center",
+                    "Collected from Warehouse": "Collected from Warehouse",
+                    "Dispatched to Destination": "Dispatched to Destination",
+                    "Received at Destination": "Received at Destination Branch",
+                    "Rescheduled": "Delivery Rescheduled",
+                    "Returned to Branch Rescheduled": "Returned to Branch Rescheduled",
+                    "Cancelled": "Cancelled / Returned",
+                    "Failed": "Delivery Failed",
+                    "Cash on Delivery (COD)": "Cash on Delivery (COD)",
+                    "Prepaid / Card Payment": "Prepaid / Online Payment",
+                    "Prepaid": "Prepaid"
+                },
+                stepper: {
+                    s1: "Order Placed",
+                    s2: "Picked Up",
+                    s3: "In Transit",
+                    s4: "Out for Delivery",
+                    s5: "Delivered"
+                }
+            },
+            si: {
+                pageTitle: "ඔබගේ ඇණවුම Track කරන්න",
+                pageSubtitle: "නවතම delivery තත්ත්වය සහ courier විස්තර සජීවීව බලාගැනීමට Waybill අංකය හෝ Order අංකය ඇතුළත් කරන්න.",
+                inputPlaceholder: "Waybill අංකය හෝ Order අංකය ඇතුළත් කරන්න",
+                btnTrack: "සොයන්න",
+                btnRefresh: "යාවත්කාලීන කරන්න",
+                feat1: "නිල TransExpress සජීවී සම්බන්ධතාව",
+                feat2: "තත්‍ය කාලීන Status යාවත්කාලීන",
+                feat3: "දිවයින පුරා බෙදාහැරීම්",
+                loaderMsg: "කුරියර් ජාලය හා සම්බන්ධ වෙමින් TransExpress status සොයමින් පවතී...",
+                errTitle: "Tracking අංකය හමු නොවීය",
+                errDefault: "වලංගු නොවන Tracking අංකයක් හෝ Waybill අංකයකි. කරුණාකර ඔබගේ ඇණවුම් තොරතුරු පරීක්ෂා කරන්න.",
+                errPrefix: "❌ මෙම අංකය සඳහා ඇණවුමක් හමු නොවීය: ",
+                errSuffix: ". කරුණාකර ඔබගේ Waybill අංකය හෝ Order අංකය නිවැරදි දැයි නැවත පරීක්ෂා කරන්න.",
+                lastSyncPrefix: "අවසන් යාවත්කාලීනය: ",
+                estDelivery: "දින 1 - 3 ඇතුළත",
+                box1: "ඇණවුම් සහ පාර්සල් විස්තර",
+                courier: "කුරියර් සේවාව:",
+                waybill: "Waybill අංකය:",
+                orderRef: "ඇණවුම් අංකය:",
+                orderDate: "ඇණවුම් කළ දිනය:",
+                box2: "බෙදාහැරීම සහ ශාඛාව",
+                destCity: "ගමනාන්ත නගරය:",
+                branch: "භාරදුන් ශාඛාව:",
+                custContact: "පාරිභෝගික දුරකථනය:",
+                rider: "බෙදාහරින නිලධාරී (Rider):",
+                riderUnassigned: "බෙදාහැරීමට පිටත් වූ පසු පවරනු ලැබේ",
+                estDel: "ලැබිය හැකි කාලය:",
+                box3: "ගෙවීම් සහ සාරාංශය",
+                payMethod: "ගෙවීමේ ක්‍රමය:",
+                codAmt: "ගෙවිය යුතු COD මුදල:",
+                itemsDesc: "භාණ්ඩ විස්තරය:",
+                weight: "පාර්සලයේ බර:",
+                historyTitle: "සම්පූර්ණ Tracking ඉතිහාසය සහ ක්‍රියාකාරකම්",
+                courierSync: "TransExpress කුරියර් ජාලය මගින් සජීවීව යාවත්කාලීන වේ.",
+                statuses: {
+                    "Delivered": "සාර්ථකව භාරදෙන ලදී (Delivered)",
+                    "Out for Delivery": "බෙදාහැරීමට රැගෙන යමින් පවතී (Out for Delivery)",
+                    "In Transit": "ප්‍රවාහනයේ පවතී (In Transit)",
+                    "Picked Up": "පාර්සලය ලබාගන්නා ලදී (Picked Up)",
+                    "Processing": "ක්‍රියාවලියේ පවතී (Processing)",
+                    "Order Placed": "ඇණවුම භාරගන්නා ලදී (Order Placed)",
+                    "Received at Shuttle": "ෂටල් හබ් වෙත ලැබුණි (Shuttle Hub)",
+                    "Collected at Sorting Center": "වර්ගීකරණ මධ්‍යස්ථානයට ලැබුණි (Sorting Center)",
+                    "Collected from Warehouse": "ගබඩාවෙන් ලබාගන්නා ලදී (Warehouse)",
+                    "Dispatched to Destination": "ගමනාන්ත ශාඛාව වෙත පිටත් කරන ලදී (Dispatched)",
+                    "Received at Destination": "ගමනාන්ත ශාඛාවට ලැබුණි (Destination Branch)",
+                    "Rescheduled": "දිනය නැවත වෙනස් කරන ලදී (Rescheduled)",
+                    "Returned to Branch Rescheduled": "නැවත සැලසුම් කිරීමට ශාඛාවට රැගෙන ආවේය",
+                    "Cancelled": "අවලංගු කරන ලදී (Cancelled)",
+                    "Failed": "බෙදාහැරීම අසාර්ථක විය",
+                    "Cash on Delivery (COD)": "භාණ්ඩ ලැබුණු පසු මුදල් ගෙවීම (COD)",
+                    "Prepaid / Card Payment": "කාඩ්පත් මගින් කලින් ගෙවන ලදී (Prepaid)",
+                    "Prepaid": "කලින් ගෙවන ලදී (Prepaid)"
+                },
+                stepper: {
+                    s1: "ඇණවුම ලැබුණි",
+                    s2: "පාර්සලය ගත්තා",
+                    s3: "ප්‍රවාහනයේ",
+                    s4: "බෙදාහැරීමට ගෙනියනවා",
+                    s5: "භාරදුන්නා"
+                }
+            },
+            ta: {
+                pageTitle: "உங்கள் ஆர்டரைக் கண்காணிக்கவும்",
+                pageSubtitle: "நேரடி கூரியர் நிலை மற்றும் விநியோக தகவல்களைப் பெற உங்கள் Waybill ID அல்லது ஆர்டர் எண்ணை உள்ளிடவும்.",
+                inputPlaceholder: "Waybill ID அல்லது ஆர்டர் எண்ணை உள்ளிடவும்",
+                btnTrack: "தேடுங்கள்",
+                btnRefresh: "புதுப்பிக்கவும்",
+                feat1: "அதிகாரப்பூர்வ TransExpress நேரடி இணைப்பு",
+                feat2: "உடனுக்குடனான நிலை புதுப்பிப்புகள்",
+                feat3: "நாடு தழுவிய டெலிவரி",
+                loaderMsg: "கூரியர் நெட்வொர்க்குடன் இணைகிறது, TransExpress நிலை தேடப்படுகிறது...",
+                errTitle: "டிராக்கிங் எண் கிடைக்கவில்லை",
+                errDefault: "தவறான டிராக்கிங் எண் அல்லது Waybill எண். உங்கள் ஆர்டர் உறுதிப்படுத்தல் விவரங்களைச் சரிபார்க்கவும்.",
+                errPrefix: "❌ இதற்கான ஆர்டர் கிடைக்கவில்லை: ",
+                errSuffix: ". உங்கள் Waybill எண் அல்லது ஆர்டர் எண்ணை மீண்டும் சரிபார்க்கவும்.",
+                lastSyncPrefix: "கடைசி புதுப்பிப்பு: ",
+                estDelivery: "1 - 3 நாட்களுக்குள்",
+                box1: "ஏற்றுமதி மற்றும் பார்சல் விவரங்கள்",
+                courier: "கூரியர் பங்குதாரர்:",
+                waybill: "Waybill எண்:",
+                orderRef: "ஆர்டர் குறிப்பு எண்:",
+                orderDate: "ஆர்டர் செய்யப்பட்ட தேதி:",
+                box2: "விநியோகம் மற்றும் கிளை",
+                destCity: "சேருமிடம் நகரம்:",
+                branch: "ஒதுக்கப்பட்ட கிளை:",
+                custContact: "வாடிக்கையாளர் தொலைபேசி:",
+                rider: "டெலிவரி ரைடர் (Rider):",
+                riderUnassigned: "விநியோகத்திற்கு புறப்படும் போது ஒதுக்கப்படும்",
+                estDel: "எதிர்பார்க்கப்படும் டெலிவரி:",
+                box3: "பணம் செலுத்துதல் & சுருக்கம்",
+                payMethod: "பணம் செலுத்தும் முறை:",
+                codAmt: "செலுத்த வேண்டிய COD தொகை:",
+                itemsDesc: "பொருட்களின் விளக்கம்:",
+                weight: "பார்சல் எடை:",
+                historyTitle: "முழு டிராக்கிங் வரலாறு மற்றும் செயல்பாட்டு பதிவு",
+                courierSync: "TransExpress கூரியர் நெட்வொர்க் மூலம் நேரடி புதுப்பிப்பு.",
+                statuses: {
+                    "Delivered": "வழங்கப்பட்டது (Delivered)",
+                    "Out for Delivery": "டெலிவரிக்கு புறப்பட்டது (Out for Delivery)",
+                    "In Transit": "பயணத்தில் உள்ளது (In Transit)",
+                    "Picked Up": "பார்சல் பெறப்பட்டது (Picked Up)",
+                    "Processing": "செயலாக்கத்தில் உள்ளது (Processing)",
+                    "Order Placed": "ஆர்டர் பதிவு செய்யப்பட்டது (Order Placed)",
+                    "Received at Shuttle": "ஷட்டில் மையத்தை அடைந்தது (Shuttle Hub)",
+                    "Collected at Sorting Center": "வரிசைப்படுத்தும் மையத்தை அடைந்தது (Sorting Center)",
+                    "Collected from Warehouse": "கிடங்கிலிருந்து பெறப்பட்டது (Warehouse)",
+                    "Dispatched to Destination": "சேருமிடத்திற்கு அனுப்பப்பட்டது (Dispatched)",
+                    "Received at Destination": "சேருமிடக் கிளையை அடைந்தது (Destination Branch)",
+                    "Rescheduled": "விநியோகம் மறுதிட்டமிடப்பட்டது (Rescheduled)",
+                    "Returned to Branch Rescheduled": "மீண்டும் திட்டமிட கிளைக்கு திரும்பியது",
+                    "Cancelled": "ரத்து செய்யப்பட்டது (Cancelled)",
+                    "Failed": "டெலிவரி தோல்வியடைந்தது",
+                    "Cash on Delivery (COD)": "டெலிவரியின் போது பணம் செலுத்துதல் (COD)",
+                    "Prepaid / Card Payment": "முன்கூட்டியே செலுத்தப்பட்டது (Prepaid)",
+                    "Prepaid": "முன்கூட்டியே செலுத்தப்பட்டது (Prepaid)"
+                },
+                stepper: {
+                    s1: "ஆர்டர் பெறப்பட்டது",
+                    s2: "பார்சல் எடுக்கப்பட்டது",
+                    s3: "பயணத்தில் உள்ளது",
+                    s4: "டெலிவரிக்கு புறப்பட்டது",
+                    s5: "டெலிவரி முடிந்தது"
+                }
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLanguage = lang;
+            localStorage.setItem('roohira_track_lang', lang);
+
+            // Update Active Class on Buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            const activeBtn = document.getElementById(`lang-${lang}`);
+            if (activeBtn) activeBtn.classList.add('active');
+
+            // Apply static text translations
+            applyTranslations();
+
+            // Re-render active tracking data if available
+            if (currentTrackingData) {
+                renderTrackingDetails(currentTrackingData);
+            }
+        }
+
+        function applyTranslations() {
+            const t = i18n[currentLanguage] || i18n.en;
+
+            document.getElementById('txt-page-title').textContent = t.pageTitle;
+            document.getElementById('txt-page-subtitle').textContent = t.pageSubtitle;
+            document.getElementById('track-input').placeholder = t.inputPlaceholder;
+            document.getElementById('txt-btn-track').textContent = t.btnTrack;
+            document.getElementById('txt-btn-refresh').textContent = t.btnRefresh;
+            document.getElementById('txt-feat-1').textContent = t.feat1;
+            document.getElementById('txt-feat-2').textContent = t.feat2;
+            document.getElementById('txt-feat-3').textContent = t.feat3;
+            document.getElementById('txt-loader-msg').textContent = t.loaderMsg;
+            document.getElementById('txt-err-title').textContent = t.errTitle;
+
+            // Labels
+            document.getElementById('lbl-box-1').textContent = t.box1;
+            document.getElementById('lbl-courier').textContent = t.courier;
+            document.getElementById('lbl-waybill').textContent = t.waybill;
+            document.getElementById('lbl-order-ref').textContent = t.orderRef;
+            document.getElementById('lbl-order-date').textContent = t.orderDate;
+
+            document.getElementById('lbl-box-2').textContent = t.box2;
+            document.getElementById('lbl-dest-city').textContent = t.destCity;
+            document.getElementById('lbl-branch').textContent = t.branch;
+            if (document.getElementById('lbl-cust-phone')) document.getElementById('lbl-cust-phone').textContent = t.custContact;
+            document.getElementById('lbl-rider').textContent = t.rider;
+            document.getElementById('lbl-est-delivery').textContent = t.estDel;
+
+            document.getElementById('lbl-box-3').textContent = t.box3;
+            document.getElementById('lbl-payment-method').textContent = t.payMethod;
+            document.getElementById('lbl-cod-amount').textContent = t.codAmt;
+            document.getElementById('lbl-items-desc').textContent = t.itemsDesc;
+            document.getElementById('lbl-weight').textContent = t.weight;
+
+            document.getElementById('lbl-history-title').textContent = t.historyTitle;
+            document.getElementById('lbl-courier-sync').textContent = t.courierSync;
+
+            // Stepper Labels
+            document.getElementById('step-lbl-1').textContent = t.stepper.s1;
+            document.getElementById('step-lbl-2').textContent = t.stepper.s2;
+            document.getElementById('step-lbl-3').textContent = t.stepper.s3;
+            document.getElementById('step-lbl-4').textContent = t.stepper.s4;
+            document.getElementById('step-lbl-5').textContent = t.stepper.s5;
+        }
+
+        function translateStatusText(statusStr) {
+            if (!statusStr) return statusStr;
+            const t = i18n[currentLanguage] || i18n.en;
+            if (t.statuses && t.statuses[statusStr]) {
+                return t.statuses[statusStr];
+            }
+            // partial match fallback
+            for (const key in t.statuses) {
+                if (statusStr.toLowerCase().includes(key.toLowerCase())) {
+                    return t.statuses[key];
+                }
+            }
+            return statusStr;
+        }
+
+        // Exclusive Light Mode Manager
+        function initTheme() {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            const themeBtn = document.getElementById('theme-toggle-btn');
+            if (themeBtn) themeBtn.remove();
+            const mobileThemeBtn = document.getElementById('mobile-theme-toggle-btn');
+            if (mobileThemeBtn) mobileThemeBtn.remove();
+        }
+
+        function toggleTheme() {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+        }
+
+        function applyTheme(theme) {
+            document.documentElement.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+        }
+
+        // Auto execution on load if URL has ?id=...
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            setLanguage(currentLanguage);
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const queryId = urlParams.get('id') || urlParams.get('waybill_id') || urlParams.get('order_id');
+
+            if (queryId) {
+                document.getElementById('track-input').value = queryId.trim();
+                executeTracking(queryId.trim());
+            }
+
+            // Mobile menu toggle
+            const menuBtn = document.getElementById('mobile-menu-btn');
+            const closeBtn = document.getElementById('close-menu');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const overlay = document.getElementById('menu-overlay');
+
+            if (menuBtn && mobileMenu && overlay) {
+                menuBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    mobileMenu.classList.add('active');
+                    overlay.classList.add('active');
+                });
+            }
+
+            if (closeBtn && mobileMenu && overlay) {
+                closeBtn.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+                overlay.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    overlay.classList.remove('active');
+                });
+            }
+        });
+
+        function handleTrackSearch(e) {
+            e.preventDefault();
+            const inputVal = document.getElementById('track-input').value.trim();
+            if (!inputVal) return;
+            executeTracking(inputVal);
+        }
+
+        function refreshCurrentTracking() {
+            if (currentActiveTrackingId) {
+                executeTracking(currentActiveTrackingId);
+            }
+        }
+
+        async function executeTracking(trackingId) {
+            currentActiveTrackingId = trackingId;
+            const loader = document.getElementById('track-loader');
+            const errorBox = document.getElementById('track-error-box');
+            const resultWrap = document.getElementById('track-result-wrapper');
+            const submitBtn = document.getElementById('track-btn-submit');
+
+            errorBox.style.display = 'none';
+            resultWrap.style.display = 'none';
+            loader.style.display = 'block';
+            submitBtn.disabled = true;
+
+            const newUrl = new URL(window.location);
+            newUrl.searchParams.set('id', trackingId);
+            window.history.pushState({}, '', newUrl);
+
+            try {
+                // 1. Primary: Search TransExpress Real-Time API
+                let trackingData = await fetchTransExpressLive(trackingId);
+
+                // 2. Secondary: Search Store Database (Firestore / Local Orders)
+                if (!trackingData) {
+                    trackingData = await fetchFromFirebaseStore(trackingId);
+                }
+
+                if (trackingData) {
+                    currentTrackingData = trackingData;
+                    renderTrackingDetails(trackingData);
+                    resultWrap.style.display = 'block';
+                    if (window.lucide) lucide.createIcons();
+                    resultWrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    const t = i18n[currentLanguage] || i18n.en;
+                    showError(`${t.errPrefix}"${trackingId}"${t.errSuffix}`);
+                }
+            } catch (err) {
+                console.error("Tracking Error:", err);
+                showError("⚠️ Unable to connect to TransExpress at this moment. Please try again shortly or contact us on WhatsApp.");
+            } finally {
+                loader.style.display = 'none';
+                submitBtn.disabled = false;
+            }
+        }
+
+        // Fetch from TransExpress Official Live Tracking API
+        async function fetchTransExpressLive(trackingId) {
+            const rawId = trackingId.trim();
+            const cleanId = encodeURIComponent(rawId);
+            
+            const endpoints = [
+                `https://api.transexpress.lk/api/v1/tracking?waybill_id=${cleanId}`,
+                `https://domestic.transexpress.lk/order-tracking?waybill_id=${cleanId}`
+            ];
+
+            for (const ep of endpoints) {
+                try {
+                    const ctrl = new AbortController();
+                    const tid = setTimeout(() => ctrl.abort(), 7000);
+                    const res = await fetch(ep, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json, text/plain, */*' },
+                        signal: ctrl.signal
+                    });
+                    clearTimeout(tid);
+
+                    if (res.ok) {
+                        const json = await res.json();
+                        const parsed = parseTransExpressResponse(json, rawId);
+                        if (parsed) return parsed;
+                    }
+                } catch (e) {
+                    console.warn(`Direct fetch failed for ${ep}:`, e);
+                }
+            }
+            return null;
+        }
+
+        // Parse TransExpress API response
+        function parseTransExpressResponse(json, trackingId) {
+            if (!json) return null;
+            if (json.status_code === 200 && Array.isArray(json.data)) {
+                let orderDetails = null;
+                let trackingHistory = [];
+                for (const item of json.data) {
+                    if (item.key === 'order_details' && Array.isArray(item.value) && item.value.length > 0) {
+                        orderDetails = item.value[0];
+                    } else if (item.key === 'tracking_history' && Array.isArray(item.value)) {
+                        trackingHistory = item.value;
+                    }
+                }
+                if (orderDetails) {
+                    return normalizeTransExpressV1Data(orderDetails, trackingHistory, trackingId);
+                }
+            }
+            return null;
+        }
+
+        // Normalize TransExpress Official V1 API Data Structure
+        function normalizeTransExpressV1Data(order, history, trackingId) {
+            const statusStr = (order.current_status || order.status || 'Processing').toString();
+            let statusCode = 1;
+            const lower = statusStr.toLowerCase();
+
+            if (lower.includes('deliver') || lower.includes('complete') || lower.includes('success')) {
+                statusCode = 5;
+            } else if (lower.includes('out') || lower.includes('dispatch') || lower.includes('rider') || lower.includes('delivering')) {
+                statusCode = 4;
+            } else if (lower.includes('transit') || lower.includes('sorting') || lower.includes('shuttle') || lower.includes('warehouse') || lower.includes('destination') || lower.includes('branch')) {
+                statusCode = 3;
+            } else if (lower.includes('pick') || lower.includes('collected') || lower.includes('process') || lower.includes('accepted')) {
+                statusCode = 2;
+            } else if (lower.includes('cancel') || lower.includes('reject') || lower.includes('return') || lower.includes('failed') || lower.includes('undelivered')) {
+                statusCode = 0;
+            }
+
+            const lastSync = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Extract Rider information from history remarks or order fields
+            let riderInfo = order.rider_name ? `${order.rider_name}${order.rider_phone ? ' (' + order.rider_phone + ')' : ''}` : '';
+            
+            let eventsList = [];
+            if (Array.isArray(history) && history.length > 0) {
+                // Check if any history record mentions assigned rider
+                for (const h of history) {
+                    const rem = h.remarks || '';
+                    if (!riderInfo) {
+                        const mAssigned = rem.match(/Assigned to\s+([^\n\r.]+)/i);
+                        const mRider = rem.match(/Rider:\s*([^\n\r]+)/i);
+                        if (mAssigned) riderInfo = mAssigned[1].trim();
+                        else if (mRider) riderInfo = mRider[1].trim();
+                    }
+                }
+
+                eventsList = history.map(h => ({
+                    title: h.status_name || h.name || h.status || statusStr,
+                    rawTitle: h.status_name || h.name || h.status || statusStr,
+                    desc: h.remarks || h.description || `Status: ${h.status_name || statusStr}`,
+                    location: order.branch_name || order.customer_city || 'TransExpress Network',
+                    time: h.status_created_at ? new Date(h.status_created_at).toLocaleString('en-GB') : 'Recent'
+                })).reverse();
+            } else {
+                eventsList = [{
+                    title: `Status: ${statusStr}`,
+                    rawTitle: statusStr,
+                    desc: "Live status synchronized from TransExpress network.",
+                    location: order.branch_name || order.customer_city || 'TransExpress Hub',
+                    time: order.completed_date || order.order_date || 'Recent'
+                }];
+            }
+
+            const custPhone = order.customer_phone_no || order.phone || order.contact || '-';
+
+            return {
+                trackingId: order.waybill_id || trackingId,
+                waybillId: order.waybill_id || trackingId,
+                orderNo: order.order_no || 'ROOH-' + (order.waybill_id || trackingId),
+                customerName: order.customer_name || 'Valued Customer',
+                customerPhone: custPhone,
+                destination: order.customer_address || order.customer_city || 'Sri Lanka',
+                city: order.customer_city || order.customer_district || 'Sri Lanka',
+                status: statusStr,
+                statusCode: statusCode,
+                codAmount: order.cod ? 'LKR ' + Number(order.cod).toLocaleString() : 'Prepaid',
+                paymentMethod: (order.cod && Number(order.cod) > 0) ? 'Cash on Delivery (COD)' : 'Prepaid / Card Payment',
+                orderDate: order.order_date ? new Date(order.order_date).toLocaleDateString('en-GB') : 'Confirmed',
+                branch: order.branch_name || 'TransExpress Operations Hub',
+                rider: riderInfo || '',
+                itemsDescription: order.description || (order.client_name ? `Client: ${order.client_name}` : 'Roohira Apparel Package'),
+                weight: order.weight ? `${order.weight} kg` : '0.5 kg',
+                lastUpdated: lastSync,
+                events: eventsList
+            };
+        }
+
+        async function fetchFromFirebaseStore(trackingId) {
+            const cleanId = trackingId.trim();
+
+            if (window.db) {
+                try {
+                    const ordersRef = window.db.collection('orders');
+                    let snap = await ordersRef.where('waybill_id', '==', cleanId).limit(1).get();
+                    if (snap.empty) snap = await ordersRef.where('order_id', '==', cleanId).limit(1).get();
+                    if (snap.empty) snap = await ordersRef.where('id', '==', cleanId).limit(1).get();
+
+                    if (!snap.empty) {
+                        const o = snap.docs[0].data();
+                        return {
+                            trackingId: o.waybill_id || cleanId,
+                            waybillId: o.waybill_id || cleanId,
+                            orderNo: o.orderId || o.id || cleanId,
+                            customerName: o.customerName || (o.customer && o.customer.name) || 'Valued Customer',
+                            customerPhone: o.customerPhone || o.phone || (o.customer && o.customer.phone) || '-',
+                            destination: (o.city ? o.city + ', ' : '') + (o.userAddress || o.address || 'Sri Lanka'),
+                            city: o.city || 'Colombo',
+                            status: o.status || 'Order Placed',
+                            statusCode: 1,
+                            codAmount: o.total ? 'LKR ' + Number(o.total).toLocaleString() : 'Prepaid',
+                            paymentMethod: o.paymentMethod || 'Cash on Delivery (COD)',
+                            orderDate: o.createdAt ? new Date(o.createdAt).toLocaleDateString('en-GB') : 'Today',
+                            branch: 'TransExpress Hub',
+                            rider: o.rider || '',
+                            itemsDescription: o.items ? `${o.items.length} Item(s) from Roohira` : 'Roohira Apparel',
+                            weight: '0.5 kg',
+                            lastUpdated: 'Just now',
+                            events: [
+                                { title: 'Order Placed', rawTitle: 'Order Placed', desc: 'Order confirmed at Roohira store.', location: 'Roohira Store', time: 'Today' }
+                            ]
+                        };
+                    }
+                } catch (e) {
+                    console.warn("Firestore error:", e);
+                }
+            }
+            return null;
+        }
+
+        function renderTrackingDetails(data) {
+            const t = i18n[currentLanguage] || i18n.en;
+
+            document.getElementById('res-tracking-id').textContent = data.waybillId || data.trackingId;
+            document.getElementById('res-recipient-name').textContent = data.customerName;
+            document.getElementById('res-destination').textContent = data.destination;
+            document.getElementById('res-last-updated').textContent = `${t.lastSyncPrefix}${data.lastUpdated}`;
+
+            const pill = document.getElementById('res-status-pill');
+            const pillText = document.getElementById('res-status-text');
+            const pillIcon = document.getElementById('res-status-icon');
+
+            const translatedStatus = translateStatusText(data.status);
+
+            pill.className = 'status-pill';
+            if (data.statusCode === 5) {
+                pill.classList.add('status-delivered');
+                pillText.textContent = translatedStatus || 'Delivered';
+                pillIcon.setAttribute('data-lucide', 'check-circle-2');
+            } else if (data.statusCode === 4) {
+                pill.classList.add('status-out');
+                pillText.textContent = translatedStatus || 'Out for Delivery';
+                pillIcon.setAttribute('data-lucide', 'navigation');
+            } else if (data.statusCode === 3) {
+                pill.classList.add('status-transit');
+                pillText.textContent = translatedStatus || 'In Transit';
+                pillIcon.setAttribute('data-lucide', 'truck');
+            } else if (data.statusCode === 2) {
+                pill.classList.add('status-pending');
+                pillText.textContent = translatedStatus || 'Picked Up';
+                pillIcon.setAttribute('data-lucide', 'box');
+            } else if (data.statusCode === 0) {
+                pill.classList.add('status-cancelled');
+                pillText.textContent = translatedStatus || 'Cancelled / Returned';
+                pillIcon.setAttribute('data-lucide', 'x-circle');
+            } else {
+                pill.classList.add('status-pending');
+                pillText.textContent = translatedStatus || 'Order Placed';
+                pillIcon.setAttribute('data-lucide', 'clock');
+            }
+
+            // Stepper Visual
+            const validCode = Math.max(1, Math.min(5, data.statusCode || 1));
+            const stepPercent = ((validCode - 1) / 4) * 100;
+            document.getElementById('stepper-bar').style.width = `${stepPercent}%`;
+
+            for (let i = 1; i <= 5; i++) {
+                const stepEl = document.getElementById(`step-${i}`);
+                if (!stepEl) continue;
+                stepEl.className = 'step-node';
+                if (i < validCode) stepEl.classList.add('completed');
+                else if (i === validCode) stepEl.classList.add('active');
+            }
+
+            document.getElementById('res-waybill-val').textContent = data.waybillId;
+            document.getElementById('res-order-no-val').textContent = data.orderNo;
+            document.getElementById('res-order-date-val').textContent = data.orderDate;
+            document.getElementById('res-city-val').textContent = data.city;
+            document.getElementById('res-branch-val').textContent = data.branch;
+            
+            // Customer phone display next to customer name
+            const custPhoneTopEl = document.getElementById('res-customer-phone-top');
+            const custPhoneBadge = document.getElementById('res-customer-phone-badge');
+            if (custPhoneTopEl) {
+                custPhoneTopEl.textContent = data.customerPhone || '';
+                if (custPhoneBadge) {
+                    custPhoneBadge.style.display = (data.customerPhone && data.customerPhone !== '-') ? 'inline-flex' : 'none';
+                }
+            }
+
+            // Delivery Rider display
+            const riderEl = document.getElementById('res-rider-val');
+            if (riderEl) {
+                riderEl.textContent = data.rider ? data.rider : (t.riderUnassigned || 'Assigned upon dispatch');
+            }
+
+            document.getElementById('res-est-delivery').textContent = t.estDelivery;
+            document.getElementById('res-payment-method').textContent = translateStatusText(data.paymentMethod);
+            document.getElementById('res-cod-amount').textContent = data.codAmount;
+            document.getElementById('res-items-desc').textContent = data.itemsDescription;
+            document.getElementById('res-weight-val').textContent = data.weight;
+
+            const courierLink = document.getElementById('direct-courier-link');
+            if (courierLink) {
+                courierLink.href = `https://tracking.transexpress.lk/tracking?id=${encodeURIComponent(data.waybillId)}`;
+            }
+
+            const timelineContainer = document.getElementById('tracking-timeline-list');
+            timelineContainer.innerHTML = '';
+
+            const events = data.events || [];
+            events.forEach((ev) => {
+                const evDiv = document.createElement('div');
+                evDiv.className = 'timeline-event';
+                const eventTitle = translateStatusText(ev.rawTitle || ev.title);
+                evDiv.innerHTML = `
+                    <div class="timeline-dot"></div>
+                    <div class="timeline-event-content">
+                        <div class="timeline-event-title">${eventTitle}</div>
+                        <p style="font-size: 0.84rem; color: var(--text-muted); margin: 0 0 6px 0;">${ev.desc}</p>
+                        <div class="timeline-event-meta">
+                            <span><i data-lucide="map-pin" style="width:12px; height:12px; vertical-align:middle;"></i> ${ev.location}</span>
+                            <span><i data-lucide="clock" style="width:12px; height:12px; vertical-align:middle;"></i> ${ev.time}</span>
+                        </div>
+                    </div>
+                `;
+                timelineContainer.appendChild(evDiv);
+            });
+
+            if (window.lucide) lucide.createIcons();
+        }
+
+        function showError(msg) {
+            const errorBox = document.getElementById('track-error-box');
+            const errorMsg = document.getElementById('track-error-msg');
+            errorMsg.textContent = msg;
+            errorBox.style.display = 'block';
+            if (window.lucide) lucide.createIcons();
+            errorBox.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+    </script>
+</body>
+
+</html>
