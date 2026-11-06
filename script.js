@@ -382,7 +382,7 @@ function displayProducts(filteredProducts) {
         const heartColor = wished ? 'color: #DC143C;' : 'color: var(--text-main);';
         const visibleSizes = sizeKeys.slice(0, 7);
         const visibleColors = colors.slice(0, 7);
-        const imagery = images.map(img => `<img src="${escapeProductHtml(img)}" alt="${escapeProductHtml(p.name)}" loading="lazy" style="width:100%;flex:0 0 100%;height:100%;object-fit:contain;padding:18px;box-sizing:border-box;">`).join('');
+        const imagery = images.map(img => `<img src="${escapeProductHtml(img)}" alt="${escapeProductHtml(p.name)}" loading="lazy" decoding="async" draggable="false" style="width:100%;flex:0 0 100%;height:100%;object-fit:contain;padding:18px;box-sizing:border-box;">`).join('');
 
         grid.innerHTML += `
         <div class="product-card product-card-large ${isOutOfStock ? 'out-of-stock' : ''}"

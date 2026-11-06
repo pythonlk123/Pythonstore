@@ -457,6 +457,7 @@
         .admin-upload-status { margin-top: 9px; font-size: 0.72rem; font-weight: 700; color: var(--green); }
         .admin-upload-status.error { color: #dc2626; }
         .admin-upload-status.loading { color: var(--amber); }
+        .admin-upload-status.warning { color: #B45309; }
         .admin-spec-list { display: flex; flex-direction: column; gap: 8px; }
         .admin-spec-row { display: grid; grid-template-columns: 0.9fr 1.4fr 32px; gap: 8px; align-items: center; }
         .admin-spec-row input { min-width: 0; }
@@ -1316,7 +1317,7 @@
                             <label class="form-label">Main Image * <span style="color: var(--dark-red);">(uploads to ImgBB automatically)</span></label>
                             <div class="admin-upload-box">
                                 <input type="file" id="form-main-image-file" accept="image/*" onchange="handleMainImageSelect(this)">
-                                <div class="admin-field-help">This is the hero image used on product cards and the product page. Required.</div>
+                                <div class="admin-field-help">For HD/4K clarity upload a high-resolution image (2000px+ long edge, up to 32MB). The original quality is kept — no compression.</div>
                                 <div id="form-main-image-preview" class="admin-image-preview"></div>
                                 <div id="form-main-image-status" class="admin-upload-status"></div>
                             </div>
@@ -1326,7 +1327,7 @@
                             <label class="form-label">Additional Images <span style="color: var(--text-dim); font-weight: 600;">(maximum 10)</span></label>
                             <div class="admin-upload-box">
                                 <input type="file" id="form-extra-images-file" accept="image/*" multiple onchange="handleExtraImagesSelect(this)">
-                                <div class="admin-field-help">Add up to 10 supporting images. They upload straight to ImgBB and are saved as product URLs.</div>
+                                <div class="admin-field-help">Add up to 10 supporting images. Each HD/4K image (up to 32MB) is uploaded at its full original resolution.</div>
                                 <div id="form-extra-images-preview" class="admin-image-preview"></div>
                             </div>
                         </div>
@@ -1691,6 +1692,9 @@
         }
 
         // ── ImgBB upload helpers ─────────────────────────────────────────────
+        // HD/4K originals are uploaded as-is. No canvas resize, no JPEG re-compression.
+        const MAX_IMAGE_UPLOAD_MB = 32;
+
         function readImageAsDataUrl(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
@@ -1700,10 +1704,44 @@
             });
         }
 
+        // Reads the real pixel dimensions so the admin can see the upload quality.
+        function getImageDimensions(file) {
+            return new Promise((resolve) => {
+                if (!file || !String(file.type || '').startsWith('image/')) {
+                    return resolve({ width: 0, height: 0 });
+                }
+                const objectUrl = URL.createObjectURL(file);
+                const img = new Image();
+                img.onload = () => {
+                    const dims = { width: img.naturalWidth || 0, height: img.naturalHeight || 0 };
+                    URL.revokeObjectURL(objectUrl);
+                    resolve(dims);
+                };
+                img.onerror = () => {
+                    URL.revokeObjectURL(objectUrl);
+                    resolve({ width: 0, height: 0 });
+                };
+                img.src = objectUrl;
+            });
+        }
+
+        function describeImageQuality(width, height) {
+            const longEdge = Math.max(Number(width) || 0, Number(height) || 0);
+            const sizeText = width && height ? `${width}×${height}` : 'unknown size';
+            if (longEdge >= 3840) return { text: `4K Ultra HD (${sizeText})`, warning: false };
+            if (longEdge >= 2560) return { text: `2K QHD (${sizeText})`, warning: false };
+            if (longEdge >= 1920) return { text: `Full HD (${sizeText})`, warning: false };
+            if (longEdge >= 1280) return { text: `HD (${sizeText})`, warning: false };
+            if (longEdge >= 1000) return { text: `${sizeText} — use 2000px+ for sharper detail`, warning: true };
+            return { text: `${sizeText} — low resolution. Use 2000px+ for HD/4K`, warning: true };
+        }
+
         async function uploadImageToImgBB(file) {
             if (!file) throw new Error('No image selected.');
             if (!file.type.startsWith('image/')) throw new Error('Please select an image file.');
-            if (file.size > 10 * 1024 * 1024) throw new Error('Image is too large. Use an image under 10MB.');
+            if (file.size > MAX_IMAGE_UPLOAD_MB * 1024 * 1024) {
+                throw new Error(`Image is too large. Use an HD/4K image under ${MAX_IMAGE_UPLOAD_MB}MB.`);
+            }
 
             const dataUrl = await readImageAsDataUrl(file);
             const base64Data = String(dataUrl).split(',')[1];
@@ -1722,7 +1760,12 @@
                 const detail = result && result.error && result.error.message ? result.error.message : 'ImgBB upload failed.';
                 throw new Error(detail);
             }
-            return result.data.display_url || result.data.url;
+
+            // Keep the direct full-resolution file. display_url is only a safety fallback
+            // for older API responses, never the thumbnail/medium variants.
+            return result.data.url
+                || (result.data.image && result.data.image.url)
+                || result.data.display_url;
         }
 
         function renderMainImagePreview() {
@@ -1736,6 +1779,22 @@
                     <a class="image-link" href="${url}" target="_blank" rel="noopener">IMGBB LINK</a>
                 </div>
             ` : '';
+            if (url) reportImageUrlQuality(url);
+        }
+
+        // Shows the real resolution of an already-saved image when editing a product.
+        function reportImageUrlQuality(url) {
+            const status = document.getElementById('form-main-image-status');
+            if (!status || !url) return;
+            const probe = new Image();
+            probe.onload = () => {
+                const field = document.getElementById('form-prod-img1');
+                if (!field || field.value.trim() !== url) return;
+                const quality = describeImageQuality(probe.naturalWidth, probe.naturalHeight);
+                status.className = 'admin-upload-status' + (quality.warning ? ' warning' : '');
+                status.innerText = `Current image · ${quality.text}`;
+            };
+            probe.src = url;
         }
 
         function renderExtraImagePreviews() {
@@ -1789,12 +1848,14 @@
             if (!file) return;
             pendingImageUploads++;
             status.className = 'admin-upload-status loading';
-            status.innerText = 'Uploading main image to ImgBB...';
+            status.innerText = 'Uploading main image at original quality...';
             try {
+                const dims = await getImageDimensions(file);
+                const quality = describeImageQuality(dims.width, dims.height);
                 const url = await uploadImageToImgBB(file);
                 document.getElementById('form-prod-img1').value = url;
-                status.className = 'admin-upload-status';
-                status.innerText = '✓ Main image uploaded to ImgBB.';
+                status.className = 'admin-upload-status' + (quality.warning ? ' warning' : '');
+                status.innerText = `✓ Main image uploaded · ${quality.text}`;
                 renderMainImagePreview();
             } catch (error) {
                 status.className = 'admin-upload-status error';
@@ -1820,11 +1881,14 @@
             }
             for (const file of selected) {
                 pendingImageUploads++;
-                showToast('Uploading image to ImgBB...');
+                showToast('Uploading image at original quality...');
                 try {
+                    const dims = await getImageDimensions(file);
+                    const quality = describeImageQuality(dims.width, dims.height);
                     const url = await uploadImageToImgBB(file);
                     productExtraImages.push(url);
                     renderExtraImagePreviews();
+                    showToast(`✓ Uploaded · ${quality.text}${quality.warning ? ' · Tip: use 2000px+ for HD.' : ''}`);
                 } catch (error) {
                     showToast(error.message || 'Image upload failed.', true);
                 } finally {

@@ -2088,6 +2088,7 @@ nav.show-nav {
     height: 100%;
     object-fit: cover;
     transition: var(--transition-smooth);
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .product-card:hover .product-image img {
@@ -6907,6 +6908,7 @@ footer.luxury-footer .footer-bottom {
     box-sizing: border-box;
     background: transparent;
     border-radius: 0 !important;
+    image-rendering: -webkit-optimize-contrast;
 }
 
 .product-card:hover .card-slider img {

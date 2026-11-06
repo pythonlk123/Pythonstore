@@ -437,6 +437,100 @@
         display: grid !important;
       }
     }
+
+    /* ── Full-resolution HD/4K image viewer ─────────────────────────── */
+    #image-slider img {
+      cursor: zoom-in;
+      image-rendering: -webkit-optimize-contrast;
+    }
+    .pd-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 10001;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      background: rgba(5, 5, 5, 0.94);
+      backdrop-filter: blur(14px);
+      padding: 20px;
+      overflow: hidden;
+    }
+    .pd-lightbox.active {
+      display: flex;
+    }
+    .pd-lightbox-stage {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      touch-action: none;
+    }
+    .pd-lightbox-stage img {
+      max-width: 96vw;
+      max-height: 88vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      user-select: none;
+      -webkit-user-drag: none;
+      transform-origin: center center;
+      transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      will-change: transform;
+    }
+    .pd-lightbox-stage.zoomed {
+      cursor: grab;
+    }
+    .pd-lightbox-stage.zoomed:active {
+      cursor: grabbing;
+    }
+    .pd-lightbox-close {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      width: 46px;
+      height: 46px;
+      border: 1px solid #8B0000;
+      border-radius: 50%;
+      background: #8B0000;
+      color: #FFFFFF;
+      font-size: 26px;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+    .pd-lightbox-close:hover {
+      background: #A50000;
+      transform: scale(1.06);
+    }
+    .pd-lightbox-hint {
+      position: fixed;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      color: rgba(255, 255, 255, 0.72);
+      font-family: 'Anta', sans-serif;
+      font-size: 0.68rem;
+      letter-spacing: 0.6px;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .pd-lightbox { padding: 10px; }
+      .pd-lightbox-stage img { max-height: 82vh; }
+      .pd-lightbox-hint { font-size: 0.58rem; }
+      .pd-lightbox-close { top: 12px; right: 12px; width: 42px; height: 42px; }
+    }
   </style>
 </head>
 <body>
@@ -896,6 +990,18 @@
         </div>
     </div>
 
+    <!-- Full-resolution HD/4K Product Image Viewer -->
+    <div id="imageLightbox" class="pd-lightbox" onclick="closeImageLightbox()" aria-hidden="true">
+        <button type="button" class="pd-lightbox-close" onclick="event.stopPropagation(); closeImageLightbox()" aria-label="Close image viewer">&times;</button>
+        <div class="pd-lightbox-stage" id="lightbox-stage" onclick="event.stopPropagation(); toggleLightboxZoom(event)">
+            <img id="lightbox-img" alt="Product image at full resolution" draggable="false">
+        </div>
+        <div class="pd-lightbox-hint">
+            <i data-lucide="zoom-in" style="width: 14px; height: 14px;"></i>
+            Tap image or scroll to zoom &bull; drag to move
+        </div>
+    </div>
+
     <style>
         @keyframes modalZoom { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
         .modal-overlay.active { display: flex !important; }
@@ -1067,8 +1173,16 @@
                 imgTag.style.width = '100%';
                 imgTag.style.flex = '0 0 100%';
                 imgTag.style.objectFit = 'contain';
-                imgTag.style.maxHeight = '650px';
+                imgTag.style.maxHeight = 'min(82vh, 920px)';
                 imgTag.style.background = '#FFFFFF';
+                imgTag.style.cursor = 'zoom-in';
+                imgTag.decoding = 'async';
+                imgTag.loading = idx === 0 ? 'eager' : 'lazy';
+                if (idx === 0) imgTag.fetchPriority = 'high';
+                imgTag.addEventListener('click', (event) => {
+                    event.stopPropagation();
+                    openImageLightbox(img, product.name || 'Product image');
+                });
                 slider.appendChild(imgTag);
 
                 if (images.length > 1 && dotsContainer) {
@@ -1847,6 +1961,143 @@
             prefillProductReviewUser();
             loadProductReviews();
         }
+
+        // ── Full-resolution HD/4K image viewer ───────────────────────────
+        let lightboxZoom = 1;
+        let lightboxPanX = 0;
+        let lightboxPanY = 0;
+        let lightboxPanStart = null;
+        let lightboxDragMoved = false;
+
+        function applyLightboxTransform() {
+            const img = document.getElementById('lightbox-img');
+            if (!img) return;
+            img.style.transform = `translate(${lightboxPanX}px, ${lightboxPanY}px) scale(${lightboxZoom})`;
+        }
+
+        function openImageLightbox(src, alt) {
+            const overlay = document.getElementById('imageLightbox');
+            const img = document.getElementById('lightbox-img');
+            if (!overlay || !img || !src) return;
+            img.src = src;
+            img.alt = alt || 'Product image at full resolution';
+            lightboxZoom = 1;
+            lightboxPanX = 0;
+            lightboxPanY = 0;
+            lightboxPanStart = null;
+            lightboxDragMoved = false;
+            img.style.transformOrigin = 'center center';
+            applyLightboxTransform();
+            overlay.classList.add('active');
+            overlay.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            const stage = document.getElementById('lightbox-stage');
+            if (stage) stage.classList.remove('zoomed');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeImageLightbox() {
+            const overlay = document.getElementById('imageLightbox');
+            if (!overlay) return;
+            overlay.classList.remove('active');
+            overlay.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+            lightboxZoom = 1;
+            lightboxPanX = 0;
+            lightboxPanY = 0;
+            lightboxPanStart = null;
+            const img = document.getElementById('lightbox-img');
+            if (img) {
+                img.style.transformOrigin = 'center center';
+                img.style.transform = '';
+            }
+            const stage = document.getElementById('lightbox-stage');
+            if (stage) stage.classList.remove('zoomed');
+        }
+
+        function toggleLightboxZoom(event) {
+            const img = document.getElementById('lightbox-img');
+            const stage = document.getElementById('lightbox-stage');
+            if (!img) return;
+            // A drag should pan, not toggle the zoom level.
+            if (lightboxDragMoved) {
+                lightboxDragMoved = false;
+                return;
+            }
+            if (lightboxZoom > 1) {
+                lightboxZoom = 1;
+                lightboxPanX = 0;
+                lightboxPanY = 0;
+                img.style.transformOrigin = 'center center';
+                applyLightboxTransform();
+                if (stage) stage.classList.remove('zoomed');
+                return;
+            }
+            const rect = img.getBoundingClientRect();
+            const x = rect.width ? ((event.clientX - rect.left) / rect.width) * 100 : 50;
+            const y = rect.height ? ((event.clientY - rect.top) / rect.height) * 100 : 50;
+            img.style.transformOrigin = `${Math.max(0, Math.min(100, x))}% ${Math.max(0, Math.min(100, y))}%`;
+            lightboxZoom = 2.5;
+            lightboxPanX = 0;
+            lightboxPanY = 0;
+            applyLightboxTransform();
+            if (stage) stage.classList.add('zoomed');
+        }
+
+        (function initImageLightbox() {
+            const overlay = document.getElementById('imageLightbox');
+            const stage = document.getElementById('lightbox-stage');
+            if (!overlay || !stage) return;
+
+            overlay.addEventListener('wheel', (event) => {
+                if (!overlay.classList.contains('active')) return;
+                event.preventDefault();
+                lightboxZoom = Math.max(1, Math.min(5, lightboxZoom + (event.deltaY < 0 ? 0.3 : -0.3)));
+                if (lightboxZoom === 1) {
+                    lightboxPanX = 0;
+                    lightboxPanY = 0;
+                }
+                stage.classList.toggle('zoomed', lightboxZoom > 1);
+                applyLightboxTransform();
+            }, { passive: false });
+
+            stage.addEventListener('pointerdown', (event) => {
+                if (lightboxZoom <= 1) return;
+                lightboxPanStart = {
+                    x: event.clientX,
+                    y: event.clientY,
+                    panX: lightboxPanX,
+                    panY: lightboxPanY
+                };
+                lightboxDragMoved = false;
+                try { stage.setPointerCapture(event.pointerId); } catch (e) {}
+            });
+
+            stage.addEventListener('pointermove', (event) => {
+                if (!lightboxPanStart) return;
+                const dx = event.clientX - lightboxPanStart.x;
+                const dy = event.clientY - lightboxPanStart.y;
+                if (Math.abs(dx) > 3 || Math.abs(dy) > 3) lightboxDragMoved = true;
+                lightboxPanX = lightboxPanStart.panX + dx;
+                lightboxPanY = lightboxPanStart.panY + dy;
+                applyLightboxTransform();
+            });
+
+            const endPan = (event) => {
+                lightboxPanStart = null;
+                try { stage.releasePointerCapture(event.pointerId); } catch (e) {}
+            };
+            stage.addEventListener('pointerup', endPan);
+            stage.addEventListener('pointercancel', endPan);
+
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape') closeImageLightbox();
+            });
+        })();
+
+        window.openImageLightbox = openImageLightbox;
+        window.closeImageLightbox = closeImageLightbox;
+        window.toggleLightboxZoom = toggleLightboxZoom;
 
         document.addEventListener('DOMContentLoaded', () => {
             updateDeliveryPromo();
