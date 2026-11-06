@@ -7212,6 +7212,81 @@ footer.luxury-footer .footer-bottom {
     padding: 5px 8px;
 }
 
+/* ===== HOME — Drop Category Quick Filters ===== */
+.home-drop-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 9px;
+    align-items: center;
+    margin: -4px 0 26px;
+}
+
+.home-drop-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 9px 18px;
+    border-radius: 50px;
+    border: 1.5px solid var(--border-fine);
+    background: #FFFFFF;
+    color: #0A0A0A;
+    font-family: 'Anta', sans-serif;
+    font-size: 0.72rem;
+    font-weight: 900;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+}
+
+.home-drop-pill .hdp-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: currentColor;
+    opacity: 0.65;
+    transition: opacity 0.2s, transform 0.2s;
+}
+
+.home-drop-pill:hover {
+    border-color: var(--dark-red);
+    color: var(--dark-red);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(139, 0, 0, 0.12);
+}
+
+.home-drop-pill:hover .hdp-dot {
+    opacity: 1;
+    transform: scale(1.25);
+}
+
+.home-drop-pill.active {
+    background: linear-gradient(135deg, #A50000 0%, #6E0000 100%);
+    border-color: #6E0000;
+    color: #FFFFFF;
+    box-shadow: 0 8px 20px rgba(139, 0, 0, 0.28);
+    transform: translateY(-2px);
+}
+
+.home-drop-pill.active .hdp-dot {
+    background: #FFFFFF;
+    opacity: 1;
+}
+
+@media (max-width: 560px) {
+    .home-drop-filters {
+        gap: 8px;
+        margin-bottom: 20px;
+    }
+    .home-drop-pill {
+        flex: 1 1 calc(50% - 8px);
+        padding: 10px 12px;
+        font-size: 0.68rem;
+    }
+}
+
 /* ==========================================================================
    LARGER, MOBILE-FIRST PRODUCT DETAIL EXPERIENCE
    ========================================================================== */

@@ -1303,6 +1303,15 @@
                             </select>
                         </div>
 
+                        <div>
+                            <label class="form-label">Home Page Visibility</label>
+                            <label for="form-prod-show-home" style="display:flex;align-items:center;gap:10px;padding:11px 14px;border:1.5px solid #E5E7EB;border-radius:10px;cursor:pointer;font-weight:700;font-size:0.84rem;background:#FAFAFA;">
+                                <input type="checkbox" id="form-prod-show-home" checked style="width:18px;height:18px;accent-color:#8B0000;cursor:pointer;flex-shrink:0;">
+                                <span>Show this item on the Home Page</span>
+                            </label>
+                            <div class="admin-field-help">Untick this to keep the product only inside the Shop catalog.</div>
+                        </div>
+
                         <div class="form-full">
                             <label class="form-label">Main Image * <span style="color: var(--dark-red);">(uploads to ImgBB automatically)</span></label>
                             <div class="admin-upload-box">
@@ -1950,6 +1959,8 @@
             document.getElementById('form-prod-id').value = "";
             document.getElementById('product-form').reset();
             document.getElementById('form-prod-stock').value = "20";
+            const showHomeEl = document.getElementById('form-prod-show-home');
+            if (showHomeEl) showHomeEl.checked = true;
             document.getElementById('form-prod-img1').value = "";
             document.getElementById('form-prod-sizechart').value = "";
             productExtraImages = [];
@@ -1979,6 +1990,8 @@
             document.getElementById('form-prod-oldprice').value = p.oldPrice || '';
             document.getElementById('form-prod-stock').value = p.stock !== undefined ? p.stock : 10;
             document.getElementById('form-prod-badge').value = p.badge || '';
+            const showHomeEl = document.getElementById('form-prod-show-home');
+            if (showHomeEl) showHomeEl.checked = (p.showOnHome !== false);
             if (document.getElementById('form-prod-category')) document.getElementById('form-prod-category').value = p.category || '';
             document.getElementById('form-prod-desc').value = p.desc || '';
 
@@ -2024,6 +2037,8 @@
             const oldPrice = parseFloat(document.getElementById('form-prod-oldprice').value) || 0;
             const stock = parseInt(document.getElementById('form-prod-stock').value) || 0;
             const badge = document.getElementById('form-prod-badge').value;
+            const showHomeEl = document.getElementById('form-prod-show-home');
+            const showOnHome = showHomeEl ? showHomeEl.checked : true;
             const category = document.getElementById('form-prod-category') ? document.getElementById('form-prod-category').value.trim() : '';
             const desc = document.getElementById('form-prod-desc').value.trim();
             const mainImage = document.getElementById('form-prod-img1').value.trim();
@@ -2067,6 +2082,7 @@
                 stock,
                 stockStatus: stock === 0 ? 'out_of_stock' : 'in_stock',
                 badge,
+                showOnHome: showOnHome,
                 images: [mainImage].concat(productExtraImages).slice(0, 11),
                 image: mainImage,
                 desc,

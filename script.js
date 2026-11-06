@@ -689,6 +689,7 @@ function selectGSM(gsm, btn) {
 }
 
 let currentShopCategory = 'All';
+let currentShopBadge = 'All';
 
 function selectShopCategory(catName) {
     currentShopCategory = catName || 'All';
@@ -699,6 +700,17 @@ function selectShopCategory(catName) {
 }
 window.selectShopCategory = selectShopCategory;
 
+function selectShopBadge(badge) {
+    const target = badge || 'All';
+    // Tapping the already-active collection again clears it back to All
+    currentShopBadge = (target !== 'All' && currentShopBadge === target) ? 'All' : target;
+    document.querySelectorAll('.shop-badge-pill').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.badge === currentShopBadge);
+    });
+    filterShop();
+}
+window.selectShopBadge = selectShopBadge;
+
 function filterShop() {
     let filtered = products.filter(p => !p.isDeleted);
 
@@ -708,6 +720,13 @@ function filterShop() {
             const cat = String(p.category || '').toLowerCase().trim();
             return cat === currentShopCategory.toLowerCase().trim();
         });
+    }
+
+    // Promo badge quick filter: New Drop / Best Seller / Hot / Limited
+    if (currentShopBadge && currentShopBadge !== 'All') {
+        const normalizeBadge = v => String(v || '').toUpperCase().replace(/[^A-Z]/g, '');
+        const targetBadge = normalizeBadge(currentShopBadge);
+        filtered = filtered.filter(p => normalizeBadge(p.badge) === targetBadge);
     }
 
     // Size filter (sizes are stored as an object in Firestore)

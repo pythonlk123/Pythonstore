@@ -2126,6 +2126,22 @@
         </a>
       </div>
 
+      <!-- Quick drop filters: click once to filter, click again to show all -->
+      <div class="home-drop-filters" id="home-drop-filters" role="group" aria-label="Filter home products">
+        <button type="button" class="home-drop-pill" data-home-filter="NEW DROP" onclick="setHomeFilter(this)">
+          <span class="hdp-dot"></span> NEW DROP
+        </button>
+        <button type="button" class="home-drop-pill" data-home-filter="BESTSELLER" onclick="setHomeFilter(this)">
+          <span class="hdp-dot"></span> BEST SELLER
+        </button>
+        <button type="button" class="home-drop-pill" data-home-filter="HOT" onclick="setHomeFilter(this)">
+          <span class="hdp-dot"></span> HOT
+        </button>
+        <button type="button" class="home-drop-pill" data-home-filter="LIMITED" onclick="setHomeFilter(this)">
+          <span class="hdp-dot"></span> LIMITED
+        </button>
+      </div>
+
       <!-- Dynamic Grid Hook: Populated live from Firebase Firestore via script.js -->
       <div class="products-fashion-grid" id="new-drop-grid">
         <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px;">
@@ -2289,12 +2305,37 @@
   <script>
     'use strict';
 
+    // Active quick filter for the Home "The New Drop" grid ('all' = show every home item)
+    var homeProductFilter = 'all';
+
+    // Click a pill to filter; click the active pill again to reset to all items
+    function setHomeFilter(btn) {
+      var filter = btn.getAttribute('data-home-filter') || 'all';
+      var wasActive = btn.classList.contains('active');
+      document.querySelectorAll('.home-drop-pill').forEach(function (b) {
+        b.classList.remove('active');
+      });
+      if (wasActive) {
+        homeProductFilter = 'all';
+      } else {
+        homeProductFilter = filter;
+        btn.classList.add('active');
+      }
+      renderHomeProducts();
+    }
+
     // Renders the Homepage dynamic New Drop grid from the active products
     function renderHomeProducts() {
       const grid = document.getElementById('new-drop-grid');
       if (!grid) return;
 
-      if (!Array.isArray(products) || products.length === 0) {
+      // Only products explicitly allowed on the Home Page (legacy items without
+      // the flag stay visible so nothing disappears after this update).
+      const homeVisible = Array.isArray(products)
+        ? products.filter(p => !p.isDeleted && p.showOnHome !== false)
+        : [];
+
+      if (homeVisible.length === 0) {
         grid.innerHTML = `
           <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; background: #F9FAFB; border-radius: 16px; border: 1.5px dashed var(--border-fine);">
             <i data-lucide="layers" style="width: 44px; height: 44px; color: var(--dark-red); margin: 0 auto 14px;"></i>
@@ -2311,8 +2352,29 @@
         return;
       }
 
+      // Apply the selected quick filter (badge based)
+      const normalizeBadge = (v) => String(v || '').toUpperCase().replace(/[^A-Z]/g, '');
+      const filteredHome = homeProductFilter === 'all'
+        ? homeVisible
+        : homeVisible.filter(p => normalizeBadge(p.badge) === normalizeBadge(homeProductFilter));
+
+      if (filteredHome.length === 0) {
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 54px 20px; background: #F9FAFB; border-radius: 16px; border: 1.5px dashed var(--border-fine);">
+            <i data-lucide="package-search" style="width: 42px; height: 42px; color: var(--dark-red); margin: 0 auto 12px;"></i>
+            <h3 style="font-family: var(--font-headline); font-size: 1.15rem; font-weight: 900; color: #0A0A0A; margin-bottom: 6px;">NO ${homeProductFilter} ITEMS YET</h3>
+            <p style="color: #6B7280; font-size: 0.88rem; margin-bottom: 18px;">Click the active pill again to view all home items, or explore the full catalog.</p>
+            <a href="shop.html" class="btn-hero-primary" style="font-size: 0.75rem; padding: 11px 22px;">
+              <i data-lucide="shopping-bag"></i> EXPLORE CATALOG
+            </a>
+          </div>
+        `;
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+        return;
+      }
+
       // Render the live products
-      grid.innerHTML = products.filter(p => !p.isDeleted).slice(0, 8).map(p => {
+      grid.innerHTML = filteredHome.slice(0, 8).map(p => {
         const displayPrice = getProductDisplayPrice(p);
         const displayOldPrice = getProductDisplayOldPrice(p);
         const img = getProductImages(p)[0];
@@ -2366,7 +2428,7 @@
       }).join('');
 
       // Update hero spotlight card with the top product if available
-      const topProd = products.find(p => !p.isDeleted);
+      const topProd = filteredHome[0] || homeVisible[0];
       if (topProd) {
         const topImg = getProductImages(topProd)[0];
         const heroImg = document.getElementById('hero-spotlight-img');

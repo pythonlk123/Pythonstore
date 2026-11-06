@@ -194,6 +194,77 @@
       border-color: #8B0000 !important;
       box-shadow: 0 4px 14px rgba(139, 0, 0, 0.22);
     }
+
+    /* Promo / Badge Quick Filters */
+    .shop-badge-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+    .shop-badge-pill {
+      flex: 1 1 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 7px;
+      padding: 9px 18px;
+      border-radius: 50px;
+      border: 1.5px solid #E5E7EB;
+      background: #FFFFFF;
+      color: #0A0A0A;
+      font-family: 'Anta', sans-serif;
+      font-size: 0.74rem;
+      font-weight: 900;
+      letter-spacing: 0.7px;
+      text-transform: uppercase;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .shop-badge-pill .sbp-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: 0.65;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .shop-badge-pill:hover {
+      border-color: #8B0000;
+      color: #8B0000;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 14px rgba(139, 0, 0, 0.12);
+    }
+    .shop-badge-pill:hover .sbp-dot {
+      opacity: 1;
+      transform: scale(1.25);
+    }
+    .shop-badge-pill.active {
+      background: linear-gradient(135deg, #A50000 0%, #6E0000 100%);
+      border-color: #6E0000;
+      color: #FFFFFF;
+      box-shadow: 0 6px 18px rgba(139, 0, 0, 0.28);
+      transform: translateY(-2px);
+    }
+    .shop-badge-pill.active .sbp-dot {
+      background: #FFFFFF;
+      opacity: 1;
+    }
+    @media (max-width: 560px) {
+      .shop-badge-filter {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+      .shop-badge-pill {
+        padding: 11px 10px;
+        font-size: 0.7rem;
+      }
+      .shop-badge-pill[data-badge="All"] {
+        grid-column: 1 / -1;
+      }
+    }
   </style>
 </head>
 
@@ -394,6 +465,27 @@
       <button class="shop-cat-pill active" data-category="All" onclick="selectShopCategory('All')">
         <i data-lucide="layers" style="width: 13px; height: 13px;"></i>
         All Pieces
+      </button>
+    </div>
+  </div>
+
+  <!-- Promo / Badge Quick Filters -->
+  <div class="shop-category-bar-wrapper" style="margin-bottom: 18px;">
+    <div class="shop-badge-filter" id="shop-badge-filter" role="group" aria-label="Filter products by collection">
+      <button class="shop-badge-pill active" data-badge="All" onclick="selectShopBadge('All')">
+        <span class="sbp-dot"></span> All
+      </button>
+      <button class="shop-badge-pill" data-badge="NEW DROP" onclick="selectShopBadge('NEW DROP')">
+        <span class="sbp-dot"></span> New Drop
+      </button>
+      <button class="shop-badge-pill" data-badge="BESTSELLER" onclick="selectShopBadge('BESTSELLER')">
+        <span class="sbp-dot"></span> Best Seller
+      </button>
+      <button class="shop-badge-pill" data-badge="HOT" onclick="selectShopBadge('HOT')">
+        <span class="sbp-dot"></span> Hot
+      </button>
+      <button class="shop-badge-pill" data-badge="LIMITED" onclick="selectShopBadge('LIMITED')">
+        <span class="sbp-dot"></span> Limited
       </button>
     </div>
   </div>
