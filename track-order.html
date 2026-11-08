@@ -1928,7 +1928,7 @@
 
         let specs = [];
         if (it.size) specs.push('<span class="spec-pill">Size: ' + it.size + '</span>');
-        if (it.color) specs.push('<span class="spec-pill">Color: ' + it.color + '</span>');
+        if (it.color) specs.push('<span class="spec-pill">Color: ' + ((typeof getColorName === 'function') ? getColorName(it.color) : it.color) + '</span>');
         specs.push('<span class="spec-pill">Qty: ' + qty + '</span>');
 
         return '<div class="order-item-row">' +

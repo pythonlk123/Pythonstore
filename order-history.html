@@ -1133,7 +1133,7 @@
               const lineTotal = price * qty;
               const img = it.image || 'logo.png';
               const size = it.size || 'Free';
-              const color = it.color || 'Classic';
+              const color = (typeof getColorName === 'function') ? getColorName(it.color) : (it.color || 'Classic');
 
               return `
                 <div class="py-item-row">

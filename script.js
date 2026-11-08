@@ -35,10 +35,75 @@ const colorNames = {
     '#d9cdbe': 'Beige'
 };
 
-function getColorName(color) {
+function hexToNamedColor(hex) {
+    if (!hex || typeof hex !== 'string') return 'Classic';
+    const clean = hex.trim();
+    if (!clean.startsWith('#')) return clean;
+    let h = clean.slice(1);
+    if (h.length === 3) h = h.split('').map(function(c) { return c + c; }).join('');
+    if (h.length !== 6) return 'Custom Colour';
+    const r = parseInt(h.slice(0, 2), 16);
+    const g = parseInt(h.slice(2, 4), 16);
+    const b = parseInt(h.slice(4, 6), 16);
+    if (isNaN(r) || isNaN(g) || isNaN(b)) return 'Custom Colour';
+    const basePalette = [
+        { name: 'Pure White', r: 255, g: 255, b: 255 },
+        { name: 'Off-White', r: 245, g: 245, b: 240 },
+        { name: 'Black', r: 10, g: 10, b: 10 },
+        { name: 'Jet Black', r: 0, g: 0, b: 0 },
+        { name: 'Charcoal', r: 54, g: 69, b: 79 },
+        { name: 'Grey', r: 128, g: 128, b: 128 },
+        { name: 'Light Slate', r: 156, g: 163, b: 175 },
+        { name: 'Silver', r: 209, g: 213, b: 219 },
+        { name: 'Navy Blue', r: 0, g: 0, b: 128 },
+        { name: 'Midnight Blue', r: 26, g: 42, b: 74 },
+        { name: 'Royal Blue', r: 0, g: 35, b: 200 },
+        { name: 'Sky Blue', r: 74, g: 144, b: 226 },
+        { name: 'Light Blue', r: 0, g: 242, b: 255 },
+        { name: 'Dark Red', r: 139, g: 0, b: 0 },
+        { name: 'Crimson Red', r: 220, g: 20, b: 60 },
+        { name: 'Red', r: 255, g: 0, b: 0 },
+        { name: 'Maroon', r: 128, g: 0, b: 0 },
+        { name: 'Pink', r: 255, g: 105, b: 180 },
+        { name: 'Salmon Pink', r: 255, g: 145, b: 164 },
+        { name: 'Forest Green', r: 4, g: 120, b: 87 },
+        { name: 'Emerald Green', r: 22, g: 163, b: 74 },
+        { name: 'Mint Green', r: 34, g: 197, b: 94 },
+        { name: 'Sage Green', r: 136, g: 156, b: 138 },
+        { name: 'Beige', r: 217, g: 205, b: 190 },
+        { name: 'Light Brown', r: 196, g: 149, b: 106 },
+        { name: 'Brown', r: 139, g: 69, b: 19 },
+        { name: 'Yellow', r: 255, g: 255, b: 0 },
+        { name: 'Amber Orange', r: 255, g: 149, b: 0 },
+        { name: 'Purple', r: 128, g: 0, b: 128 }
+    ];
+    let bestDist = Infinity, bestName = 'Custom Colour';
+    for (let i = 0; i < basePalette.length; i++) {
+        const p = basePalette[i];
+        const dist = Math.hypot(r - p.r, g - p.g, b - p.b);
+        if (dist < bestDist) {
+            bestDist = dist;
+            bestName = p.name;
+        }
+    }
+    return bestName;
+}
+
+function getColorName(color, product) {
     if (!color) return 'Classic';
     const str = String(color).trim();
     if (!str.startsWith('#')) return str;
+    if (product && product.colorLabels && product.colorLabels[str] && !product.colorLabels[str].startsWith('#')) {
+        return product.colorLabels[str];
+    }
+    if (typeof products !== 'undefined' && Array.isArray(products)) {
+        for (let i = 0; i < products.length; i++) {
+            const p = products[i];
+            if (p && p.colorLabels && p.colorLabels[str] && !p.colorLabels[str].startsWith('#')) {
+                return p.colorLabels[str];
+            }
+        }
+    }
     const lower = str.toLowerCase();
     const map = {
         '#000000': 'Black',
@@ -84,10 +149,11 @@ function getColorName(color) {
         const found = Object.keys(colorNames).find(k => k.toLowerCase() === lower);
         if (found) return colorNames[found];
     }
-    return str;
+    return hexToNamedColor(lower);
 }
 if (typeof window !== 'undefined') {
     window.getColorName = getColorName;
+    window.hexToNamedColor = hexToNamedColor;
     window.colorNames = colorNames;
 }
 
@@ -198,9 +264,10 @@ function getProductColors(product) {
 
 function getColorLabel(color, product) {
     if (!color) return 'Default';
-    if (product && product.colorLabels && product.colorLabels[color]) return product.colorLabels[color];
-    const match = Object.keys(colorNames).find(key => key.toLowerCase() === String(color).toLowerCase());
-    return match ? colorNames[match] : color;
+    if (product && product.colorLabels && product.colorLabels[color] && !product.colorLabels[color].startsWith('#')) {
+        return product.colorLabels[color];
+    }
+    return getColorName(color, product);
 }
 
 function getProductDisplayPrice(product) {
@@ -323,11 +390,19 @@ function addToCart(name, price, image = '', size = 'Free', color = 'Default', qu
             return;
         }
     }
-    const existingItem = cart.find(item => item.name === name && item.size === size && item.color === color);
+    let finalColor = color;
+    if (typeof finalColor === 'string' && finalColor.startsWith('#')) {
+        finalColor = getColorLabel(finalColor, product);
+    }
+    if (!finalColor || finalColor.startsWith('#')) {
+        finalColor = getColorName(finalColor, product);
+    }
+    const existingItem = cart.find(item => item.name === name && item.size === size && (item.color === finalColor || item.color === color));
     if (existingItem) {
+        existingItem.color = finalColor;
         existingItem.quantity += parseInt(quantity);
     } else {
-        cart.push({ name: name, price: price, quantity: parseInt(quantity), image: image, size: size, color: color });
+        cart.push({ name: name, price: price, quantity: parseInt(quantity), image: image, size: size, color: finalColor });
     }
     saveCart();
     showNotification(`${name} added to cart!`);
@@ -482,7 +557,8 @@ function addCardToCart(event, productId) {
         return;
     }
     const activeColor = card ? card.querySelector('.card-color-dot.active') : null;
-    const selectedColor = activeColor ? activeColor.dataset.color : (getProductColors(product)[0] || 'Default');
+    const rawColor = activeColor ? activeColor.dataset.color : (getProductColors(product)[0] || 'Default');
+    const selectedColor = activeColor ? (activeColor.dataset.label || getColorLabel(rawColor, product)) : getColorLabel(rawColor, product);
     const sizes = getProductSizes(product);
     const selectedSize = sizes[0] || 'Free';
     addToCart(product.name, getProductDisplayPrice(product), getProductImages(product)[0], selectedSize, selectedColor, 1);
@@ -1882,7 +1958,12 @@ function placeOrder() {
                 price: item.price,
                 quantity: item.quantity,
                 size: item.size,
-                color: getColorName(item.color),
+                color: (function() {
+                    let c = item.color;
+                    if (p && p.colorLabels && p.colorLabels[c] && !p.colorLabels[c].startsWith('#')) return p.colorLabels[c];
+                    c = getColorName(c, p);
+                    return (typeof c === 'string' && c.startsWith('#')) ? hexToNamedColor(c) : c;
+                })(),
                 image: item.image || (p.images ? p.images[0] : ''),
                 isCustom: item.isCustom || (item.id && String(item.id).startsWith('custom-')) || false,
                 basePrice: item.basePrice || 0,

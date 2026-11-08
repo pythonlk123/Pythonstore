@@ -1093,12 +1093,18 @@
 
         function getPdColorLabel(color) {
             if (!color) return 'Default';
-            if (product && product.colorLabels && product.colorLabels[color]) return product.colorLabels[color];
+            if (product && product.colorLabels && product.colorLabels[color] && !product.colorLabels[color].startsWith('#')) {
+                return product.colorLabels[color];
+            }
+            if (typeof getColorName === 'function') {
+                const n = getColorName(color, product);
+                if (n && !n.startsWith('#')) return n;
+            }
             if (typeof colorNames !== 'undefined') {
                 const found = Object.keys(colorNames).find(key => key.toLowerCase() === String(color).toLowerCase());
                 if (found) return colorNames[found];
             }
-            return color;
+            return (typeof hexToNamedColor === 'function') ? hexToNamedColor(color) : color;
         }
 
         function getPdSpecIcon(key) {
@@ -1480,7 +1486,8 @@
                 return;
             }
             const images = getProductImages(product);
-            addToCart(product.name, currentPrice, images[0], selectedSize || 'Free', selectedColor, currentQty);
+            const colorName = getPdColorLabel(selectedColor);
+            addToCart(product.name, currentPrice, images[0], selectedSize || 'Free', colorName, currentQty);
         }
 
         function openSizeChart() {

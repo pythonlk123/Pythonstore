@@ -341,18 +341,17 @@
             .customize-layout {
                 display: flex;
                 flex-direction: column;
-                padding: 15px;
+                padding: 10px;
                 width: 100%;
                 box-sizing: border-box;
-                gap: 20px;
+                gap: 16px;
                 overflow-x: hidden;
             }
 
             .preview-box {
-                min-height: unset;
+                min-height: 520px;
                 height: auto;
-                aspect-ratio: 1 / 1;
-                padding: 10px;
+                padding: 38px 8px 56px;
                 width: 100%;
                 box-sizing: border-box;
                 display: flex;
@@ -361,8 +360,8 @@
             }
 
             .tshirt-base {
-                width: 90%;
-                max-width: 100%;
+                width: 98%;
+                max-width: 500px;
                 height: auto;
             }
 
@@ -377,7 +376,7 @@
             }
 
             .selector-grid {
-                grid-template-columns: repeat(5, 1fr);
+                grid-template-columns: repeat(4, 1fr);
             }
         }
 
@@ -779,7 +778,7 @@
         }
 
         .size-selector {
-            grid-template-columns: repeat(5, minmax(0, 1fr));
+            grid-template-columns: repeat(4, minmax(0, 1fr));
             gap: 7px;
         }
 
@@ -1140,25 +1139,38 @@
 
         @media (max-width: 900px) {
             .studio-main {
-                padding-top: 106px !important;
+                padding-top: 96px !important;
+                padding-bottom: 50px !important;
             }
 
             .studio-hero {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 12px;
-                margin-bottom: 20px;
+                gap: 8px;
+                margin-bottom: 14px;
+                padding: 0 14px;
+            }
+
+            .studio-hero h1 {
+                font-size: clamp(1.8rem, 4vw, 2.4rem);
+                margin: 6px 0 4px;
+            }
+
+            .studio-hero p {
+                font-size: 0.8rem;
+                line-height: 1.45;
             }
 
             .studio-hero-meta {
                 justify-content: flex-start;
+                gap: 5px;
             }
 
             .customize-layout {
                 grid-template-columns: 1fr;
                 align-items: stretch;
-                padding: 0 14px 20px;
-                gap: 16px;
+                padding: 0 10px 20px;
+                gap: 14px;
             }
 
             .controls-panel,
@@ -1170,45 +1182,62 @@
             .preview-box {
                 position: relative;
                 top: 0;
-                min-height: 450px;
-                padding: 48px 18px 78px;
+                min-height: 520px;
+                padding: 38px 8px 58px;
                 aspect-ratio: auto;
+                border-radius: 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
 
             .tshirt-base {
-                width: min(86%, 420px);
+                width: 98% !important;
+                max-width: 500px !important;
+                margin: 0 auto;
+                filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.22));
+            }
+
+            .tshirt-img {
+                width: 100%;
+                height: auto;
+                display: block;
+                image-rendering: -webkit-optimize-contrast;
             }
 
             .studio-stage-top {
-                top: 14px;
-                left: 15px;
-                right: 15px;
+                top: 10px;
+                left: 12px;
+                right: 12px;
             }
 
             .studio-sizechart-btn {
-                top: 13px;
-                right: 14px;
-                padding: 6px 9px;
+                top: 9px;
+                right: 12px;
+                padding: 5px 8px;
                 font-size: 0.52rem;
             }
 
             .studio-preview-bar {
-                left: 10px;
-                right: 10px;
-                bottom: 10px;
-                padding: 10px 11px;
+                left: 8px;
+                right: 8px;
+                bottom: 8px;
+                padding: 8px 12px;
+                border-radius: 11px;
             }
 
             .studio-preview-bar strong {
-                font-size: 0.66rem;
+                font-size: 0.68rem;
             }
 
             .studio-preview-bar .studio-live-total strong {
-                font-size: 0.8rem;
+                font-size: 0.82rem;
             }
 
             .canvas-empty {
-                bottom: 84px;
+                bottom: 68px;
+                padding: 6px 10px;
+                font-size: 0.56rem;
             }
 
             .canvas-picker__card {
@@ -1229,27 +1258,49 @@
             }
         }
 
-        @media (max-width: 420px) {
-            .studio-hero h1 {
-                font-size: 2rem;
+        @media (max-width: 480px) {
+            .studio-main {
+                padding-top: 86px !important;
+            }
+
+            .customize-layout {
+                padding: 0 6px 16px;
             }
 
             .preview-box {
-                min-height: 390px;
+                min-height: 480px !important;
+                padding: 34px 4px 54px !important;
                 border-radius: 14px;
             }
 
+            .tshirt-base {
+                width: 100% !important;
+                max-width: 100% !important;
+                transform: scale(1.03);
+            }
+
+            .studio-stage-top {
+                top: 8px;
+                left: 8px;
+                right: 8px;
+            }
+
             .studio-preview-bar {
-                grid-template-columns: 1fr 0.7fr 1.1fr;
+                grid-template-columns: 1fr 0.7fr 1.15fr;
+                padding: 7px 10px;
+                left: 6px;
+                right: 6px;
+                bottom: 6px;
             }
 
             .studio-preview-bar span {
                 font-size: 0.44rem;
+                margin-bottom: 1px;
             }
 
             .studio-preview-bar strong,
             .studio-preview-bar .studio-live-total strong {
-                font-size: 0.62rem;
+                font-size: 0.65rem;
             }
 
             .color-copy small,
@@ -1258,11 +1309,23 @@
             }
 
             .color-option {
-                padding: 9px;
+                padding: 8px 7px;
             }
 
             .control-section {
-                padding: 15px;
+                padding: 14px 12px;
+            }
+        }
+
+        @media (max-width: 370px) {
+            .preview-box {
+                min-height: 420px !important;
+                padding: 30px 2px 50px !important;
+            }
+
+            .tshirt-base {
+                width: 100% !important;
+                transform: scale(1.05);
             }
         }
 
@@ -1857,7 +1920,6 @@
                         <div class="selector-btn active" onclick="setTshirtSize('M', this)">M</div>
                         <div class="selector-btn" onclick="setTshirtSize('L', this)">L</div>
                         <div class="selector-btn" onclick="setTshirtSize('XL', this)">XL</div>
-                        <div class="selector-btn" onclick="setTshirtSize('2XL', this)">2XL</div>
                     </div>
                 </div>
 
@@ -2609,7 +2671,7 @@
             if (isLocked) return;
 
             const raw = String(color || '').toUpperCase();
-            const isBlack = raw === '#0A0A0A' || raw === '#000000' || raw === '#2B2B2B';
+            const isBlack = raw === '#0A0A0A' || raw === '#000000' || raw === '#2B2B2B' || /black/i.test(name || '');
             selectedColor = isBlack ? '#0A0A0A' : '#FFFFFF';
             selectedColorName = isBlack ? 'Onyx Black' : 'Optic White';
 
@@ -2621,14 +2683,31 @@
 
             const base = document.querySelector('.tshirt-base');
             const img = document.querySelector('.tshirt-img');
-            if (base) {
-                base.style.webkitMaskImage = "url('https://i.ibb.co/NnQrQr7y/T-Shirt.png')";
-                base.style.maskImage = "url('https://i.ibb.co/NnQrQr7y/T-Shirt.png')";
-                base.style.backgroundColor = selectedColor;
-            }
-            if (img) {
-                img.style.mixBlendMode = 'multiply';
-                img.src = 'https://i.ibb.co/NnQrQr7y/T-Shirt.png';
+            const blackTeeImg = 'https://i.ibb.co/Rk82RMjR/f46b35401278.png';
+            const whiteTeeImg = 'https://i.ibb.co/NnQrQr7y/T-Shirt.png';
+
+            if (isBlack) {
+                if (base) {
+                    base.style.webkitMaskImage = 'none';
+                    base.style.maskImage = 'none';
+                    base.style.backgroundColor = 'transparent';
+                }
+                if (img) {
+                    img.style.mixBlendMode = 'normal';
+                    img.style.filter = 'none';
+                    img.src = blackTeeImg;
+                }
+            } else {
+                if (base) {
+                    base.style.webkitMaskImage = `url('${whiteTeeImg}')`;
+                    base.style.maskImage = `url('${whiteTeeImg}')`;
+                    base.style.backgroundColor = '#FFFFFF';
+                }
+                if (img) {
+                    img.style.mixBlendMode = 'multiply';
+                    img.style.filter = 'none';
+                    img.src = whiteTeeImg;
+                }
             }
 
             const colorLabel = document.getElementById('studio-color-name');
@@ -2894,7 +2973,7 @@
                     const targetOption = document.querySelector(`.color-option[data-color="${normalizedColor}"]`);
                     setTshirtColor(normalizedColor, normalizedName, targetOption);
 
-                    const validSizes = ['S', 'M', 'L', 'XL', '2XL'];
+                    const validSizes = ['S', 'M', 'L', 'XL'];
                     const size = validSizes.includes(data.size) ? data.size : 'M';
                     setTshirtSize(size, null);
                     document.querySelectorAll('.size-selector .selector-btn').forEach(btn => {
@@ -2963,20 +3042,24 @@
                 const shirtColor = isBlack ? '#0A0A0A' : '#FFFFFF';
 
                 if (shirtImg && (shirtImg.naturalWidth || shirtImg.complete)) {
-                    const layer = document.createElement('canvas');
-                    layer.width = 1000;
-                    layer.height = 1000;
-                    const lctx = layer.getContext('2d');
-                    lctx.drawImage(shirtImg, 0, 0, 1000, 1000);
-                    lctx.globalCompositeOperation = 'source-in';
-                    lctx.fillStyle = shirtColor;
-                    lctx.fillRect(0, 0, 1000, 1000);
-                    ctx.drawImage(layer, 0, 0);
+                    if (isBlack) {
+                        ctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                    } else {
+                        const layer = document.createElement('canvas');
+                        layer.width = 1000;
+                        layer.height = 1000;
+                        const lctx = layer.getContext('2d');
+                        lctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                        lctx.globalCompositeOperation = 'source-in';
+                        lctx.fillStyle = shirtColor;
+                        lctx.fillRect(0, 0, 1000, 1000);
+                        ctx.drawImage(layer, 0, 0);
 
-                    ctx.save();
-                    ctx.globalCompositeOperation = 'multiply';
-                    ctx.drawImage(shirtImg, 0, 0, 1000, 1000);
-                    ctx.restore();
+                        ctx.save();
+                        ctx.globalCompositeOperation = 'multiply';
+                        ctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                        ctx.restore();
+                    }
                 }
 
                 // 2. Draw placed stickers
@@ -3084,7 +3167,7 @@
                     isCustom: true,
                     customStickers: details,
                     previewImage: previewDataUrl || '',
-                    image: previewDataUrl || 'https://i.ibb.co/NnQrQr7y/T-Shirt.png',
+                    image: previewDataUrl || (selectedColor === '#0A0A0A' ? 'https://i.ibb.co/Rk82RMjR/f46b35401278.png' : 'https://i.ibb.co/NnQrQr7y/T-Shirt.png'),
                     basePrice: baseTshirtPrice
                 };
                 tempCart.push(cartItem);

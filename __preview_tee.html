@@ -1,0 +1,3519 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Design Studio | Python Store</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        :root {
+            --primary: #DC143C;
+        }
+
+        .customize-layout {
+            display: grid;
+            grid-template-columns: 1fr 400px;
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .preview-box {
+            position: relative;
+            background: var(--surface);
+            border-radius: 24px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 40px var(--shadow-color);
+            min-height: 600px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .tshirt-base {
+            position: relative;
+            width: 100%;
+            max-width: 550px;
+            background-color: #ffffff;
+            transition: 0.3s;
+            -webkit-mask-image: url('https://i.ibb.co/NnQrQr7y/T-Shirt.png');
+            mask-image: url('https://i.ibb.co/NnQrQr7y/T-Shirt.png');
+            -webkit-mask-size: contain;
+            mask-size: contain;
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-position: center;
+            mask-position: center;
+        }
+
+        .tshirt-img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+            mix-blend-mode: multiply;
+        }
+
+        .sticker-wrapper {
+            position: absolute;
+            top: 45%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 180px;
+            cursor: move;
+            z-index: 10;
+            border: 2px dashed transparent;
+            transform-origin: center center;
+            touch-action: none;
+        }
+
+        .sticker-wrapper.active {
+            border-color: var(--primary);
+            z-index: 100;
+        }
+
+        .sticker-wrapper.locked {
+            cursor: default !important;
+            border: none !important;
+        }
+
+        .sticker-wrapper img {
+            width: 100%;
+            display: block;
+            pointer-events: none;
+        }
+
+        .sticker-size-tag {
+            position: absolute;
+            bottom: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            display: none;
+            white-space: nowrap;
+        }
+
+        .sticker-wrapper.active .sticker-size-tag {
+            display: block;
+        }
+
+        .handle {
+            position: absolute;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 120;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+        }
+
+        .sticker-wrapper.active:not(.locked) .handle {
+            display: flex;
+        }
+
+        .sticker-delete {
+            top: -17px;
+            left: -17px;
+            background: #ff0000;
+        }
+
+        .resize-handle {
+            bottom: -17px;
+            right: -17px;
+        }
+
+        .rotate-handle {
+            top: -45px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+        }
+
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .control-section {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px var(--shadow-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-main);
+        }
+
+        .control-section h4 {
+            font-size: 0.85rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .color-dot {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 3px solid red;
+            transition: 0.2s;
+        }
+
+        .color-dot.active {
+            border-color: green;
+            transform: scale(1.1);
+        }
+
+        .selector-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .selector-btn {
+            padding: 10px 5px;
+            border: 1px solid var(--border-color);
+            background: var(--surface);
+            color: var(--text-main);
+            border-radius: 10px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.75rem;
+            font-weight: 800;
+        }
+
+        .selector-btn.active {
+            background: var(--primary-dark);
+            color: var(--primary-light);
+            border-color: var(--primary-dark);
+        }
+
+        .sticker-grid {
+            display: grid;
+            grid-template-rows: repeat(3, 70px);
+            grid-auto-flow: column;
+            grid-auto-columns: 70px;
+            gap: 10px;
+            overflow-x: auto;
+            overflow-y: hidden;
+            padding: 12px 10px;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-page, var(--primary-light));
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .sticker-grid::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+
+        .sticker-grid::-webkit-scrollbar-track {
+            background: var(--border-light);
+            border-radius: 10px;
+            margin: 5px;
+        }
+
+        .sticker-grid::-webkit-scrollbar-thumb {
+            background: var(--accent-gold);
+            border-radius: 10px;
+        }
+
+        .sticker-item {
+            width: 100%;
+            height: 100%;
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            padding: 6px;
+            border-radius: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: 0.2s;
+        }
+
+        .sticker-item:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .sticker-item img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .modal-content {
+            background: var(--surface);
+            color: var(--text-main);
+            padding: 20px;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            cursor: pointer;
+        }
+
+        #btn-finish {
+            width: 100%;
+            height: 50px;
+            background: var(--primary-dark);
+            color: var(--primary-light);
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        #btn-cart {
+            display: none;
+            width: 100%;
+            height: 50px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        .sticker-summary {
+            margin-top: 15px;
+            padding: 10px;
+            background: #f9f9f9;
+            border-radius: 12px;
+            font-size: 0.75rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        @media (max-width: 900px) {
+            .customize-layout {
+                display: flex;
+                flex-direction: column;
+                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
+                gap: 20px;
+                overflow-x: hidden;
+            }
+
+            .preview-box {
+                min-height: unset;
+                height: auto;
+                aspect-ratio: 1 / 1;
+                padding: 10px;
+                width: 100%;
+                box-sizing: border-box;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .tshirt-base {
+                width: 90%;
+                max-width: 100%;
+                height: auto;
+            }
+
+            .control-section {
+                padding: 15px;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
+            .color-grid {
+                grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+            }
+
+            .selector-grid {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+
+        /* ==========================================================================
+           ADVANCED DESIGN STUDIO
+           ========================================================================== */
+        .studio-main {
+            padding: 112px 0 80px !important;
+            background:
+                radial-gradient(circle at 8% 0%, rgba(139, 0, 0, 0.06), transparent 28%),
+                #F7F7F8;
+        }
+
+        .studio-hero {
+            max-width: 1240px;
+            margin: 0 auto 28px;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            gap: 26px;
+        }
+
+        .studio-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 11px;
+            border: 1px solid rgba(139, 0, 0, 0.2);
+            background: rgba(139, 0, 0, 0.06);
+            color: var(--dark-red);
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+        }
+
+        .studio-hero h1 {
+            font-family: var(--font-headline);
+            font-size: clamp(2.1rem, 4.4vw, 3.6rem);
+            line-height: 0.98;
+            letter-spacing: -1.5px;
+            font-weight: 900;
+            text-transform: uppercase;
+            color: #0A0A0A;
+            margin: 12px 0 10px;
+        }
+
+        .studio-hero h1 span {
+            color: var(--dark-red);
+        }
+
+        .studio-hero p {
+            max-width: 560px;
+            margin: 0;
+            color: #52525B;
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        .studio-hero-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            gap: 7px;
+            flex-shrink: 0;
+        }
+
+        .studio-hero-meta span {
+            padding: 7px 10px;
+            border: 1px solid #D4D4D8;
+            background: #FFFFFF;
+            color: #3F3F46;
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        .customize-layout {
+            max-width: 1240px;
+            grid-template-columns: minmax(0, 1fr) minmax(360px, 420px);
+            gap: 26px;
+            padding: 0 20px 20px;
+            align-items: start;
+        }
+
+        .preview-box {
+            position: sticky;
+            top: 118px;
+            min-height: 650px;
+            padding: 58px 34px 88px;
+            border-radius: 20px;
+            border: 1px solid #D4D4D8;
+            background:
+                radial-gradient(circle at 50% 42%, #FFFFFF 0%, #F7F7F8 44%, #EDEDEF 100%);
+            box-shadow: 0 28px 70px rgba(0, 0, 0, 0.11);
+            overflow: hidden;
+        }
+
+        .preview-box::before {
+            content: '';
+            position: absolute;
+            inset: 16px;
+            pointer-events: none;
+            background-image:
+                linear-gradient(rgba(10, 10, 10, 0.035) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 10, 10, 0.035) 1px, transparent 1px);
+            background-size: 34px 34px;
+            border: 1px solid rgba(10, 10, 10, 0.04);
+            border-radius: 14px;
+        }
+
+        .studio-stage-top {
+            position: absolute;
+            top: 20px;
+            left: 22px;
+            right: 22px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            z-index: 6;
+        }
+
+        .studio-stage-top span {
+            font-size: 0.56rem;
+            font-weight: 900;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: #52525B;
+        }
+
+        .studio-stage-top .live-dot {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: #166534;
+        }
+
+        .studio-stage-top .live-dot::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #16A34A;
+            box-shadow: 0 0 0 4px rgba(22, 163, 74, 0.12);
+        }
+
+        .tshirt-base {
+            position: relative;
+            z-index: 2;
+            max-width: 540px;
+            filter: drop-shadow(0 26px 26px rgba(0, 0, 0, 0.16));
+        }
+
+        .canvas-empty {
+            position: absolute;
+            left: 50%;
+            bottom: 100px;
+            transform: translateX(-50%);
+            z-index: 4;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid #D4D4D8;
+            color: #52525B;
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            pointer-events: none;
+            backdrop-filter: blur(8px);
+        }
+
+        .canvas-empty.hidden {
+            display: none;
+        }
+
+        .studio-preview-bar {
+            position: absolute;
+            left: 16px;
+            right: 16px;
+            bottom: 16px;
+            z-index: 6;
+            display: grid;
+            grid-template-columns: 1fr 0.7fr 1.25fr;
+            gap: 8px;
+            padding: 12px 14px;
+            border-radius: 13px;
+            color: #FFFFFF;
+            background: rgba(10, 10, 10, 0.93);
+            backdrop-filter: blur(12px);
+        }
+
+        .studio-preview-bar span {
+            display: block;
+            font-size: 0.52rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            opacity: 0.5;
+            text-transform: uppercase;
+            margin-bottom: 3px;
+        }
+
+        .studio-preview-bar strong {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .studio-preview-bar .studio-live-total {
+            text-align: right;
+        }
+
+        .studio-preview-bar .studio-live-total strong {
+            color: #FFFFFF;
+            font-size: 0.92rem;
+        }
+
+        .studio-sizechart-btn {
+            position: absolute;
+            top: 18px;
+            right: 20px;
+            z-index: 7;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border: 1px solid #D4D4D8;
+            border-radius: 50px;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+
+        .controls-panel {
+            gap: 13px;
+        }
+
+        .control-section {
+            padding: 19px;
+            border-radius: 16px;
+            border: 1px solid #E4E4E7;
+            background: #FFFFFF;
+            box-shadow: 0 12px 28px rgba(0, 0, 0, 0.04);
+        }
+
+        .control-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 11px;
+            margin-bottom: 14px;
+        }
+
+        .control-head .step-no {
+            width: 34px;
+            height: 34px;
+            min-width: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-size: 0.66rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+        }
+
+        .control-head h4 {
+            margin: 1px 0 0;
+            font-size: 0.82rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #0A0A0A;
+            display: block;
+        }
+
+        .control-head p {
+            margin: 4px 0 0;
+            font-size: 0.66rem;
+            line-height: 1.45;
+            color: #71717A;
+        }
+
+        .canvas-fixed {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-bottom: 13px;
+        }
+
+        .canvas-fixed span {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 8px;
+            border: 1px solid #E4E4E7;
+            background: #FAFAFA;
+            color: #52525B;
+            font-size: 0.56rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        .micro-label {
+            margin: 14px 0 8px;
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 1.4px;
+            color: #71717A;
+            text-transform: uppercase;
+        }
+
+        .color-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 9px;
+        }
+
+        .color-option {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 10px;
+            border: 1px solid #E4E4E7;
+            border-radius: 11px;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .color-option.active {
+            background: #0A0A0A;
+            border-color: #0A0A0A;
+            color: #FFFFFF;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18);
+        }
+
+        .color-option .swatch {
+            width: 28px;
+            height: 28px;
+            min-width: 28px;
+            border-radius: 50%;
+            border: 1px solid #D4D4D8;
+            box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.25);
+        }
+
+        .color-option.active .swatch {
+            border-color: #FFFFFF;
+        }
+
+        .color-copy strong {
+            display: block;
+            font-size: 0.7rem;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .color-copy small {
+            display: block;
+            margin-top: 2px;
+            font-size: 0.55rem;
+            color: #71717A;
+            white-space: nowrap;
+        }
+
+        .color-option.active .color-copy small {
+            color: rgba(255, 255, 255, 0.62);
+        }
+
+        .color-check {
+            width: 15px;
+            height: 15px;
+            margin-left: auto;
+            opacity: 0;
+            flex-shrink: 0;
+        }
+
+        .color-option.active .color-check {
+            opacity: 1;
+        }
+
+        .size-selector {
+            grid-template-columns: repeat(4, minmax(0, 1fr));
+            gap: 7px;
+        }
+
+        .size-selector .selector-btn {
+            padding: 11px 4px;
+            border-radius: 9px;
+            border: 1px solid #E4E4E7;
+            background: #FAFAFA;
+            color: #0A0A0A;
+            font-size: 0.7rem;
+        }
+
+        .size-selector .selector-btn.active {
+            background: #0A0A0A;
+            border-color: #0A0A0A;
+            color: #FFFFFF;
+        }
+
+        .studio-tabs {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 11px;
+            overflow-x: auto;
+            padding-bottom: 3px;
+        }
+
+        .studio-tabs .selector-btn {
+            padding: 6px 11px;
+            border-radius: 50px;
+            border: 1px solid #E4E4E7;
+            background: #FFFFFF;
+            color: #52525B;
+            font-size: 0.62rem;
+            white-space: nowrap;
+        }
+
+        .studio-tabs .selector-btn.active {
+            background: #0A0A0A;
+            border-color: #0A0A0A;
+            color: #FFFFFF;
+        }
+
+        .studio-tools {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 6px;
+            margin-bottom: 9px;
+        }
+
+        .studio-tools button {
+            padding: 8px 5px;
+            border: 1px solid #E4E4E7;
+            border-radius: 8px;
+            background: #FFFFFF;
+            color: #52525B;
+            font-size: 0.56rem;
+            font-weight: 900;
+            letter-spacing: 0.7px;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.18s ease;
+        }
+
+        .studio-tools button:hover {
+            border-color: #0A0A0A;
+            background: #0A0A0A;
+            color: #FFFFFF;
+        }
+
+        .sticker-grid {
+            grid-template-rows: repeat(2, 64px);
+            grid-auto-columns: 64px;
+            gap: 8px;
+            padding: 10px;
+            border-radius: 10px;
+            background: #FAFAFA;
+        }
+
+        .sticker-item {
+            border-radius: 8px;
+            background: #FFFFFF;
+        }
+
+        .studio-upload {
+            margin-top: 12px;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px dashed #D4D4D8;
+            background: #FAFAFA;
+        }
+
+        .studio-upload button {
+            width: 100%;
+            padding: 11px;
+            border: 1px solid #0A0A0A;
+            border-radius: 8px;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-size: 0.68rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            text-transform: uppercase;
+        }
+
+        .studio-estimate {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 11px;
+            padding: 12px 13px;
+            border-radius: 11px;
+            background: #0A0A0A;
+            color: #FFFFFF;
+        }
+
+        .studio-estimate span {
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            color: rgba(255, 255, 255, 0.56);
+            text-transform: uppercase;
+        }
+
+        .studio-estimate strong {
+            font-size: 1.18rem;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+        }
+
+        .sticker-summary {
+            padding: 11px;
+            border-radius: 9px;
+            background: #FAFAFA;
+            border: 1px solid #EFEFF1;
+        }
+
+        .summary-item {
+            font-size: 0.68rem;
+            color: #52525B;
+        }
+
+        #btn-finish,
+        #btn-cart {
+            height: 48px;
+            border-radius: 9px;
+            font-size: 0.76rem;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+        }
+
+        #btn-finish {
+            background: #0A0A0A;
+            color: #FFFFFF;
+        }
+
+        #btn-cart {
+            background: var(--dark-red);
+            color: #FFFFFF;
+        }
+
+        .control-section > .btn {
+            border-radius: 9px !important;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+        }
+
+        /* Canvas picker overlay */
+        #product-selection-overlay {
+            position: fixed;
+            inset: 0;
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background:
+                radial-gradient(circle at 50% 25%, rgba(139, 0, 0, 0.22), transparent 32%),
+                rgba(7, 7, 8, 0.94) !important;
+            backdrop-filter: blur(18px) !important;
+            overflow-y: auto;
+        }
+
+        .canvas-picker {
+            width: min(720px, 100%);
+            margin: auto;
+            text-align: center;
+            color: #FFFFFF;
+        }
+
+        .canvas-picker__eyebrow {
+            display: inline-block;
+            padding: 6px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: rgba(255, 255, 255, 0.65);
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .canvas-picker h2 {
+            margin: 16px 0 10px;
+            font-family: var(--font-headline);
+            font-size: clamp(2rem, 5vw, 3.4rem);
+            line-height: 0.98;
+            letter-spacing: -1.5px;
+            font-weight: 900;
+            text-transform: uppercase;
+        }
+
+        .canvas-picker h2 span {
+            color: #FF334A;
+        }
+
+        .canvas-picker__sub {
+            max-width: 520px;
+            margin: 0 auto 22px;
+            color: rgba(255, 255, 255, 0.58);
+            font-size: 0.8rem;
+            line-height: 1.6;
+        }
+
+        .canvas-picker__card {
+            display: grid;
+            grid-template-columns: 0.9fr 1.1fr;
+            gap: 0;
+            width: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            background: #FFFFFF;
+            color: #0A0A0A;
+            text-align: left;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.25s ease, border-color 0.25s ease;
+        }
+
+        .canvas-picker__card:hover {
+            transform: translateY(-4px);
+            border-color: #FFFFFF;
+        }
+
+        .canvas-picker__visual {
+            min-height: 300px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            background:
+                linear-gradient(rgba(10, 10, 10, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(10, 10, 10, 0.04) 1px, transparent 1px),
+                #F3F3F4;
+            background-size: 28px 28px;
+        }
+
+        .canvas-picker__visual img {
+            width: 100%;
+            max-width: 250px;
+            max-height: 240px;
+            object-fit: contain;
+            filter: drop-shadow(0 18px 20px rgba(0, 0, 0, 0.16));
+        }
+
+        .canvas-picker__copy {
+            padding: 26px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .canvas-pill {
+            align-self: flex-start;
+            padding: 4px 7px;
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-size: 0.52rem;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        .canvas-picker__copy h3 {
+            margin: 12px 0 6px;
+            font-family: var(--font-headline);
+            font-size: 1.7rem;
+            line-height: 1;
+            text-transform: uppercase;
+            letter-spacing: -0.6px;
+        }
+
+        .canvas-picker__copy p {
+            margin: 0 0 14px;
+            color: #71717A;
+            font-size: 0.73rem;
+            line-height: 1.55;
+        }
+
+        .canvas-picker__swatches {
+            display: flex;
+            gap: 7px;
+            margin-bottom: 18px;
+        }
+
+        .canvas-picker__swatches .swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 1px solid #D4D4D8;
+        }
+
+        .canvas-picker__swatches .swatch.white {
+            background: #FFFFFF;
+        }
+
+        .canvas-picker__swatches .swatch.black {
+            background: #0A0A0A;
+        }
+
+        .canvas-picker__bottom {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding-top: 14px;
+            border-top: 1px solid #E4E4E7;
+        }
+
+        .canvas-picker__bottom strong {
+            font-size: 1.15rem;
+            font-weight: 900;
+            letter-spacing: -0.4px;
+        }
+
+        .canvas-picker__bottom span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--dark-red);
+            font-size: 0.62rem;
+            font-weight: 900;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .canvas-picker__note {
+            margin: 16px 0 0;
+            color: rgba(255, 255, 255, 0.38);
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+
+        @media (max-width: 900px) {
+            .studio-main {
+                padding-top: 106px !important;
+            }
+
+            .studio-hero {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 12px;
+                margin-bottom: 20px;
+            }
+
+            .studio-hero-meta {
+                justify-content: flex-start;
+            }
+
+            .customize-layout {
+                grid-template-columns: 1fr;
+                align-items: stretch;
+                padding: 0 14px 20px;
+                gap: 16px;
+            }
+
+            .controls-panel,
+            .control-section {
+                width: 100%;
+                min-width: 0;
+            }
+
+            .preview-box {
+                position: relative;
+                top: 0;
+                min-height: 450px;
+                padding: 48px 18px 78px;
+                aspect-ratio: auto;
+            }
+
+            .tshirt-base {
+                width: min(86%, 420px);
+            }
+
+            .studio-stage-top {
+                top: 14px;
+                left: 15px;
+                right: 15px;
+            }
+
+            .studio-sizechart-btn {
+                top: 13px;
+                right: 14px;
+                padding: 6px 9px;
+                font-size: 0.52rem;
+            }
+
+            .studio-preview-bar {
+                left: 10px;
+                right: 10px;
+                bottom: 10px;
+                padding: 10px 11px;
+            }
+
+            .studio-preview-bar strong {
+                font-size: 0.66rem;
+            }
+
+            .studio-preview-bar .studio-live-total strong {
+                font-size: 0.8rem;
+            }
+
+            .canvas-empty {
+                bottom: 84px;
+            }
+
+            .canvas-picker__card {
+                grid-template-columns: 1fr;
+            }
+
+            .canvas-picker__visual {
+                min-height: 210px;
+                padding: 18px;
+            }
+
+            .canvas-picker__visual img {
+                max-height: 180px;
+            }
+
+            .canvas-picker__copy {
+                padding: 20px;
+            }
+        }
+
+        @media (max-width: 420px) {
+            .studio-hero h1 {
+                font-size: 2rem;
+            }
+
+            .preview-box {
+                min-height: 390px;
+                border-radius: 14px;
+            }
+
+            .studio-preview-bar {
+                grid-template-columns: 1fr 0.7fr 1.1fr;
+            }
+
+            .studio-preview-bar span {
+                font-size: 0.44rem;
+            }
+
+            .studio-preview-bar strong,
+            .studio-preview-bar .studio-live-total strong {
+                font-size: 0.62rem;
+            }
+
+            .color-copy small,
+            .color-check {
+                display: none;
+            }
+
+            .color-option {
+                padding: 9px;
+            }
+
+            .control-section {
+                padding: 15px;
+            }
+        }
+
+        /* ── Sticker studio manager (admin) ── */
+        .sm-head-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+        .sm-head-actions .sm-head-btn { margin-left: 0; }
+        .sm-head-btn {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid #D4D4D8;
+            border-radius: 50px;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            font-family: inherit;
+            font-size: 0.54rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .sm-head-btn:hover { border-color: #8B0000; color: #8B0000; }
+
+        .sm-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 22px 16px;
+            background: rgba(6, 6, 6, 0.72);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            overflow-y: auto;
+        }
+        .sm-modal.open { display: flex; }
+        .sm-dialog {
+            width: 100%;
+            max-width: 880px;
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+            margin: auto;
+        }
+        .sm-dialog-sm { max-width: 520px; }
+        .sm-head {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid #ECECEF;
+            position: relative;
+        }
+        .sm-head h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 2px 0 4px;
+            color: #0A0A0A;
+        }
+        .sm-head p { font-size: 0.66rem; color: #71717A; line-height: 1.5; max-width: 560px; }
+        .sm-kicker { font-size: 0.54rem; letter-spacing: 2px; font-weight: 900; color: #8B0000; }
+        .sm-close {
+            margin-left: auto;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            border: 1px solid #E4E4E7;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            cursor: pointer;
+            font-size: 0.8rem;
+            line-height: 1;
+        }
+        .sm-close:hover { background: #0A0A0A; color: #FFFFFF; }
+
+        .sm-gate {
+            padding: 26px 22px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .sm-gate p { font-size: 0.72rem; color: #52525B; }
+        .sm-gate input {
+            width: 100%;
+            max-width: 280px;
+            padding: 11px 13px;
+            border: 1px solid #D4D4D8;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.8rem;
+        }
+        .sm-error { color: #8B0000; font-size: 0.64rem; font-weight: 700; min-height: 14px; }
+
+        .sm-body { padding: 18px 22px 26px; display: none; }
+        .sm-body.is-open { display: block; }
+        .sm-section {
+            border: 1px solid #ECECEF;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 13px;
+            background: #FFFFFF;
+        }
+        .sm-section-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 11px;
+        }
+        .sm-section-head h4 {
+            font-size: 0.76rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: #0A0A0A;
+        }
+        .sm-section-head span { font-size: 0.58rem; color: #71717A; }
+
+        .sm-price-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 9px;
+            margin-bottom: 10px;
+        }
+        .sm-price-field {
+            border: 1px solid #E4E4E7;
+            border-radius: 11px;
+            padding: 8px 9px;
+            background: #FAFAFA;
+        }
+        .sm-price-field span {
+            display: block;
+            font-size: 0.56rem;
+            font-weight: 900;
+            color: #52525B;
+            letter-spacing: 0.6px;
+            margin-bottom: 3px;
+        }
+        .sm-price-field input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 900;
+            font-size: 0.9rem;
+            color: #0A0A0A;
+            outline: none;
+        }
+
+        .sm-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .sm-form-grid label {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.56rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #52525B;
+        }
+        .sm-form-grid label.sm-wide { grid-column: 1 / -1; }
+        .sm-form-grid input,
+        .sm-form-grid select {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #D4D4D8;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #0A0A0A;
+            background: #FFFFFF;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .sm-form-grid input[type="file"] { padding: 7px; font-size: 0.62rem; }
+
+        .sm-row-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .sm-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 15px;
+            border-radius: 9px;
+            border: 1px solid #D4D4D8;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            font-family: inherit;
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .sm-btn:hover { border-color: #0A0A0A; }
+        .sm-btn-dark { background: #0A0A0A; border-color: #0A0A0A; color: #FFFFFF; }
+        .sm-btn-dark:hover { background: #262626; }
+        .sm-btn-red { background: #8B0000; border-color: #8B0000; color: #FFFFFF; }
+        .sm-btn-red:hover { background: #A50000; }
+        .sm-btn-ghost { padding: 6px 9px; font-size: 0.54rem; }
+        .sm-btn[disabled] { opacity: 0.6; cursor: default; }
+
+        .sm-status { font-size: 0.62rem; font-weight: 700; color: #15803D; margin-top: 8px; min-height: 14px; }
+        .sm-status.is-error { color: #8B0000; }
+
+        .sm-design-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 360px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+        .sm-design-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px;
+            border: 1px solid #ECECEF;
+            border-radius: 11px;
+            background: #FCFCFD;
+        }
+        .sm-design-row img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #FFFFFF;
+            border: 1px solid #ECECEF;
+            flex-shrink: 0;
+        }
+        .sm-design-main { flex: 1; min-width: 90px; }
+        .sm-design-main input {
+            width: 100%;
+            border: 1px solid transparent;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #0A0A0A;
+            padding: 3px 4px;
+            border-radius: 6px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .sm-design-main input:focus { border-color: #D4D4D8; background: #FFFFFF; outline: none; }
+        .sm-design-main input[readonly] { color: #3F3F46; }
+        .sm-design-sub { font-size: 0.52rem; color: #71717A; padding-left: 4px; }
+        .sm-design-row select {
+            width: 118px;
+            padding: 7px 6px;
+            border: 1px solid #D4D4D8;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.6rem;
+            font-weight: 700;
+            background: #FFFFFF;
+        }
+        .sm-price-input {
+            width: 84px;
+            padding: 7px 8px;
+            border: 1px solid #D4D4D8;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.66rem;
+            font-weight: 800;
+        }
+        .sm-row-btns { display: flex; gap: 5px; flex-shrink: 0; }
+
+        .sm-chart-wrap { padding: 4px 22px 24px; }
+        .sm-size-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        .sm-size-table th {
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-size: 0.56rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 9px 10px;
+            text-align: left;
+        }
+        .sm-size-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid #ECECEF;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #0A0A0A;
+        }
+        .sm-size-table td:last-child,
+        .sm-size-table th:last-child { text-align: right; }
+        .sm-size-table tr.is-default td { background: #FFF5F5; font-weight: 900; }
+        .sm-size-note { font-size: 0.58rem; color: #71717A; margin-top: 10px; line-height: 1.5; }
+
+        @media (max-width: 760px) {
+            .sm-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .sm-form-grid { grid-template-columns: 1fr; }
+            .sm-design-row { flex-wrap: wrap; }
+            .sm-design-main { flex-basis: calc(100% - 55px); }
+            .sm-design-row select { width: calc(100% - 96px); }
+            .sm-price-input { flex: 1; }
+            .sm-head { padding: 16px 16px 12px; }
+            .sm-body { padding: 14px 16px 20px; }
+            .sm-chart-wrap { padding: 4px 16px 20px; }
+        }
+    </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Anta&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="site-header">
+<!-- Top Announcement Bar -->
+<div class="announcement-bar">
+  <div class="announcement-track">
+    <div class="announcement-content">
+      <span class="dot"></span>
+      <span>PYTHON ARCHIVE 2026</span>
+      <span class="announcement-divider">•</span>
+      <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+      <span class="announcement-divider">•</span>
+      <span>ISLANDWIDE EXPRESS DELIVERY</span>
+      <span class="announcement-divider">•</span>
+      <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+      <span class="announcement-divider">•</span>
+      <span>CASH ON DELIVERY AVAILABLE</span>
+    </div>
+    <div class="announcement-content" aria-hidden="true">
+      <span class="dot"></span>
+      <span>PYTHON ARCHIVE 2026</span>
+      <span class="announcement-divider">•</span>
+      <span>220 GSM HEAVYWEIGHT COMBED COTTON</span>
+      <span class="announcement-divider">•</span>
+      <span>ISLANDWIDE EXPRESS DELIVERY</span>
+      <span class="announcement-divider">•</span>
+      <span>BESPOKE HIGH-DEFINITION DTF PRINTS</span>
+      <span class="announcement-divider">•</span>
+      <span>CASH ON DELIVERY AVAILABLE</span>
+    </div>
+  </div>
+</div>
+<nav id="navbar">
+        <a href="index.html" class="logo">
+            <img src="logo.png" alt="Python Logo">
+            <span>PYTHON</span>
+        </a>
+        <ul class="nav-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="shop.html">Shop</a></li>
+            <li><a href="customize.html" class="active">Customize</a></li>
+            <li><a href="offers.html">Offers</a></li>
+        </ul>
+        <div class="nav-icons">
+            <a href="profile.html"><i data-lucide="user"></i></a>
+            <a href="wishlist.html" style="position: relative; margin-right: 5px;">
+                <i data-lucide="heart"></i>
+                <span id="wishlist-count"
+                    style="position: absolute; top: -10px; right: -10px; background: #DC143C; color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="cart.html" style="position: relative;">
+                <i data-lucide="shopping-cart"></i>
+                <span id="cart-count"
+                    style="position: absolute; top: -10px; right: -10px; background: var(--accent-gold); color: white; font-size: 10px; padding: 2px 5px; border-radius: 50%; font-weight: 800;">0</span>
+            </a>
+            <a href="#" id="mobile-menu-btn"><i data-lucide="menu"></i></a>
+        </div>
+    </nav>
+</header>
+
+    <!-- Mobile Luxury Drawer Menu -->
+    <div class="menu-overlay" id="menu-overlay"></div>
+    <div class="mobile-menu" id="mobile-menu">
+        <div class="drawer-header">
+            <div class="drawer-brand">
+                <img src="logo.png" alt="Python Logo" class="drawer-logo">
+                <div>
+                    <span class="drawer-title">PYTHON</span>
+                    <span class="drawer-subtitle">STREETWEAR 2026</span>
+                </div>
+            </div>
+            <button class="close-menu" id="close-menu" aria-label="Close Menu">
+                <i data-lucide="x" style="width: 20px; height: 20px;"></i>
+            </button>
+        </div>
+
+        <div class="drawer-quick-actions">
+            <a href="shop.html" class="drawer-action-btn">
+                <i data-lucide="search" style="width: 18px; height: 18px;"></i>
+                <span>Search</span>
+            </a>
+            <a href="wishlist.html" class="drawer-action-btn">
+                <i data-lucide="heart" style="width: 18px; height: 18px;"></i>
+                <span>Wishlist</span>
+            </a>
+            <a href="cart.html" class="drawer-action-btn">
+                <i data-lucide="shopping-bag" style="width: 18px; height: 18px;"></i>
+                <span>Cart</span>
+            </a>
+            <a href="profile.html" class="drawer-action-btn">
+                <i data-lucide="user" style="width: 18px; height: 18px;"></i>
+                <span>Account</span>
+            </a>
+        </div>
+
+        <div class="drawer-section-label">MAIN STORE</div>
+        <div class="drawer-links-group">
+            <a href="index.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">01</span>
+                    <i data-lucide="home" style="width: 18px; height: 18px;"></i>
+                    <span>HOME</span>
+                </div>
+                <i data-lucide="chevron-right" class="drawer-chevron"></i>
+            </a>
+            <a href="shop.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">02</span>
+                    <i data-lucide="shirt" style="width: 18px; height: 18px;"></i>
+                    <span>SHOP ALL</span>
+                </div>
+                <i data-lucide="chevron-right" class="drawer-chevron"></i>
+            </a>
+            <a href="customize.html" class="drawer-link active">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">03</span>
+                    <i data-lucide="palette" style="width: 18px; height: 18px;"></i>
+                    <span>CUSTOMIZE TEE</span>
+                </div>
+                <i data-lucide="chevron-right" class="drawer-chevron"></i>
+            </a>
+            <a href="offers.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">04</span>
+                    <i data-lucide="tag" style="width: 18px; height: 18px;"></i>
+                    <span>SPECIAL OFFERS</span>
+                </div>
+                <span class="drawer-badge-discount">20% OFF</span>
+            </a>
+            <a href="track-order.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">05</span>
+                    <i data-lucide="package" style="width: 18px; height: 18px;"></i>
+                    <span>TRACK ORDER</span>
+                </div>
+                <i data-lucide="chevron-right" class="drawer-chevron"></i>
+            </a>
+            <a href="reviews.html" class="drawer-link">
+                <div class="drawer-link-left">
+                    <span class="drawer-num">06</span>
+                    <i data-lucide="star" style="width: 18px; height: 18px;"></i>
+                    <span>REVIEWS</span>
+                </div>
+                <i data-lucide="chevron-right" class="drawer-chevron"></i>
+            </a>
+        </div>
+
+        <div class="drawer-footer">
+            <a href="https://wa.me/94757218786" target="_blank" class="drawer-wa-btn">
+                <i data-lucide="message-circle" style="width: 18px; height: 18px;"></i>
+                <span>WHATSAPP VIP SUPPORT</span>
+            </a>
+            <div class="drawer-meta-info">
+                <span>220 GSM HEAVYWEIGHT COTTON</span>
+                <span>•</span>
+                <span>SRI LANKA</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="product-selection-overlay">
+        <div class="canvas-picker">
+            <span class="canvas-picker__eyebrow">PYTHON DESIGN STUDIO</span>
+            <h2>ONE CANVAS.<br><span>YOUR RULES.</span></h2>
+            <p class="canvas-picker__sub">The Regular Fit Tee is the only canvas in this drop — 220 GSM heavyweight
+                cotton, cut for a clean streetwear silhouette and finished in two monochrome colourways.</p>
+            <button class="canvas-picker__card"
+                onclick="startCustomizing('Regular Fit Tee', 1300, 'https://i.ibb.co/NnQrQr7y/T-Shirt.png')">
+                <span class="canvas-picker__visual">
+                    <img src="https://i.ibb.co/NnQrQr7y/T-Shirt.png" alt="Regular Fit Tee">
+                </span>
+                <span class="canvas-picker__copy">
+                    <span class="canvas-pill">ONLY CANVAS / 2026</span>
+                    <h3>Regular Fit Tee</h3>
+                    <p>220 GSM premium combed cotton · Relaxed streetwear cut · Black or white</p>
+                    <span class="canvas-picker__swatches">
+                        <span class="swatch white"></span>
+                        <span class="swatch black"></span>
+                    </span>
+                    <span class="canvas-picker__bottom">
+                        <strong>Rs. 1,300</strong>
+                        <span>START DESIGNING <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i></span>
+                    </span>
+                </span>
+            </button>
+            <p class="canvas-picker__note">One tee · two colourways · unlimited print combinations</p>
+        </div>
+    </div>
+
+    <main class="section studio-main">
+        <header class="studio-hero">
+            <div>
+                <span class="studio-eyebrow"><i data-lucide="sparkles" style="width: 13px; height: 13px;"></i> PYTHON DESIGN STUDIO / 2026</span>
+                <h1>BUILD YOUR <span>REGULAR FIT TEE</span></h1>
+                <p>One canvas. Two monochrome colourways. Drop your artwork, tune the print scale, and build a
+                    one-of-one piece in a live studio preview.</p>
+            </div>
+            <div class="studio-hero-meta">
+                <span>220 GSM</span>
+                <span>BLACK / WHITE</span>
+                <span>LIVE PREVIEW</span>
+            </div>
+        </header>
+
+        <div class="customize-layout">
+            <div class="preview-box">
+                <div class="studio-stage-top">
+                    <span>CANVAS 01 / REGULAR FIT TEE</span>
+                </div>
+                <button class="studio-sizechart-btn" onclick="toggleModal(true)">
+                    <i data-lucide="ruler" style="width: 13px; height: 13px;"></i> SIZE GUIDE
+                </button>
+                <div class="tshirt-base" id="canvas">
+                    <img src="https://i.ibb.co/NnQrQr7y/T-Shirt.png" class="tshirt-img" alt="Regular Fit Tee preview">
+                </div>
+                <div class="canvas-empty" id="canvas-empty">
+                    <i data-lucide="move" style="width: 13px; height: 13px;"></i> TAP ARTWORK TO PLACE IT
+                </div>
+                <div class="studio-preview-bar">
+                    <div>
+                        <span>COLOUR</span>
+                        <strong id="studio-color-name">Optic White</strong>
+                    </div>
+                    <div>
+                        <span>SIZE</span>
+                        <strong id="studio-size-name">M</strong>
+                    </div>
+                    <div class="studio-live-total">
+                        <span>LIVE TOTAL</span>
+                        <strong>Rs. <span id="studio-total">1,300</span></strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="controls-panel">
+                <div class="control-section">
+                    <div class="control-head">
+                        <span class="step-no">01</span>
+                        <div>
+                            <h4>Canvas &amp; Colour</h4>
+                            <p>Regular Fit Tee · 220 GSM heavyweight cotton</p>
+                        </div>
+                    </div>
+                    <div class="canvas-fixed">
+                        <span><i data-lucide="shirt" style="width: 12px; height: 12px;"></i> Regular Fit</span>
+                        <span><i data-lucide="layers" style="width: 12px; height: 12px;"></i> 220 GSM</span>
+                        <span><i data-lucide="palette" style="width: 12px; height: 12px;"></i> 2 Colours</span>
+                    </div>
+                    <div class="color-grid">
+                        <button type="button" class="color-option active" data-color="#FFFFFF"
+                            onclick="setTshirtColor('#FFFFFF', 'Optic White', this)">
+                            <span class="swatch" style="background: #FFFFFF;"></span>
+                            <span class="color-copy"><strong>Optic White</strong><small>Clean studio base</small></span>
+                            <i data-lucide="check" class="color-check"></i>
+                        </button>
+                        <button type="button" class="color-option" data-color="#0A0A0A"
+                            onclick="setTshirtColor('#0A0A0A', 'Onyx Black', this)">
+                            <span class="swatch" style="background: #0A0A0A;"></span>
+                            <span class="color-copy"><strong>Onyx Black</strong><small>Deep matte finish</small></span>
+                            <i data-lucide="check" class="color-check"></i>
+                        </button>
+                    </div>
+                    <div class="micro-label">Select Size</div>
+                    <div class="selector-grid size-selector">
+                        <div class="selector-btn" onclick="setTshirtSize('S', this)">S</div>
+                        <div class="selector-btn active" onclick="setTshirtSize('M', this)">M</div>
+                        <div class="selector-btn" onclick="setTshirtSize('L', this)">L</div>
+                        <div class="selector-btn" onclick="setTshirtSize('XL', this)">XL</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="control-head">
+                        <span class="step-no">02</span>
+                        <div>
+                            <h4>Artwork Library</h4>
+                            <p>Tap a graphic to drop it on the canvas. Drag to place it.</p>
+                        </div>
+                        <div class="sm-head-actions">
+                            <button type="button" class="sm-head-btn" onclick="openStickerSizeChart()">
+                                <i data-lucide="ruler" style="width: 13px; height: 13px;"></i> SIZE &amp; PRICE
+                            </button>
+                        </div>
+                    </div>
+                    <div class="category-tabs studio-tabs">
+                        <div class="selector-btn active" onclick="filterStickers('all', this)">All Designs</div>
+                        <div class="selector-btn" onclick="filterStickers('bw', this)">Black &amp; White</div>
+                        <div class="selector-btn" onclick="filterStickers('python', this)">Python Collection</div>
+                        <div class="selector-btn" onclick="filterStickers('custom', this)">Your Stickers</div>
+                    </div>
+                    <div class="studio-tools">
+                        <button type="button" onclick="centerActiveSticker()">Center</button>
+                        <button type="button" onclick="duplicateActiveSticker()">Duplicate</button>
+                        <button type="button" onclick="clearArtwork()">Clear</button>
+                    </div>
+                    <input type="file" id="custom-sticker-input" accept="image/*" style="display: none;" onchange="handleStickerUpload(event)">
+                    <div class="sticker-grid" id="main-sticker-grid">
+                        <!-- Black & White Collection -->
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/MyV1gShG/download-28.png')"><img
+                                src="https://i.ibb.co/MyV1gShG/download-28.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/k2V8LGH8/download-29.png')"><img
+                                src="https://i.ibb.co/k2V8LGH8/download-29.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/XfMfT2Pc/download-30.png')"><img
+                                src="https://i.ibb.co/XfMfT2Pc/download-30.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/v9nFCm5/download-31.png')"><img
+                                src="https://i.ibb.co/v9nFCm5/download-31.png"></div>
+                        <div class="sticker-item" data-cat="bw"
+                            onclick="addNewSticker('https://i.ibb.co/0jNxLvYv/Believe.png')"><img
+                                src="https://i.ibb.co/0jNxLvYv/Believe.png"></div>
+                        <!-- Nike -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png')">
+                            <img src="https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png">
+                        </div>
+                        <!-- BMW -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png')">
+                            <img src="https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png">
+                        </div>
+                        <!-- Infinity -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/0VKQ1GX2/download-23.png')"><img
+                                src="https://i.ibb.co/0VKQ1GX2/download-23.png"></div>
+
+                        <!-- NEW BRANDS -->
+                        <!-- Ferrari -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/8g3YLLRP/download-25.png')"><img
+                                src="https://i.ibb.co/8g3YLLRP/download-25.png"></div>
+                        <!-- Porsche -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/rf382jbv/download-26.png')"><img
+                                src="https://i.ibb.co/rf382jbv/download-26.png"></div>
+                        <!-- Lamborghini -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/gFXHwFCX/download-27.png')"><img
+                                src="https://i.ibb.co/gFXHwFCX/download-27.png"></div>
+                        <!-- Mustang -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png')">
+                            <img src="https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png">
+                        </div>
+                        <!-- Flintstones -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png')">
+                            <img
+                                src="https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png">
+                        </div>
+
+                        <!-- Space -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png')">
+                            <img src="https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png">
+                        </div>
+                        <!-- Urban -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png')">
+                            <img src="https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png">
+                        </div>
+
+                        <!-- NEW ADDITIONS -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/jnJPTYN/download-34.png')"><img
+                                src="https://i.ibb.co/jnJPTYN/download-34.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/prLnyfzg/download-35.png')"><img
+                                src="https://i.ibb.co/prLnyfzg/download-35.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/WW2ZJCcC/download-36.png')"><img
+                                src="https://i.ibb.co/WW2ZJCcC/download-36.png"></div>
+
+                        <!-- Graphics -->
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/gMrCJPnN/A3-1.png')"><img
+                                src="https://i.ibb.co/gMrCJPnN/A3-1.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/QFRLTykz/A3-2.png')"><img
+                                src="https://i.ibb.co/QFRLTykz/A3-2.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/S7f8ZfJs/A3-3.png')"><img
+                                src="https://i.ibb.co/S7f8ZfJs/A3-3.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/tMccn0qh/A3-4.png')"><img
+                                src="https://i.ibb.co/tMccn0qh/A3-4.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/B5s9qhyX/A3-5.png')"><img
+                                src="https://i.ibb.co/B5s9qhyX/A3-5.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/bj43Hcks/A3-6.png')"><img
+                                src="https://i.ibb.co/bj43Hcks/A3-6.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/7B5DZmx/A3-7.png')"><img
+                                src="https://i.ibb.co/7B5DZmx/A3-7.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/SXdG9PTc/A3-8.png')"><img
+                                src="https://i.ibb.co/SXdG9PTc/A3-8.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/tp3krXPp/A3-9.png')"><img
+                                src="https://i.ibb.co/tp3krXPp/A3-9.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/VY90dG3G/A3-10.png')"><img
+                                src="https://i.ibb.co/VY90dG3G/A3-10.png"></div>
+                        <div class="sticker-item" data-cat="python"
+                            onclick="addNewSticker('https://i.ibb.co/1JQ00QMd/A3-11.png')"><img
+                                src="https://i.ibb.co/1JQ00QMd/A3-11.png"></div>
+                        <!-- NEW CUSTOMER ADDITIONS -->
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png')"><img src="https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png"></div>
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png')"><img src="https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png"></div>
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png')"><img src="https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png"></div>
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png')"><img src="https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png"></div>
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png')"><img src="https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png"></div>
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png')"><img src="https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png"></div>
+                        <div class="sticker-item" data-cat="python" onclick="addNewSticker('https://i.ibb.co/zHGbqMn0/honor-design.png')"><img src="https://i.ibb.co/zHGbqMn0/honor-design.png"></div>
+                    </div>
+
+                    <!-- Custom Sticker Upload Panel -->
+                    <div class="studio-upload">
+                        <button type="button" onclick="triggerUpload()">
+                            <i data-lucide="upload-cloud" style="width: 16px; height: 16px;"></i>
+                            UPLOAD YOUR STICKER
+                        </button>
+                        <div style="margin-top: 9px; display: flex; align-items: flex-start; gap: 7px; font-size: 0.62rem; color: #71717A; line-height: 1.5;">
+                            <i data-lucide="cloud" style="width: 12px; height: 12px; flex-shrink: 0; margin-top: 1px;"></i>
+                            <span><b>Cloud upload:</b> Your sticker syncs to the cloud so it opens on any device via WhatsApp link or invoice. PNG with a clear background works best.</span>
+                        </div>
+                    </div>
+
+                    <p style="font-size: 0.6rem; color: #71717A; margin: 9px 0 0; padding: 9px; border-radius: 8px; border: 1px solid #EFEFF1; background: #FAFAFA; display: flex; align-items: flex-start; gap: 7px; line-height: 1.5;">
+                        <i data-lucide="info" style="width: 13px; flex-shrink: 0; margin-top: 1px;"></i>
+                        <span>Preview is for placement only. Final print is produced in original HD quality.</span>
+                    </p>
+                </div>
+
+                <div class="control-section" id="sticker-size-control" style="display: none;">
+                    <div class="control-head">
+                        <span class="step-no">03</span>
+                        <div>
+                            <h4>Print Scale</h4>
+                            <p>Select the printed size for the active artwork.</p>
+                        </div>
+                        <button type="button" class="sm-head-btn" onclick="openStickerSizeChart()">
+                            <i data-lucide="ruler" style="width: 13px; height: 13px;"></i> SIZE &amp; PRICE
+                        </button>
+                    </div>
+                    <div class="selector-grid">
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A2', this)">A2</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A3', this)">A3</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A4', this)">A4</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A5', this)">A5</div>
+                        <div class="selector-btn sz-btn" onclick="setStickerSize('A6', this)">A6</div>
+                    </div>
+                </div>
+
+                <div class="control-section">
+                    <div class="studio-estimate">
+                        <span>Live Estimate</span>
+                        <strong>Rs. <span id="grand-total-display">1,300</span></strong>
+                    </div>
+                    <div id="sticker-summary-box" class="sticker-summary"></div>
+                    <div style="margin-top: 15px;">
+                        <button id="btn-finish" onclick="finishDesign()">FINISH &amp; SAVE</button>
+                        <button id="btn-cart" onclick="addCustomToCart()">ADD TO CART</button>
+                        <button id="btn-edit" class="btn" style="display: none; width: 100%; margin-top: 10px;"
+                            onclick="enableEditing()">EDIT DESIGN</button>
+                        <button class="btn"
+                            style="width: 100%; margin-top: 10px; background: var(--border-light); color: var(--primary-dark); font-size: 0.75rem;"
+                            onclick="resetDesign()">RESET DESIGN</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div id="size-modal" class="modal">
+        <div class="modal-content">
+            <i data-lucide="x" class="close-modal" onclick="toggleModal(false)"></i>
+            <h3 style="margin-bottom: 20px;">T-Shirt Size Chart</h3>
+            <img src="https://i.ibb.co/rftkd3K0/Chat-GPT-Image-Aug-20-2026-10-17-15-PM.png" style="width: 100%; border-radius: 10px;"
+                alt="220 GSM Regular Fit Size Chart">
+        </div>
+    </div>
+
+    <!-- ═══════════ Sticker print size & price chart ═══════════ -->
+    <div id="sticker-size-chart" class="sm-modal" aria-hidden="true">
+        <div class="sm-dialog sm-dialog-sm" role="dialog" aria-modal="true" aria-labelledby="sm-chart-title">
+            <div class="sm-head">
+                <div>
+                    <span class="sm-kicker">PRINT GUIDE</span>
+                    <h3 id="sm-chart-title">Sticker Size &amp; Price</h3>
+                    <p>Maximum print area per artwork. Prices are per sticker.</p>
+                </div>
+                <button type="button" class="sm-close" onclick="closeStickerSizeChart()" aria-label="Close">✕</button>
+            </div>
+            <div id="sticker-size-chart-body"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════ Upload progress overlay (ImgBB / server / offline) ═══════════ -->
+    <div id="upload-loader" class="upload-loader" aria-hidden="true">
+        <div class="upload-loader-card" role="status" aria-live="polite">
+            <div class="upload-loader-thumb-wrap">
+                <img id="upload-loader-thumb" class="upload-loader-thumb" alt="">
+                <span class="upload-loader-ring"></span>
+            </div>
+            <div class="upload-loader-title" id="upload-loader-title">Uploading your artwork…</div>
+            <div class="upload-loader-sub" id="upload-loader-sub">Sending the original HD file to the cloud</div>
+            <div class="upload-loader-bar"><span id="upload-loader-bar-fill"></span></div>
+        </div>
+    </div>
+    <style>
+        .upload-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(10, 10, 10, 0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .upload-loader.active { display: flex; }
+        .upload-loader-card {
+            width: 100%;
+            max-width: 330px;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 18px;
+            padding: 24px 22px 20px;
+            text-align: center;
+            box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+            animation: uploadPop 0.22s ease;
+            font-family: 'League Spartan', 'Anta', sans-serif;
+        }
+        .upload-loader-thumb-wrap {
+            position: relative;
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .upload-loader-thumb {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #F7F7F8;
+            border: 1px solid #E5E7EB;
+            display: none;
+        }
+        .upload-loader-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid #F1F1F1;
+            border-top-color: #8B0000;
+            animation: uploadSpin 0.85s linear infinite;
+        }
+        .upload-loader-title {
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: #0A0A0A;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+        }
+        .upload-loader-sub {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #6B7280;
+            line-height: 1.4;
+            margin-bottom: 14px;
+        }
+        .upload-loader-bar {
+            width: 100%;
+            height: 5px;
+            border-radius: 10px;
+            background: #F1F1F1;
+            overflow: hidden;
+        }
+        .upload-loader-bar span {
+            display: block;
+            height: 100%;
+            width: 35%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #8B0000, #DC143C);
+            animation: uploadBar 1.2s ease-in-out infinite;
+        }
+        @keyframes uploadSpin { to { transform: rotate(360deg); } }
+        @keyframes uploadBar {
+            0%   { transform: translateX(-110%); }
+            100% { transform: translateX(320%); }
+        }
+        @keyframes uploadPop {
+            from { opacity: 0; transform: translateY(10px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .upload-loader-ring, .upload-loader-bar span { animation-duration: 2s; }
+        }
+    </style>
+
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+    <script src="firebase-config.js"></script>
+    <script src="script.js"></script>
+    <script>
+        lucide.createIcons();
+        let currentTshirtType = 'Regular Fit Tee';
+        let baseTshirtPrice = 1300;
+        let activeStickers = [];
+        let isLocked = false;
+        let isHydrating = false;
+        let currentTshirtSize = 'M';
+        let selectedColor = '#FFFFFF';
+        let selectedColorName = 'Optic White';
+
+        // ─────────────────────────────────────────────────────────────────────
+        // ImgBB Free API Key — get yours FREE at https://imgbb.com/
+        //   1. Register at imgbb.com (free, no credit card)
+        //   2. Go to https://api.imgbb.com/ and copy your API key
+        //   3. Paste it below replacing YOUR_IMGBB_KEY_HERE
+        // ─────────────────────────────────────────────────────────────────────
+        const IMGBB_API_KEY = '05f9ffbbbadb71e449b28e2d1adf8975';
+
+        function triggerUpload() {
+            if (isLocked) return;
+            document.getElementById('custom-sticker-input').click();
+        }
+
+        // ── Upload progress overlay helpers ─────────────────────────────
+        let uploadLoaderTimer = null;
+        let uploadLoaderPrevOverflow = '';
+
+        function showUploadLoader(file) {
+            const loader = document.getElementById('upload-loader');
+            if (!loader) return;
+            const thumb = document.getElementById('upload-loader-thumb');
+            const title = document.getElementById('upload-loader-title');
+            const sub = document.getElementById('upload-loader-sub');
+            const bar = document.getElementById('upload-loader-bar-fill');
+
+            if (title) title.textContent = 'Uploading your artwork…';
+            if (sub) sub.textContent = 'Sending the original HD file to the cloud';
+            if (bar) bar.style.width = '35%';
+
+            if (thumb) {
+                if (thumb.dataset.objectUrl) {
+                    try { URL.revokeObjectURL(thumb.dataset.objectUrl); } catch (e) {}
+                    delete thumb.dataset.objectUrl;
+                }
+                thumb.removeAttribute('src');
+                thumb.style.display = 'none';
+                if (file && /^image\//.test(file.type || '')) {
+                    try {
+                        const objUrl = URL.createObjectURL(file);
+                        thumb.dataset.objectUrl = objUrl;
+                        thumb.onload = function () {
+                            thumb.style.display = 'block';
+                            if (thumb.dataset.objectUrl) {
+                                try { URL.revokeObjectURL(thumb.dataset.objectUrl); } catch (e) {}
+                                delete thumb.dataset.objectUrl;
+                            }
+                        };
+                        thumb.src = objUrl;
+                    } catch (e) {
+                        thumb.style.display = 'none';
+                    }
+                }
+            }
+
+            if (!loader.classList.contains('active')) {
+                uploadLoaderPrevOverflow = document.body.style.overflow;
+                loader.classList.add('active');
+                loader.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Safety net: never trap the user behind the overlay forever.
+            clearTimeout(uploadLoaderTimer);
+            uploadLoaderTimer = setTimeout(function () {
+                uploadLoaderTimer = null;
+                if (!loader.classList.contains('active')) return;
+                hideUploadLoader();
+                if (typeof showNotification === 'function') {
+                    showNotification('Upload is taking too long. Please try again.');
+                }
+            }, 90000);
+        }
+
+        function updateUploadLoader(title, sub) {
+            const t = document.getElementById('upload-loader-title');
+            const s = document.getElementById('upload-loader-sub');
+            if (title && t) t.textContent = title;
+            if (sub && s) s.textContent = sub;
+        }
+
+        function hideUploadLoader() {
+            clearTimeout(uploadLoaderTimer);
+            uploadLoaderTimer = null;
+            const loader = document.getElementById('upload-loader');
+            if (!loader) return;
+            loader.classList.remove('active');
+            loader.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = uploadLoaderPrevOverflow || '';
+        }
+
+        function handleStickerUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            if (!file.type.startsWith('image/')) {
+                alert('Please select an image file.');
+                return;
+            }
+
+            if (file.size > 5 * 1024 * 1024) {
+                alert('File size exceeds 5MB limit.');
+                return;
+            }
+
+            showUploadLoader(file);
+
+            if (typeof showNotification === 'function') {
+                showNotification('\u2601\ufe0f Uploading to cloud...');
+            }
+
+            // Local display copy (max 1000px) — the original file itself is what gets uploaded
+            getHDImage(file, function(hdBase64) {
+
+                // ── TIER 1: ImgBB Cloud Upload ─────────────────────────────
+                // Uploads to imgbb.com CDN → URL works on ANY device, anywhere
+                function tryImgBB() {
+                    if (!IMGBB_API_KEY || IMGBB_API_KEY === 'YOUR_IMGBB_KEY_HERE') {
+                        console.info('ImgBB key not set, skipping to server upload.');
+                        updateUploadLoader('Uploading artwork…', 'Cloud key missing — sending to the store server');
+                        tryServer();
+                        return;
+                    }
+                    // Upload the ORIGINAL file so the cloud copy keeps full resolution.
+                    const imgbbForm = new FormData();
+                    imgbbForm.append('key', IMGBB_API_KEY);
+                    imgbbForm.append('image', file);
+
+                    fetch('https://api.imgbb.com/1/upload', {
+                        method: 'POST',
+                        body: imgbbForm
+                    })
+                    .then(res => { if (!res.ok) throw new Error('ImgBB HTTP ' + res.status); return res.json(); })
+                    .then(data => {
+                        if (data && data.success) {
+                            const imgUrl = data.data.url;
+                            if (typeof showNotification === 'function') {
+                                showNotification('\u2705 Cloud upload done! Any device can view this.');
+                            }
+                            // Store HD mapping locally for instant display without re-fetch
+                            try { localStorage.setItem('hd_mapping_' + imgUrl, hdBase64); } catch(e) {}
+                            addNewSticker(imgUrl);
+                            addCustomStickerToGrid(imgUrl);
+                            hideUploadLoader();
+                        } else {
+                            throw new Error('ImgBB rejected: ' + JSON.stringify(data));
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('ImgBB upload failed, trying server:', err);
+                        updateUploadLoader('Trying a backup upload…', 'ImgBB did not respond — switching to the store server');
+                        tryServer();
+                    });
+                }
+
+                // ── TIER 2: Server upload.php ──────────────────────────────
+                // Saves to InfinityFree hosting → works on same domain only
+                function tryServer() {
+                    const serverForm = new FormData();
+                    serverForm.append('sticker', file);
+
+                    fetch('upload.php', {
+                        method: 'POST',
+                        body: serverForm
+                    })
+                    .then(res => { if (!res.ok) throw new Error('Server error ' + res.status); return res.json(); })
+                    .then(data => {
+                        if (data.status === 'success') {
+                            if (typeof showNotification === 'function') {
+                                showNotification('\u2714\ufe0f Uploaded to server (same-site devices only).');
+                            }
+                            try { localStorage.setItem('hd_mapping_' + data.full_url, hdBase64); } catch(e) {}
+                            addNewSticker(data.full_url);
+                            addCustomStickerToGrid(data.full_url);
+                            hideUploadLoader();
+                        } else {
+                            throw new Error(data.message || 'Server upload failed');
+                        }
+                    })
+                    .catch(err => {
+                        console.warn('Server upload failed, using offline fallback:', err);
+                        updateUploadLoader('Saving on this device…', 'Cloud upload unavailable — keeping a local copy');
+                        tryOffline();
+                    });
+                }
+
+                // ── TIER 3: Offline Base64 Fallback ───────────────────────
+                // Stores only in localStorage → this device only
+                function tryOffline() {
+                    if (typeof showNotification === 'function') {
+                        showNotification('\ud83d\udcf1 Saved locally (this device only).');
+                    }
+                    getFallbackImage(file, function(fallbackBase64) {
+                        try { localStorage.setItem('hd_mapping_' + fallbackBase64, hdBase64); } catch(e) {}
+                        addNewSticker(fallbackBase64);
+                        addCustomStickerToGrid(fallbackBase64);
+                        hideUploadLoader();
+                    });
+                }
+
+                // Start with best option first
+                tryImgBB();
+            });
+
+            event.target.value = '';
+        }
+
+        // Local display copy (max 1000px, preserves PNG transparency)
+        function getHDImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 1000;
+                    
+                    if (width > height) {
+                        if (width > maxDim) {
+                            height = Math.round(height * maxDim / width);
+                            width = maxDim;
+                        }
+                    } else {
+                        if (height > maxDim) {
+                            width = Math.round(width * maxDim / height);
+                            height = maxDim;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const format = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                    const dataUrl = format === 'image/png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.9);
+                    callback(dataUrl);
+                };
+                img.onerror = function() {
+                    hideUploadLoader();
+                    if (typeof showNotification === 'function') {
+                        showNotification('\u26a0\ufe0f That image could not be read. Please try another file.');
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                hideUploadLoader();
+                if (typeof showNotification === 'function') {
+                    showNotification('\u26a0\ufe0f Could not read the file. Please try again.');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        // Helper to get compressed fallback (150px) image and preserve format (PNG transparency)
+        function getFallbackImage(file, callback) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width;
+                    let height = img.height;
+                    const maxDim = 150;
+                    
+                    if (width > height) {
+                        if (width > maxDim) {
+                            height = Math.round(height * maxDim / width);
+                            width = maxDim;
+                        }
+                    } else {
+                        if (height > maxDim) {
+                            width = Math.round(width * maxDim / height);
+                            height = maxDim;
+                        }
+                    }
+                    
+                    canvas.width = width;
+                    canvas.height = height;
+                    const ctx = canvas.getContext('2d');
+                    ctx.drawImage(img, 0, 0, width, height);
+                    
+                    const format = file.type === 'image/png' ? 'image/png' : 'image/jpeg';
+                    const dataUrl = format === 'image/png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.7);
+                    callback(dataUrl);
+                };
+                img.onerror = function() {
+                    hideUploadLoader();
+                    if (typeof showNotification === 'function') {
+                        showNotification('\u26a0\ufe0f That image could not be read. Please try another file.');
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                hideUploadLoader();
+                if (typeof showNotification === 'function') {
+                    showNotification('\u26a0\ufe0f Could not read the file. Please try again.');
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function addCustomStickerToGrid(url, autoSwitch = true) {
+            const grid = document.getElementById('main-sticker-grid');
+            if (!grid) return;
+            
+            // Avoid duplicate custom stickers in grid
+            const existing = Array.from(grid.querySelectorAll('.sticker-item img')).find(img => img.dataset.url === url || img.src === url);
+            if (existing) return;
+            
+            const item = document.createElement('div');
+            item.className = 'sticker-item';
+            item.dataset.cat = 'custom';
+            item.onclick = function() {
+                addNewSticker(url);
+            };
+            
+            const img = document.createElement('img');
+            const localHd = localStorage.getItem('hd_mapping_' + url);
+            img.src = localHd || url;
+            img.dataset.url = url;
+            item.appendChild(img);
+            
+            grid.insertBefore(item, grid.firstChild);
+            
+            if (autoSwitch) {
+                const customTab = document.querySelector('.category-tabs .selector-btn[onclick*="custom"]');
+                if (customTab) {
+                    filterStickers('custom', customTab);
+                }
+            }
+        }
+
+        function startCustomizing(type, price, img) {
+            // The Regular Fit Tee is the only canvas in this drop.
+            currentTshirtType = 'Regular Fit Tee';
+            baseTshirtPrice = 1300;
+
+            const whiteOption = document.querySelector('.color-option[data-color="#FFFFFF"]');
+            setTshirtColor('#FFFFFF', 'Optic White', whiteOption);
+
+            const overlay = document.getElementById('product-selection-overlay');
+            overlay.style.transition = 'opacity 0.35s ease';
+            overlay.style.opacity = '0';
+            overlay.style.pointerEvents = 'none';
+            setTimeout(() => { overlay.style.display = 'none'; }, 360);
+            updateTotal();
+            syncCanvasEmptyState();
+        }
+
+        const stickerMap = {
+            'https://i.ibb.co/gMrCJPnN/A3-1.png': 'S1', 'https://i.ibb.co/QFRLTykz/A3-2.png': 'S2',
+            'https://i.ibb.co/S7f8ZfJs/A3-3.png': 'S3', 'https://i.ibb.co/tMccn0qh/A3-4.png': 'S4',
+            'https://i.ibb.co/B5s9qhyX/A3-5.png': 'S5', 'https://i.ibb.co/bj43Hcks/A3-6.png': 'S6',
+            'https://i.ibb.co/7B5DZmx/A3-7.png': 'S7', 'https://i.ibb.co/SXdG9PTc/A3-8.png': 'S8',
+            'https://i.ibb.co/tp3krXPp/A3-9.png': 'S9', 'https://i.ibb.co/VY90dG3G/A3-10.png': 'S10',
+            'https://i.ibb.co/1JQ00QMd/A3-11.png': 'S11',
+            'https://i.ibb.co/XkDb3jmB/Nike.png': 'S12',
+            'https://i.ibb.co/gLS0w69Y/Python-BMW.png': 'S13',
+            'https://i.ibb.co/4w34h3hZ/Python-Infinity-w.png': 'S14',
+            'https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png': 'S15',
+            'https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png': 'S16',
+            'https://i.ibb.co/0VKQ1GX2/download-23.png': 'S17',
+            'https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png': 'S18',
+            'https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png': 'S19',
+            'https://i.ibb.co/8g3YLLRP/download-25.png': 'S20',
+            'https://i.ibb.co/rf382jbv/download-26.png': 'S21',
+            'https://i.ibb.co/gFXHwFCX/download-27.png': 'S22',
+            'https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png': 'S23',
+            'https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png': 'S24',
+            'https://i.ibb.co/MyV1gShG/download-28.png': 'S25',
+            'https://i.ibb.co/k2V8LGH8/download-29.png': 'S26',
+            'https://i.ibb.co/XfMfT2Pc/download-30.png': 'S27',
+            'https://i.ibb.co/v9nFCm5/download-31.png': 'S28',
+            'https://i.ibb.co/0jNxLvYv/Believe.png': 'S29',
+            'https://i.ibb.co/jnJPTYN/download-34.png': 'S30',
+            'https://i.ibb.co/prLnyfzg/download-35.png': 'S31',
+            'https://i.ibb.co/WW2ZJCcC/download-36.png': 'S32',
+            'https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png': 'S33',
+            'https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png': 'S34',
+            'https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png': 'S35',
+            'https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png': 'S36',
+            'https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png': 'S37',
+            'https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png': 'S38',
+            'https://i.ibb.co/zHGbqMn0/honor-design.png': 'S39'
+        };
+
+        function toggleModal(show) { document.getElementById('size-modal').style.display = show ? 'flex' : 'none'; }
+        function setTshirtColor(color, name, btn) {
+            if (isLocked) return;
+
+            const raw = String(color || '').toUpperCase();
+            const isBlack = raw === '#0A0A0A' || raw === '#000000' || raw === '#2B2B2B';
+            selectedColor = isBlack ? '#0A0A0A' : '#FFFFFF';
+            selectedColorName = isBlack ? 'Onyx Black' : 'Optic White';
+
+            document.querySelectorAll('.color-option').forEach(d => d.classList.remove('active'));
+            const activeOption = btn && btn.classList
+                ? btn
+                : document.querySelector(`.color-option[data-color="${selectedColor}"]`);
+            if (activeOption) activeOption.classList.add('active');
+
+            const base = document.querySelector('.tshirt-base');
+            const img = document.querySelector('.tshirt-img');
+            const blackTeeImg = 'https://i.ibb.co/Rk82RMjR/f46b35401278.png';
+            const whiteTeeImg = 'https://i.ibb.co/NnQrQr7y/T-Shirt.png';
+
+            if (isBlack) {
+                if (base) {
+                    base.style.webkitMaskImage = 'none';
+                    base.style.maskImage = 'none';
+                    base.style.backgroundColor = 'transparent';
+                }
+                if (img) {
+                    img.style.mixBlendMode = 'normal';
+                    img.style.filter = 'none';
+                    img.src = blackTeeImg;
+                }
+            } else {
+                if (base) {
+                    base.style.webkitMaskImage = `url('${whiteTeeImg}')`;
+                    base.style.maskImage = `url('${whiteTeeImg}')`;
+                    base.style.backgroundColor = '#FFFFFF';
+                }
+                if (img) {
+                    img.style.mixBlendMode = 'multiply';
+                    img.style.filter = 'none';
+                    img.src = whiteTeeImg;
+                }
+            }
+
+            const colorLabel = document.getElementById('studio-color-name');
+            if (colorLabel) colorLabel.textContent = selectedColorName;
+            autoSave();
+        }
+        function setTshirtSize(size, btn) {
+            if (isLocked) return;
+            document.querySelectorAll('.size-selector .selector-btn').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            currentTshirtSize = size;
+            const sizeLabel = document.getElementById('studio-size-name');
+            if (sizeLabel) sizeLabel.textContent = size;
+            autoSave();
+        }
+        function addNewSticker(url, pos = null) {
+            if (isLocked) return;
+            const id = pos && pos.id ? pos.id : 'sticker-' + Math.random().toString(36).substr(2, 9);
+            const wrapper = document.createElement('div');
+            wrapper.className = 'sticker-wrapper';
+            wrapper.id = id;
+            const storedWidth = pos && pos.w ? pos.w : '160px';
+            const storedRotation = pos && pos.r !== undefined ? pos.r : 0;
+            const storedLeft = pos && pos.l ? pos.l : '50%';
+            const storedTop = pos && pos.t ? pos.t : '45%';
+            wrapper.style.width = storedWidth;
+            wrapper.dataset.rotation = storedRotation;
+            wrapper.style.left = storedLeft;
+            wrapper.style.top = storedTop;
+            wrapper.style.transform = `translate(-50%, -50%) rotate(${storedRotation}deg)`;
+            
+            const overridePrice = stickerDesignPriceOverride(url);
+            const lockedPrice = (pos && pos.lockedPrice !== undefined)
+                ? !!pos.lockedPrice
+                : overridePrice !== null;
+            const initialPrice = pos && pos.p !== undefined
+                ? Number(pos.p)
+                : (overridePrice !== null ? overridePrice : (stickerPrices[stickerDefaultSize] || 580));
+            const initialSzName = pos && pos.sz !== undefined ? pos.sz : stickerDefaultSize;
+            
+            // Check if there is a local HD version in localStorage
+            const localHd = localStorage.getItem('hd_mapping_' + url);
+            const displayUrl = localHd || url;
+
+            wrapper.innerHTML = `
+                <img src="${displayUrl}">
+                <div class="sticker-size-tag">${initialSzName}</div>
+                <div class="handle sticker-delete" onclick="event.stopPropagation(); removeSticker('${id}')"><i data-lucide="trash-2" style="width:16px"></i></div>
+                <div class="handle resize-handle"><i data-lucide="maximize-2" style="width:16px"></i></div>
+                <div class="handle rotate-handle"><i data-lucide="rotate-cw" style="width:16px"></i></div>
+            `;
+            document.getElementById('canvas').appendChild(wrapper);
+            activeStickers.push({ id, url, price: initialPrice, szName: initialSzName, lockedPrice: lockedPrice });
+            initInteractions(wrapper);
+            selectSticker(id);
+            updateTotal();
+            syncCanvasEmptyState();
+            lucide.createIcons();
+            autoSave();
+        }
+        function setStickerSize(sz, btn) {
+            const activeEl = document.querySelector('.sticker-wrapper.active');
+            if (!activeEl) return;
+            const sticker = activeStickers.find(s => s.id === activeEl.id);
+            if (sticker) {
+                sticker.szName = sz;
+                // Designs with a fixed database price keep that price.
+                if (!sticker.lockedPrice) {
+                    sticker.price = Number(stickerPrices[sz]) || 0;
+                }
+                const tag = activeEl.querySelector('.sticker-size-tag');
+                if (tag) tag.innerText = sz;
+
+                document.querySelectorAll('.sz-btn').forEach(b => b.classList.remove('active'));
+                if (btn) btn.classList.add('active');
+                updateTotal();
+                autoSave();
+            }
+        }
+        function removeSticker(id) {
+            if (isLocked) return;
+            const el = document.getElementById(id); if (el) el.remove();
+            activeStickers = activeStickers.filter(s => s.id !== id);
+            updateTotal();
+            syncCanvasEmptyState();
+            autoSave();
+        }
+
+        function syncCanvasEmptyState() {
+            const empty = document.getElementById('canvas-empty');
+            if (!empty) return;
+            empty.classList.toggle('hidden', activeStickers.length > 0);
+        }
+
+        function centerActiveSticker() {
+            if (isLocked) return;
+            const activeEl = document.querySelector('.sticker-wrapper.active');
+            if (!activeEl) return;
+            const rotation = parseFloat(activeEl.dataset.rotation) || 0;
+            activeEl.style.left = '50%';
+            activeEl.style.top = '42%';
+            activeEl.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+            autoSave();
+        }
+
+        function duplicateActiveSticker() {
+            if (isLocked) return;
+            const activeEl = document.querySelector('.sticker-wrapper.active');
+            if (!activeEl) return;
+            const sticker = activeStickers.find(s => s.id === activeEl.id);
+            if (!sticker) return;
+            const top = (parseFloat(activeEl.style.top) || 42) + 5;
+            const left = (parseFloat(activeEl.style.left) || 50) + 5;
+            addNewSticker(sticker.url, {
+                t: Math.min(top, 88) + '%',
+                l: Math.min(left, 88) + '%',
+                w: activeEl.style.width,
+                r: activeEl.dataset.rotation || 0,
+                sz: sticker.szName,
+                p: sticker.price,
+                lockedPrice: sticker.lockedPrice
+            });
+        }
+
+        function clearArtwork() {
+            if (isLocked) return;
+            if (activeStickers.length === 0) return;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.remove());
+            activeStickers = [];
+            updateTotal();
+            syncCanvasEmptyState();
+            selectSticker('');
+            autoSave();
+        }
+
+        function updateTotal() {
+            let total = baseTshirtPrice;
+            const summaryBox = document.getElementById('sticker-summary-box');
+            if (summaryBox) {
+                summaryBox.innerHTML = `<div class="summary-item"><span>Base (${currentTshirtType})</span><span>Rs. ${baseTshirtPrice}</span></div>`;
+                activeStickers.forEach((s, idx) => {
+                    const price = Number.isFinite(Number(s.price)) ? Number(s.price) : 100;
+                    const sz = s.szName || 'A6';
+                    total += price;
+                    summaryBox.innerHTML += `<div class="summary-item"><span>Design ${idx + 1} (${sz})</span><span>Rs. ${price}</span></div>`;
+                });
+            } else {
+                total += activeStickers.reduce((sum, s) => sum + (Number.isFinite(Number(s.price)) ? Number(s.price) : 100), 0);
+            }
+            const grandTotal = document.getElementById('grand-total-display');
+            const studioTotal = document.getElementById('studio-total');
+            if (grandTotal) grandTotal.innerText = total.toLocaleString();
+            if (studioTotal) studioTotal.innerText = total.toLocaleString();
+        }
+        function selectSticker(id) {
+            if (isLocked) return;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.classList.remove('active'));
+            const activeEl = document.getElementById(id);
+            if (activeEl) {
+                activeEl.classList.add('active');
+                document.getElementById('sticker-size-control').style.display = 'block';
+                const sticker = activeStickers.find(s => s.id === id);
+                if (sticker) {
+                    document.querySelectorAll('.sz-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.innerText === sticker.szName);
+                    });
+                }
+            } else {
+                document.getElementById('sticker-size-control').style.display = 'none';
+            }
+        }
+        function initInteractions(el) {
+            let isDragging = false, isResizing = false, isRotating = false;
+            let startX, startY, startW, startAngle, startRotation, startDist = 0;
+            const canvas = document.getElementById('canvas');
+            const getDist = (t) => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+            const start = (e) => {
+                if (isLocked) return;
+                selectSticker(el.id);
+                const touches = e.touches;
+                if (touches && touches.length === 2) { isResizing = true; startDist = getDist(touches); startW = el.offsetWidth; }
+                else {
+                    const t = touches ? touches[0] : e;
+                    if (e.target.closest('.resize-handle')) { isResizing = true; startX = t.clientX; startW = el.offsetWidth; }
+                    else if (e.target.closest('.rotate-handle')) {
+                        isRotating = true;
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2, centerY = rect.top + rect.height / 2;
+                        startAngle = Math.atan2(t.clientY - centerY, t.clientX - centerX);
+                        startRotation = parseFloat(el.dataset.rotation || 0);
+                    } else { isDragging = true; startX = t.clientX - el.offsetLeft; startY = t.clientY - el.offsetTop; }
+                }
+                e.stopPropagation();
+            };
+            const move = (e) => {
+                if (!isDragging && !isResizing && !isRotating) return;
+                const touches = e.touches;
+                if (touches && touches.length === 2 && isResizing) {
+                    const dist = getDist(touches);
+                    const scale = dist / startDist;
+                    const newW = startW * scale;
+                    if (newW > 40 && newW < 380) el.style.width = newW + 'px';
+                } else {
+                    const t = touches ? touches[0] : e;
+                    if (isDragging) {
+                        el.style.left = (((t.clientX - startX) / canvas.offsetWidth) * 100) + '%';
+                        el.style.top = (((t.clientY - startY) / canvas.offsetHeight) * 100) + '%';
+                    } else if (isResizing) {
+                        const newW = startW + (t.clientX - startX);
+                        if (newW > 40 && newW < 380) el.style.width = newW + 'px';
+                    } else if (isRotating) {
+                        const rect = el.getBoundingClientRect();
+                        const centerX = rect.left + rect.width / 2, centerY = rect.top + rect.height / 2;
+                        const currentAngle = Math.atan2(t.clientY - centerY, t.clientX - centerX);
+                        const rotation = startRotation + (currentAngle - startAngle) * (180 / Math.PI);
+                        el.dataset.rotation = rotation;
+                        el.style.transform = `translate(-50%, -50%) rotate(${rotation}deg)`;
+                    }
+                }
+                updateTotal();
+                if (e.touches) e.preventDefault();
+            };
+            const end = () => { if (isDragging || isResizing || isRotating) autoSave(); isDragging = isResizing = isRotating = false; };
+            el.addEventListener('mousedown', start); el.addEventListener('touchstart', start, { passive: false });
+            window.addEventListener('mousemove', move); window.addEventListener('touchmove', move, { passive: false });
+            window.addEventListener('mouseup', end); window.addEventListener('touchend', end);
+        }
+        function autoSave() {
+            if (isHydrating) return;
+            const canvas = document.getElementById('canvas');
+            const canvasW = canvas ? canvas.offsetWidth : 1;
+            const data = {
+                tshirtType: currentTshirtType,
+                basePrice: baseTshirtPrice,
+                color: selectedColor, colorName: selectedColorName, size: currentTshirtSize,
+                stickers: activeStickers.map(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return null;
+                    // Store width as % of canvas so invoice/production previews scale exactly
+                    const pxW = el.getBoundingClientRect().width || el.offsetWidth;
+                    const pctW = ((pxW / canvasW) * 100).toFixed(4) + '%';
+                    return { id: s.id, url: s.url, t: el.style.top, l: el.style.left, w: pctW, r: el.dataset.rotation, sz: s.szName, p: s.price };
+                }).filter(s => s !== null)
+            };
+            localStorage.setItem('roohira_custom_design', JSON.stringify(data));
+        }
+        function loadSavedDesign() {
+            isHydrating = true;
+            const saved = localStorage.getItem('roohira_custom_design');
+
+            if (saved) {
+                let data = null;
+                try { data = JSON.parse(saved); } catch (e) { data = null; }
+
+                if (data) {
+                    currentTshirtType = 'Regular Fit Tee';
+                    baseTshirtPrice = 1300;
+
+                    const savedColor = String(data.color || '').toUpperCase();
+                    const isBlack = savedColor === '#0A0A0A' || savedColor === '#000000' || savedColor === '#2B2B2B';
+                    const normalizedColor = isBlack ? '#0A0A0A' : '#FFFFFF';
+                    const normalizedName = isBlack ? 'Onyx Black' : 'Optic White';
+                    const targetOption = document.querySelector(`.color-option[data-color="${normalizedColor}"]`);
+                    setTshirtColor(normalizedColor, normalizedName, targetOption);
+
+                    const validSizes = ['S', 'M', 'L', 'XL'];
+                    const size = validSizes.includes(data.size) ? data.size : 'M';
+                    setTshirtSize(size, null);
+                    document.querySelectorAll('.size-selector .selector-btn').forEach(btn => {
+                        btn.classList.toggle('active', btn.innerText === size);
+                    });
+
+                    const overlay = document.getElementById('product-selection-overlay');
+                    if (overlay) overlay.style.display = 'none';
+
+                    const savedStickers = Array.isArray(data.stickers) ? data.stickers : [];
+                    savedStickers.forEach(s => {
+                        if (!s || !s.url) return;
+                        addNewSticker(s.url, s);
+                        if (!isKnownStickerDesign(s.url)) {
+                            addCustomStickerToGrid(s.url, false);
+                        }
+                    });
+
+                    isHydrating = false;
+                    syncCanvasEmptyState();
+                    updateTotal();
+                    return;
+                }
+            }
+
+            setTshirtColor('#FFFFFF', 'Optic White', document.querySelector('.color-option[data-color="#FFFFFF"]'));
+            setTshirtSize('M', null);
+            document.querySelectorAll('.size-selector .selector-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.innerText === 'M');
+            });
+            isHydrating = false;
+            syncCanvasEmptyState();
+            updateTotal();
+        }
+        function resetDesign() { if (confirm("Reset design?")) { localStorage.removeItem('roohira_custom_design'); location.reload(); } }
+        function finishDesign() {
+            if (activeStickers.length === 0) { alert('Add at least one sticker!'); return; }
+            isLocked = true;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.classList.add('locked'));
+            document.getElementById('btn-finish').style.display = 'none';
+            document.getElementById('btn-cart').style.display = 'block';
+            document.getElementById('btn-edit').style.display = 'block';
+        }
+        function enableEditing() {
+            isLocked = false;
+            document.querySelectorAll('.sticker-wrapper').forEach(el => el.classList.remove('locked'));
+            document.getElementById('btn-finish').style.display = 'block';
+            document.getElementById('btn-cart').style.display = 'none';
+            document.getElementById('btn-edit').style.display = 'none';
+        }
+        function captureTeeDesignPreview() {
+            try {
+                const offscreen = document.createElement('canvas');
+                offscreen.width = 1000;
+                offscreen.height = 1000;
+                const ctx = offscreen.getContext('2d');
+                if (!ctx) return null;
+
+                // Fill clean background
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, 1000, 1000);
+
+                // 1. Draw T-Shirt silhouette & fabric multiply
+                const shirtImg = document.querySelector('.tshirt-img');
+                const isBlack = selectedColor === '#0A0A0A' || /black/i.test(selectedColorName);
+                const shirtColor = isBlack ? '#0A0A0A' : '#FFFFFF';
+
+                if (shirtImg && (shirtImg.naturalWidth || shirtImg.complete)) {
+                    if (isBlack) {
+                        ctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                    } else {
+                        const layer = document.createElement('canvas');
+                        layer.width = 1000;
+                        layer.height = 1000;
+                        const lctx = layer.getContext('2d');
+                        lctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                        lctx.globalCompositeOperation = 'source-in';
+                        lctx.fillStyle = shirtColor;
+                        lctx.fillRect(0, 0, 1000, 1000);
+                        ctx.drawImage(layer, 0, 0);
+
+                        ctx.save();
+                        ctx.globalCompositeOperation = 'multiply';
+                        ctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                        ctx.restore();
+                    }
+                }
+
+                // 2. Draw placed stickers
+                const canvasEl = document.getElementById('canvas');
+                const cW = (canvasEl && canvasEl.offsetWidth) || 500;
+                const cH = (canvasEl && canvasEl.offsetHeight) || cW;
+
+                activeStickers.forEach(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return;
+                    const imgEl = el.querySelector('img');
+                    if (!imgEl) return;
+
+                    const leftPct = parseFloat(el.style.left) || 50;
+                    const topPct = parseFloat(el.style.top) || 45;
+                    const elW = el.offsetWidth || 160;
+                    const wRatio = elW / cW;
+                    const targetW = 1000 * wRatio;
+                    const imgNaturalW = imgEl.naturalWidth || 1;
+                    const imgNaturalH = imgEl.naturalHeight || 1;
+                    const targetH = targetW * (imgNaturalH / imgNaturalW);
+                    const cx = 1000 * (leftPct / 100);
+                    const cy = 1000 * (topPct / 100);
+                    const rot = (parseFloat(el.dataset.rotation) || 0) * Math.PI / 180;
+
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(rot);
+                    try {
+                        ctx.drawImage(imgEl, -targetW / 2, -targetH / 2, targetW, targetH);
+                    } catch (e) {}
+                    ctx.restore();
+                });
+
+                return offscreen.toDataURL('image/jpeg', 0.88);
+            } catch (err) {
+                console.warn('captureTeeDesignPreview error:', err);
+                return null;
+            }
+        }
+
+        function addCustomToCart() {
+            try {
+                const canvas = document.getElementById('canvas');
+                const canvasW = (canvas && canvas.offsetWidth) || 500;
+
+                const details = activeStickers.map(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return null;
+                    // Use unrotated offsetWidth for exact scaling on invoice
+                    const pxW = el.offsetWidth || 160;
+                    const pctW = ((pxW / canvasW) * 100).toFixed(4) + '%';
+                    
+                    let uVal = stickerMap[s.url] || s.url;
+                    if (uVal.startsWith('data:')) {
+                        uVal = 'offline_' + s.id;
+                        const localHd = localStorage.getItem('hd_mapping_' + s.url);
+                        if (localHd) {
+                            try { localStorage.setItem('hd_mapping_' + uVal, localHd); } catch (e) {}
+                        }
+                    }
+                    return {
+                        u: uVal,
+                        url: s.url,
+                        sz: s.szName || 'A3',
+                        p: s.price,
+                        t: el.style.top || '45%',
+                        l: el.style.left || '50%',
+                        w: pctW,
+                        r: parseFloat(el.dataset.rotation || 0) || 0
+                    };
+                }).filter(d => d !== null);
+
+                const total = baseTshirtPrice + activeStickers.reduce((sum, s) => sum + (Number.isFinite(Number(s.price)) ? Number(s.price) : 250), 0);
+
+                let previewDataUrl = null;
+                try {
+                    previewDataUrl = captureTeeDesignPreview();
+                } catch (e) {}
+
+                // Safe cart checking & initialization
+                let tempCart;
+                if (typeof cart !== 'undefined') {
+                    tempCart = cart;
+                } else if (window.cart !== undefined) {
+                    tempCart = window.cart;
+                } else {
+                    try {
+                        tempCart = JSON.parse(localStorage.getItem('python_cart')) || [];
+                    } catch (e) {
+                        tempCart = [];
+                    }
+                    if (!Array.isArray(tempCart)) tempCart = [];
+                    window.cart = tempCart;
+                }
+
+                const cartItemId = 'custom-' + Date.now();
+                const cartItem = {
+                    id: cartItemId,
+                    name: currentTshirtType + ' (Custom)',
+                    price: total,
+                    quantity: 1,
+                    size: currentTshirtSize,
+                    color: selectedColorName,
+                    isCustom: true,
+                    customStickers: details,
+                    previewImage: previewDataUrl || '',
+                    image: previewDataUrl || (selectedColor === '#0A0A0A' ? 'https://i.ibb.co/Rk82RMjR/f46b35401278.png' : 'https://i.ibb.co/NnQrQr7y/T-Shirt.png'),
+                    basePrice: baseTshirtPrice
+                };
+                tempCart.push(cartItem);
+
+                if (previewDataUrl) {
+                    try {
+                        localStorage.setItem('python_custom_preview_' + cartItemId, previewDataUrl);
+                        localStorage.setItem('python_last_custom_preview', previewDataUrl);
+                    } catch (e) {}
+                }
+
+                if (typeof saveCart === 'function') {
+                    if (typeof cart !== 'undefined') {
+                        try { cart = tempCart; } catch (e) { window.cart = tempCart; }
+                    }
+                    saveCart();
+                } else {
+                    localStorage.setItem('python_cart', JSON.stringify(tempCart));
+                    if (typeof updateCartCount === 'function') updateCartCount();
+                }
+
+                localStorage.removeItem('roohira_custom_design');
+                window.location.href = 'cart.html';
+            } catch (err) {
+                console.error("Cart Error:", err);
+                alert("Something went wrong: " + err.message);
+            }
+        }
+        // ═══════════════════════════════════════════════════════════════
+        // Sticker studio database: prices, designs, categories
+        // Firestore: settings/stickerStudio + stickerLibrary collection
+        // ═══════════════════════════════════════════════════════════════
+        const STICKER_SIZE_CHART = {
+            A2: { w: 42.0, h: 59.4 },
+            A3: { w: 29.7, h: 42.0 },
+            A4: { w: 21.0, h: 29.7 },
+            A5: { w: 14.8, h: 21.0 },
+            A6: { w: 10.5, h: 14.8 }
+        };
+        const STICKER_DEFAULT_PRICES = { A2: 800, A3: 580, A4: 320, A5: 150, A6: 100 };
+        const STICKER_BASE_CATEGORIES = [
+            { slug: 'bw', label: 'Black & White' },
+            { slug: 'python', label: 'Python Collection' },
+            { slug: 'custom', label: 'Your Stickers' }
+        ];
+        const STICKER_CACHE_KEY = 'python_sticker_studio_v1';
+        const STICKER_ADMIN_PASS = 'python123';
+
+        let stickerPrices = Object.assign({}, STICKER_DEFAULT_PRICES);
+        let stickerDefaultSize = 'A3';
+        let stickerCategories = [];
+        let stickerLibraryDesigns = [];
+        let stickerDesignPrices = {};
+        let stickerCategoryOverrides = {};
+        let stickerHiddenDesigns = [];
+        let builtInStickerDesigns = [];
+        let activeStickerCategoryName = 'all';
+        let stickerManagerUnlocked = false;
+        let stickerManagerPrevOverflow = '';
+
+        function isStudioAdmin() {
+            try { return localStorage.getItem('python_admin_session') === 'authenticated'; }
+            catch (e) { return false; }
+        }
+
+        function stickerDb() {
+            if (typeof window !== 'undefined' && window.db) return window.db;
+            try { if (typeof db !== 'undefined' && db) return db; } catch (e) {}
+            return null;
+        }
+
+        function smEsc(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+
+        function stickerCategoryLabel(slug) {
+            const base = STICKER_BASE_CATEGORIES.find(function (c) { return c.slug === slug; });
+            if (base) return base.label;
+            const custom = stickerCategories.find(function (c) { return c.slug === slug; });
+            return custom ? custom.label : slug;
+        }
+
+        function allStickerCategories() {
+            const list = STICKER_BASE_CATEGORIES.slice();
+            stickerCategories.forEach(function (c) {
+                if (!list.some(function (x) { return x.slug === c.slug; })) list.push(c);
+            });
+            return list;
+        }
+
+        function stickerNameFromUrl(url) {
+            try {
+                const clean = String(url || '').split('?')[0].split('#')[0];
+                let name = decodeURIComponent(clean.substring(clean.lastIndexOf('/') + 1));
+                name = name.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim();
+                return name || 'Sticker design';
+            } catch (e) { return 'Sticker design'; }
+        }
+
+        function saveStickerCache() {
+            try {
+                localStorage.setItem(STICKER_CACHE_KEY, JSON.stringify({
+                    prices: stickerPrices,
+                    defaultSize: stickerDefaultSize,
+                    categories: stickerCategories,
+                    designs: stickerLibraryDesigns,
+                    designPrices: stickerDesignPrices,
+                    categoryOverrides: stickerCategoryOverrides,
+                    hidden: stickerHiddenDesigns
+                }));
+            } catch (e) {}
+        }
+
+        function loadStickerCache() {
+            try {
+                const raw = localStorage.getItem(STICKER_CACHE_KEY);
+                if (!raw) return;
+                applyStickerConfig(JSON.parse(raw), true);
+            } catch (e) {}
+        }
+
+        function applyStickerConfig(config, fromCache) {
+            if (!config || typeof config !== 'object') return;
+            if (config.prices && typeof config.prices === 'object') {
+                Object.keys(STICKER_DEFAULT_PRICES).forEach(function (sz) {
+                    const v = Number(config.prices[sz]);
+                    if (isFinite(v) && v >= 0) stickerPrices[sz] = v;
+                });
+            }
+            if (typeof config.defaultSize === 'string' && STICKER_SIZE_CHART[config.defaultSize]) {
+                stickerDefaultSize = config.defaultSize;
+            }
+            if (Array.isArray(config.categories)) {
+                stickerCategories = config.categories.filter(function (x) { return x && x.slug && x.label; });
+            }
+            if (fromCache && Array.isArray(config.designs)) {
+                stickerLibraryDesigns = config.designs.filter(function (d) { return d && d.url; });
+            }
+            if (config.designPrices && typeof config.designPrices === 'object') {
+                stickerDesignPrices = {};
+                Object.keys(config.designPrices).forEach(function (url) {
+                    const v = Number(config.designPrices[url]);
+                    if (isFinite(v) && v >= 0) stickerDesignPrices[url] = v;
+                });
+            }
+            if (config.categoryOverrides && typeof config.categoryOverrides === 'object') {
+                stickerCategoryOverrides = config.categoryOverrides;
+            }
+            if (Array.isArray(config.hidden)) {
+                stickerHiddenDesigns = config.hidden.filter(function (h) { return h && h.url; });
+            }
+        }
+
+        async function saveStickerConfig() {
+            saveStickerCache();
+            const database = stickerDb();
+            if (!database) return false;
+            try {
+                const payload = {
+                    prices: Object.assign({}, stickerPrices),
+                    defaultSize: stickerDefaultSize,
+                    categories: stickerCategories,
+                    designPrices: stickerDesignPrices,
+                    categoryOverrides: stickerCategoryOverrides,
+                    hidden: stickerHiddenDesigns
+                };
+                try {
+                    if (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore.FieldValue) {
+                        payload.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+                    }
+                } catch (e) {}
+                await database.collection('settings').doc('stickerStudio').set(payload, { merge: true });
+                return true;
+            } catch (e) {
+                console.warn('Sticker config save failed:', e);
+                return false;
+            }
+        }
+
+        async function loadStickerStudioFromDb() {
+            const database = stickerDb();
+            if (!database) return;
+            try {
+                const doc = await database.collection('settings').doc('stickerStudio').get();
+                if (doc && doc.exists) {
+                    applyStickerConfig(doc.data(), false);
+                    saveStickerCache();
+                    syncStickerUiFromState();
+                }
+            } catch (e) {
+                console.warn('Sticker settings load failed:', e);
+            }
+            try {
+                const snap = await database.collection('stickerLibrary').get();
+                const designs = [];
+                snap.forEach(function (entry) {
+                    const d = entry.data() || {};
+                    if (!d.url) return;
+                    designs.push({
+                        docId: entry.id,
+                        name: d.name || stickerNameFromUrl(d.url),
+                        url: d.url,
+                        category: d.category || 'python',
+                        price: (d.price === null || d.price === undefined || d.price === '') ? null : Number(d.price)
+                    });
+                });
+                stickerLibraryDesigns = designs;
+                saveStickerCache();
+                syncStickerUiFromState();
+            } catch (e) {
+                console.warn('Sticker library load failed:', e);
+            }
+        }
+
+        function captureBuiltInStickers() {
+            const grid = document.getElementById('main-sticker-grid');
+            if (!grid) return;
+            builtInStickerDesigns = [];
+            grid.querySelectorAll('.sticker-item[data-cat]').forEach(function (item) {
+                const img = item.querySelector('img');
+                const url = (img && (img.dataset.url || img.getAttribute('src'))) || '';
+                if (!url || /^data:/i.test(url)) return;
+                builtInStickerDesigns.push({
+                    url: url,
+                    category: item.dataset.cat || 'python',
+                    name: stickerNameFromUrl(url)
+                });
+            });
+        }
+
+        function isKnownStickerDesign(url) {
+            const raw = String(url || '');
+            if (!raw) return false;
+            if (/^data:|^offline_/i.test(raw)) return true;
+            try { if (stickerMap[raw]) return true; } catch (e) {}
+            return builtInStickerDesigns.some(function (d) { return d.url === raw; }) ||
+                stickerLibraryDesigns.some(function (d) { return d.url === raw; });
+        }
+
+        // Fixed price for a design (map override for built-ins, doc price for
+        // database designs). Returns null when the size price table should apply.
+        function stickerDesignPriceOverride(url) {
+            if (stickerDesignPrices[url] !== undefined && stickerDesignPrices[url] !== null) {
+                const v = Number(stickerDesignPrices[url]);
+                if (isFinite(v) && v >= 0) return v;
+            }
+            const doc = stickerLibraryDesigns.find(function (d) { return d.url === url; });
+            if (doc && doc.price !== null && doc.price !== undefined && doc.price !== '') {
+                const v = Number(doc.price);
+                if (isFinite(v) && v >= 0) return v;
+            }
+            return null;
+        }
+
+        function buildStickerTabs() {
+            const wrap = document.querySelector('.category-tabs');
+            if (!wrap) return;
+            const cats = [{ slug: 'all', label: 'All Designs' }].concat(allStickerCategories());
+            if (!cats.some(function (c) { return c.slug === activeStickerCategoryName; })) {
+                activeStickerCategoryName = 'all';
+            }
+            wrap.innerHTML = cats.map(function (c) {
+                return '<div class="selector-btn' + (c.slug === activeStickerCategoryName ? ' active' : '') +
+                    '" data-cat="' + smEsc(c.slug) + '">' + smEsc(c.label) + '</div>';
+            }).join('');
+            wrap.querySelectorAll('.selector-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () { filterStickers(btn.dataset.cat, btn); });
+            });
+        }
+
+        function syncStickerUiFromState() {
+            const grid = document.getElementById('main-sticker-grid');
+            if (grid) {
+                grid.querySelectorAll('.sticker-item[data-cat]').forEach(function (item) {
+                    if (item.dataset.source === 'library') return;
+                    const img = item.querySelector('img');
+                    const url = (img && (img.dataset.url || img.getAttribute('src'))) || '';
+                    if (!url) return;
+                    const override = stickerCategoryOverrides[url];
+                    if (override) item.dataset.cat = override;
+                    const hidden = stickerHiddenDesigns.some(function (h) { return h.url === url; });
+                    item.dataset.hidden = hidden ? '1' : '0';
+                    if (hidden) item.style.display = 'none';
+                });
+
+                grid.querySelectorAll('.sticker-item[data-source="library"]').forEach(function (el) { el.remove(); });
+
+                stickerLibraryDesigns.forEach(function (d) {
+                    if (!d || !d.url) return;
+                    if (stickerHiddenDesigns.some(function (h) { return h.url === d.url; })) return;
+                    const item = document.createElement('div');
+                    item.className = 'sticker-item';
+                    item.dataset.cat = d.category || 'python';
+                    item.dataset.source = 'library';
+                    item.dataset.url = d.url;
+                    item.title = d.name || 'Sticker design';
+                    item.onclick = function () { addNewSticker(d.url); };
+                    const img = document.createElement('img');
+                    img.src = d.url;
+                    img.alt = d.name || 'Sticker design';
+                    img.dataset.url = d.url;
+                    img.loading = 'lazy';
+                    item.appendChild(img);
+                    grid.appendChild(item);
+                });
+            }
+            buildStickerTabs();
+            applyStickerFilter(activeStickerCategoryName);
+            renderStickerSizeChart();
+        }
+
+        function applyStickerFilter(cat) {
+            document.querySelectorAll('#main-sticker-grid .sticker-item').forEach(function (item) {
+                const hidden = item.dataset.hidden === '1';
+                item.style.display = (hidden || (cat !== 'all' && item.dataset.cat !== cat)) ? 'none' : 'flex';
+            });
+        }
+
+        function filterStickers(cat, btn) {
+            activeStickerCategoryName = cat || 'all';
+            document.querySelectorAll('.category-tabs .selector-btn').forEach(function (b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            applyStickerFilter(activeStickerCategoryName);
+        }
+
+        function renderStickerSizeChart() {
+            const body = document.getElementById('sticker-size-chart-body');
+            if (!body) return;
+            const rows = Object.keys(STICKER_SIZE_CHART).map(function (sz) {
+                const dim = STICKER_SIZE_CHART[sz];
+                const isDefault = sz === stickerDefaultSize;
+                return '<tr' + (isDefault ? ' class="is-default"' : '') + '>' +
+                    '<td>' + sz + (isDefault ? ' <span style="font-size:0.5rem;color:#8B0000;letter-spacing:1px;">DEFAULT</span>' : '') + '</td>' +
+                    '<td>' + dim.w.toFixed(1) + ' × ' + dim.h.toFixed(1) + ' cm</td>' +
+                    '<td>Rs. ' + Number(stickerPrices[sz] || 0).toLocaleString() + '</td>' +
+                '</tr>';
+            }).join('');
+            body.innerHTML = '<div class="sm-chart-wrap">' +
+                '<table class="sm-size-table"><thead><tr><th>Size</th><th>Max print area</th><th>Price</th></tr></thead><tbody>' +
+                rows + '</tbody></table>' +
+                '<p class="sm-size-note">Prices are set by the store admin and apply to every sticker at checkout. ' +
+                'Designs with a fixed price keep that price even when a different print size is selected.</p></div>';
+        }
+
+        function openStickerSizeChart() {
+            const el = document.getElementById('sticker-size-chart');
+            if (!el) return;
+            renderStickerSizeChart();
+            el.classList.add('open');
+            el.setAttribute('aria-hidden', 'false');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeStickerSizeChart() {
+            const el = document.getElementById('sticker-size-chart');
+            if (!el) return;
+            el.classList.remove('open');
+            el.setAttribute('aria-hidden', 'true');
+        }
+
+        function initStickerStudio() {
+            captureBuiltInStickers();
+            loadStickerCache();
+            syncStickerUiFromState();
+            loadStickerStudioFromDb();
+        }
+
+        window.onload = () => {
+            initStickerStudio();
+            loadSavedDesign();
+            updateCartCount();
+            lucide.createIcons();
+        };
+    </script>
+<script>
+window.addEventListener('load', function () {
+  setTimeout(function () {
+    try {
+      startCustomizing('Regular Fit Tee', 1300, 'https://i.ibb.co/NnQrQr7y/T-Shirt.png');
+      setTimeout(function () {
+        var btn = document.querySelector('.color-option[data-color="#0A0A0A"]');
+        setTshirtColor('#0A0A0A', 'Onyx Black', btn);
+        addNewSticker('https://i.ibb.co/gMrCJPnN/A3-1.png');
+        var box = document.querySelector('.preview-box');
+        if (box) box.scrollIntoView({ block: 'center' });
+        // Show the captured cart/invoice snapshot under the studio for verification
+        setTimeout(function () {
+          try {
+            var dataUrl = captureTeeDesignPreview();
+            window.__captureOk = !!dataUrl;
+            window.__captureLen = dataUrl ? dataUrl.length : 0;
+            if (dataUrl) {
+              var wrap = document.createElement('div');
+              wrap.style.cssText = 'position:fixed;right:12px;bottom:12px;z-index:99999;background:#fff;border:1px solid #ccc;padding:6px;border-radius:8px;';
+              var im = document.createElement('img');
+              im.src = dataUrl;
+              im.style.cssText = 'width:220px;display:block;';
+              wrap.appendChild(im);
+              document.body.appendChild(wrap);
+            }
+          } catch (e) { window.__captureErr = String(e); }
+        }, 1200);
+      }, 900);
+    } catch (e) { console.error(e); }
+  }, 2200);
+});
+</script>
+</body>
+
+</html>
