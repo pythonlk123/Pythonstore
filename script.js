@@ -1885,7 +1885,9 @@ function placeOrder() {
                 color: getColorName(item.color),
                 image: item.image || (p.images ? p.images[0] : ''),
                 isCustom: item.isCustom || (item.id && String(item.id).startsWith('custom-')) || false,
-                customStickers: item.customStickers || []
+                basePrice: item.basePrice || 0,
+                customStickers: item.customStickers || [],
+                previewImage: item.previewImage || item.image || ''
             };
         }),
         delivery: deliveryFee,
@@ -1945,7 +1947,13 @@ function placeOrder() {
     const dbOrder = {
         id: orderID,
         date: now.toLocaleDateString(),
-        items: cart.map(item => ({ ...item, color: getColorName(item.color) })),
+        items: cart.map(item => ({
+            ...item,
+            color: getColorName(item.color),
+            previewImage: item.previewImage || item.image || '',
+            customStickers: Array.isArray(item.customStickers) ? item.customStickers : [],
+            isCustom: item.isCustom || (item.id && String(item.id).startsWith('custom-')) || false
+        })),
         total: grandTotal,
         subtotal: subtotal,
         delivery: deliveryFee,
@@ -2115,7 +2123,10 @@ function loadProfile() {
                             color: it.color || '',
                             quantity: it.quantity || 1,
                             price: it.price || 0,
-                            image: it.image || ''
+                            image: it.image || '',
+                            isCustom: it.isCustom || (it.id && String(it.id).startsWith('custom-')) || false,
+                            basePrice: it.basePrice || 0,
+                            customStickers: Array.isArray(it.customStickers) ? it.customStickers : []
                         })),
                         subtotal: o.subtotal || o.total || 0,
                         delivery: o.delivery || 0,

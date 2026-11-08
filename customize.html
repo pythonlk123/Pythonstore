@@ -1265,6 +1265,326 @@
                 padding: 15px;
             }
         }
+
+        /* ── Sticker studio manager (admin) ── */
+        .sm-head-actions {
+            margin-left: auto;
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            flex-shrink: 0;
+        }
+        .sm-head-actions .sm-head-btn { margin-left: 0; }
+        .sm-head-btn {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 10px;
+            border: 1px solid #D4D4D8;
+            border-radius: 50px;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            font-family: inherit;
+            font-size: 0.54rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .sm-head-btn:hover { border-color: #8B0000; color: #8B0000; }
+
+        .sm-modal {
+            position: fixed;
+            inset: 0;
+            z-index: 1200;
+            display: none;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 22px 16px;
+            background: rgba(6, 6, 6, 0.72);
+            backdrop-filter: blur(7px);
+            -webkit-backdrop-filter: blur(7px);
+            overflow-y: auto;
+        }
+        .sm-modal.open { display: flex; }
+        .sm-dialog {
+            width: 100%;
+            max-width: 880px;
+            background: #FFFFFF;
+            border-radius: 20px;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+            overflow: hidden;
+            margin: auto;
+        }
+        .sm-dialog-sm { max-width: 520px; }
+        .sm-head {
+            display: flex;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 20px 22px 16px;
+            border-bottom: 1px solid #ECECEF;
+            position: relative;
+        }
+        .sm-head h3 {
+            font-size: 1.2rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 2px 0 4px;
+            color: #0A0A0A;
+        }
+        .sm-head p { font-size: 0.66rem; color: #71717A; line-height: 1.5; max-width: 560px; }
+        .sm-kicker { font-size: 0.54rem; letter-spacing: 2px; font-weight: 900; color: #8B0000; }
+        .sm-close {
+            margin-left: auto;
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            border: 1px solid #E4E4E7;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            cursor: pointer;
+            font-size: 0.8rem;
+            line-height: 1;
+        }
+        .sm-close:hover { background: #0A0A0A; color: #FFFFFF; }
+
+        .sm-gate {
+            padding: 26px 22px 30px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+        }
+        .sm-gate p { font-size: 0.72rem; color: #52525B; }
+        .sm-gate input {
+            width: 100%;
+            max-width: 280px;
+            padding: 11px 13px;
+            border: 1px solid #D4D4D8;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.8rem;
+        }
+        .sm-error { color: #8B0000; font-size: 0.64rem; font-weight: 700; min-height: 14px; }
+
+        .sm-body { padding: 18px 22px 26px; display: none; }
+        .sm-body.is-open { display: block; }
+        .sm-section {
+            border: 1px solid #ECECEF;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 13px;
+            background: #FFFFFF;
+        }
+        .sm-section-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 11px;
+        }
+        .sm-section-head h4 {
+            font-size: 0.76rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.1px;
+            color: #0A0A0A;
+        }
+        .sm-section-head span { font-size: 0.58rem; color: #71717A; }
+
+        .sm-price-grid {
+            display: grid;
+            grid-template-columns: repeat(5, minmax(0, 1fr));
+            gap: 9px;
+            margin-bottom: 10px;
+        }
+        .sm-price-field {
+            border: 1px solid #E4E4E7;
+            border-radius: 11px;
+            padding: 8px 9px;
+            background: #FAFAFA;
+        }
+        .sm-price-field span {
+            display: block;
+            font-size: 0.56rem;
+            font-weight: 900;
+            color: #52525B;
+            letter-spacing: 0.6px;
+            margin-bottom: 3px;
+        }
+        .sm-price-field input {
+            width: 100%;
+            border: none;
+            background: transparent;
+            font-family: inherit;
+            font-weight: 900;
+            font-size: 0.9rem;
+            color: #0A0A0A;
+            outline: none;
+        }
+
+        .sm-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .sm-form-grid label {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            font-size: 0.56rem;
+            font-weight: 900;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            color: #52525B;
+        }
+        .sm-form-grid label.sm-wide { grid-column: 1 / -1; }
+        .sm-form-grid input,
+        .sm-form-grid select {
+            width: 100%;
+            padding: 9px 10px;
+            border: 1px solid #D4D4D8;
+            border-radius: 9px;
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #0A0A0A;
+            background: #FFFFFF;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .sm-form-grid input[type="file"] { padding: 7px; font-size: 0.62rem; }
+
+        .sm-row-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+        .sm-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 9px 15px;
+            border-radius: 9px;
+            border: 1px solid #D4D4D8;
+            background: #FFFFFF;
+            color: #0A0A0A;
+            font-family: inherit;
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            cursor: pointer;
+        }
+        .sm-btn:hover { border-color: #0A0A0A; }
+        .sm-btn-dark { background: #0A0A0A; border-color: #0A0A0A; color: #FFFFFF; }
+        .sm-btn-dark:hover { background: #262626; }
+        .sm-btn-red { background: #8B0000; border-color: #8B0000; color: #FFFFFF; }
+        .sm-btn-red:hover { background: #A50000; }
+        .sm-btn-ghost { padding: 6px 9px; font-size: 0.54rem; }
+        .sm-btn[disabled] { opacity: 0.6; cursor: default; }
+
+        .sm-status { font-size: 0.62rem; font-weight: 700; color: #15803D; margin-top: 8px; min-height: 14px; }
+        .sm-status.is-error { color: #8B0000; }
+
+        .sm-design-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            max-height: 360px;
+            overflow-y: auto;
+            padding-right: 2px;
+        }
+        .sm-design-row {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            padding: 8px;
+            border: 1px solid #ECECEF;
+            border-radius: 11px;
+            background: #FCFCFD;
+        }
+        .sm-design-row img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            border-radius: 8px;
+            background: #FFFFFF;
+            border: 1px solid #ECECEF;
+            flex-shrink: 0;
+        }
+        .sm-design-main { flex: 1; min-width: 90px; }
+        .sm-design-main input {
+            width: 100%;
+            border: 1px solid transparent;
+            background: transparent;
+            font-family: inherit;
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: #0A0A0A;
+            padding: 3px 4px;
+            border-radius: 6px;
+            text-transform: none;
+            letter-spacing: 0;
+        }
+        .sm-design-main input:focus { border-color: #D4D4D8; background: #FFFFFF; outline: none; }
+        .sm-design-main input[readonly] { color: #3F3F46; }
+        .sm-design-sub { font-size: 0.52rem; color: #71717A; padding-left: 4px; }
+        .sm-design-row select {
+            width: 118px;
+            padding: 7px 6px;
+            border: 1px solid #D4D4D8;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.6rem;
+            font-weight: 700;
+            background: #FFFFFF;
+        }
+        .sm-price-input {
+            width: 84px;
+            padding: 7px 8px;
+            border: 1px solid #D4D4D8;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 0.66rem;
+            font-weight: 800;
+        }
+        .sm-row-btns { display: flex; gap: 5px; flex-shrink: 0; }
+
+        .sm-chart-wrap { padding: 4px 22px 24px; }
+        .sm-size-table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+        .sm-size-table th {
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-size: 0.56rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 9px 10px;
+            text-align: left;
+        }
+        .sm-size-table td {
+            padding: 9px 10px;
+            border-bottom: 1px solid #ECECEF;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #0A0A0A;
+        }
+        .sm-size-table td:last-child,
+        .sm-size-table th:last-child { text-align: right; }
+        .sm-size-table tr.is-default td { background: #FFF5F5; font-weight: 900; }
+        .sm-size-note { font-size: 0.58rem; color: #71717A; margin-top: 10px; line-height: 1.5; }
+
+        @media (max-width: 760px) {
+            .sm-price-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+            .sm-form-grid { grid-template-columns: 1fr; }
+            .sm-design-row { flex-wrap: wrap; }
+            .sm-design-main { flex-basis: calc(100% - 55px); }
+            .sm-design-row select { width: calc(100% - 96px); }
+            .sm-price-input { flex: 1; }
+            .sm-head { padding: 16px 16px 12px; }
+            .sm-body { padding: 14px 16px 20px; }
+            .sm-chart-wrap { padding: 4px 16px 20px; }
+        }
     </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Anta&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
@@ -1548,6 +1868,11 @@
                             <h4>Artwork Library</h4>
                             <p>Tap a graphic to drop it on the canvas. Drag to place it.</p>
                         </div>
+                        <div class="sm-head-actions">
+                            <button type="button" class="sm-head-btn" onclick="openStickerSizeChart()">
+                                <i data-lucide="ruler" style="width: 13px; height: 13px;"></i> SIZE &amp; PRICE
+                            </button>
+                        </div>
                     </div>
                     <div class="category-tabs studio-tabs">
                         <div class="selector-btn active" onclick="filterStickers('all', this)">All Designs</div>
@@ -1709,6 +2034,9 @@
                             <h4>Print Scale</h4>
                             <p>Select the printed size for the active artwork.</p>
                         </div>
+                        <button type="button" class="sm-head-btn" onclick="openStickerSizeChart()">
+                            <i data-lucide="ruler" style="width: 13px; height: 13px;"></i> SIZE &amp; PRICE
+                        </button>
                     </div>
                     <div class="selector-grid">
                         <div class="selector-btn sz-btn" onclick="setStickerSize('A2', this)">A2</div>
@@ -1748,6 +2076,128 @@
         </div>
     </div>
 
+    <!-- ═══════════ Sticker print size & price chart ═══════════ -->
+    <div id="sticker-size-chart" class="sm-modal" aria-hidden="true">
+        <div class="sm-dialog sm-dialog-sm" role="dialog" aria-modal="true" aria-labelledby="sm-chart-title">
+            <div class="sm-head">
+                <div>
+                    <span class="sm-kicker">PRINT GUIDE</span>
+                    <h3 id="sm-chart-title">Sticker Size &amp; Price</h3>
+                    <p>Maximum print area per artwork. Prices are per sticker.</p>
+                </div>
+                <button type="button" class="sm-close" onclick="closeStickerSizeChart()" aria-label="Close">✕</button>
+            </div>
+            <div id="sticker-size-chart-body"></div>
+        </div>
+    </div>
+
+    <!-- ═══════════ Upload progress overlay (ImgBB / server / offline) ═══════════ -->
+    <div id="upload-loader" class="upload-loader" aria-hidden="true">
+        <div class="upload-loader-card" role="status" aria-live="polite">
+            <div class="upload-loader-thumb-wrap">
+                <img id="upload-loader-thumb" class="upload-loader-thumb" alt="">
+                <span class="upload-loader-ring"></span>
+            </div>
+            <div class="upload-loader-title" id="upload-loader-title">Uploading your artwork…</div>
+            <div class="upload-loader-sub" id="upload-loader-sub">Sending the original HD file to the cloud</div>
+            <div class="upload-loader-bar"><span id="upload-loader-bar-fill"></span></div>
+        </div>
+    </div>
+    <style>
+        .upload-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 999999;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 18px;
+            background: rgba(10, 10, 10, 0.55);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+        }
+        .upload-loader.active { display: flex; }
+        .upload-loader-card {
+            width: 100%;
+            max-width: 330px;
+            background: #FFFFFF;
+            border: 1px solid #E5E5E5;
+            border-radius: 18px;
+            padding: 24px 22px 20px;
+            text-align: center;
+            box-shadow: 0 26px 70px rgba(0, 0, 0, 0.35);
+            animation: uploadPop 0.22s ease;
+            font-family: 'League Spartan', 'Anta', sans-serif;
+        }
+        .upload-loader-thumb-wrap {
+            position: relative;
+            width: 78px;
+            height: 78px;
+            margin: 0 auto 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .upload-loader-thumb {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+            border-radius: 12px;
+            background: #F7F7F8;
+            border: 1px solid #E5E7EB;
+            display: none;
+        }
+        .upload-loader-ring {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            border: 3px solid #F1F1F1;
+            border-top-color: #8B0000;
+            animation: uploadSpin 0.85s linear infinite;
+        }
+        .upload-loader-title {
+            font-size: 0.95rem;
+            font-weight: 900;
+            color: #0A0A0A;
+            letter-spacing: 0.3px;
+            margin-bottom: 4px;
+        }
+        .upload-loader-sub {
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: #6B7280;
+            line-height: 1.4;
+            margin-bottom: 14px;
+        }
+        .upload-loader-bar {
+            width: 100%;
+            height: 5px;
+            border-radius: 10px;
+            background: #F1F1F1;
+            overflow: hidden;
+        }
+        .upload-loader-bar span {
+            display: block;
+            height: 100%;
+            width: 35%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #8B0000, #DC143C);
+            animation: uploadBar 1.2s ease-in-out infinite;
+        }
+        @keyframes uploadSpin { to { transform: rotate(360deg); } }
+        @keyframes uploadBar {
+            0%   { transform: translateX(-110%); }
+            100% { transform: translateX(320%); }
+        }
+        @keyframes uploadPop {
+            from { opacity: 0; transform: translateY(10px) scale(0.96); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .upload-loader-ring, .upload-loader-bar span { animation-duration: 2s; }
+        }
+    </style>
+
     <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
@@ -1778,6 +2228,83 @@
             document.getElementById('custom-sticker-input').click();
         }
 
+        // ── Upload progress overlay helpers ─────────────────────────────
+        let uploadLoaderTimer = null;
+        let uploadLoaderPrevOverflow = '';
+
+        function showUploadLoader(file) {
+            const loader = document.getElementById('upload-loader');
+            if (!loader) return;
+            const thumb = document.getElementById('upload-loader-thumb');
+            const title = document.getElementById('upload-loader-title');
+            const sub = document.getElementById('upload-loader-sub');
+            const bar = document.getElementById('upload-loader-bar-fill');
+
+            if (title) title.textContent = 'Uploading your artwork…';
+            if (sub) sub.textContent = 'Sending the original HD file to the cloud';
+            if (bar) bar.style.width = '35%';
+
+            if (thumb) {
+                if (thumb.dataset.objectUrl) {
+                    try { URL.revokeObjectURL(thumb.dataset.objectUrl); } catch (e) {}
+                    delete thumb.dataset.objectUrl;
+                }
+                thumb.removeAttribute('src');
+                thumb.style.display = 'none';
+                if (file && /^image\//.test(file.type || '')) {
+                    try {
+                        const objUrl = URL.createObjectURL(file);
+                        thumb.dataset.objectUrl = objUrl;
+                        thumb.onload = function () {
+                            thumb.style.display = 'block';
+                            if (thumb.dataset.objectUrl) {
+                                try { URL.revokeObjectURL(thumb.dataset.objectUrl); } catch (e) {}
+                                delete thumb.dataset.objectUrl;
+                            }
+                        };
+                        thumb.src = objUrl;
+                    } catch (e) {
+                        thumb.style.display = 'none';
+                    }
+                }
+            }
+
+            if (!loader.classList.contains('active')) {
+                uploadLoaderPrevOverflow = document.body.style.overflow;
+                loader.classList.add('active');
+                loader.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
+            }
+
+            // Safety net: never trap the user behind the overlay forever.
+            clearTimeout(uploadLoaderTimer);
+            uploadLoaderTimer = setTimeout(function () {
+                uploadLoaderTimer = null;
+                if (!loader.classList.contains('active')) return;
+                hideUploadLoader();
+                if (typeof showNotification === 'function') {
+                    showNotification('Upload is taking too long. Please try again.');
+                }
+            }, 90000);
+        }
+
+        function updateUploadLoader(title, sub) {
+            const t = document.getElementById('upload-loader-title');
+            const s = document.getElementById('upload-loader-sub');
+            if (title && t) t.textContent = title;
+            if (sub && s) s.textContent = sub;
+        }
+
+        function hideUploadLoader() {
+            clearTimeout(uploadLoaderTimer);
+            uploadLoaderTimer = null;
+            const loader = document.getElementById('upload-loader');
+            if (!loader) return;
+            loader.classList.remove('active');
+            loader.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = uploadLoaderPrevOverflow || '';
+        }
+
         function handleStickerUpload(event) {
             const file = event.target.files[0];
             if (!file) return;
@@ -1792,11 +2319,13 @@
                 return;
             }
 
+            showUploadLoader(file);
+
             if (typeof showNotification === 'function') {
                 showNotification('\u2601\ufe0f Uploading to cloud...');
             }
 
-            // Get HD version of image (max 1000px, preserve PNG transparency)
+            // Local display copy (max 1000px) — the original file itself is what gets uploaded
             getHDImage(file, function(hdBase64) {
 
                 // ── TIER 1: ImgBB Cloud Upload ─────────────────────────────
@@ -1804,13 +2333,14 @@
                 function tryImgBB() {
                     if (!IMGBB_API_KEY || IMGBB_API_KEY === 'YOUR_IMGBB_KEY_HERE') {
                         console.info('ImgBB key not set, skipping to server upload.');
+                        updateUploadLoader('Uploading artwork…', 'Cloud key missing — sending to the store server');
                         tryServer();
                         return;
                     }
-                    const base64Data = hdBase64.split(',')[1]; // Strip data:image/...;base64, prefix
+                    // Upload the ORIGINAL file so the cloud copy keeps full resolution.
                     const imgbbForm = new FormData();
                     imgbbForm.append('key', IMGBB_API_KEY);
-                    imgbbForm.append('image', base64Data);
+                    imgbbForm.append('image', file);
 
                     fetch('https://api.imgbb.com/1/upload', {
                         method: 'POST',
@@ -1827,12 +2357,14 @@
                             try { localStorage.setItem('hd_mapping_' + imgUrl, hdBase64); } catch(e) {}
                             addNewSticker(imgUrl);
                             addCustomStickerToGrid(imgUrl);
+                            hideUploadLoader();
                         } else {
                             throw new Error('ImgBB rejected: ' + JSON.stringify(data));
                         }
                     })
                     .catch(err => {
                         console.warn('ImgBB upload failed, trying server:', err);
+                        updateUploadLoader('Trying a backup upload…', 'ImgBB did not respond — switching to the store server');
                         tryServer();
                     });
                 }
@@ -1856,12 +2388,14 @@
                             try { localStorage.setItem('hd_mapping_' + data.full_url, hdBase64); } catch(e) {}
                             addNewSticker(data.full_url);
                             addCustomStickerToGrid(data.full_url);
+                            hideUploadLoader();
                         } else {
                             throw new Error(data.message || 'Server upload failed');
                         }
                     })
                     .catch(err => {
                         console.warn('Server upload failed, using offline fallback:', err);
+                        updateUploadLoader('Saving on this device…', 'Cloud upload unavailable — keeping a local copy');
                         tryOffline();
                     });
                 }
@@ -1876,6 +2410,7 @@
                         try { localStorage.setItem('hd_mapping_' + fallbackBase64, hdBase64); } catch(e) {}
                         addNewSticker(fallbackBase64);
                         addCustomStickerToGrid(fallbackBase64);
+                        hideUploadLoader();
                     });
                 }
 
@@ -1886,7 +2421,7 @@
             event.target.value = '';
         }
 
-        // Helper to get HD (1000px) quality image and preserve format (PNG transparency)
+        // Local display copy (max 1000px, preserves PNG transparency)
         function getHDImage(file, callback) {
             const reader = new FileReader();
             reader.onload = function(e) {
@@ -1918,7 +2453,19 @@
                     const dataUrl = format === 'image/png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.9);
                     callback(dataUrl);
                 };
+                img.onerror = function() {
+                    hideUploadLoader();
+                    if (typeof showNotification === 'function') {
+                        showNotification('\u26a0\ufe0f That image could not be read. Please try another file.');
+                    }
+                };
                 img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                hideUploadLoader();
+                if (typeof showNotification === 'function') {
+                    showNotification('\u26a0\ufe0f Could not read the file. Please try again.');
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -1955,7 +2502,19 @@
                     const dataUrl = format === 'image/png' ? canvas.toDataURL('image/png') : canvas.toDataURL('image/jpeg', 0.7);
                     callback(dataUrl);
                 };
+                img.onerror = function() {
+                    hideUploadLoader();
+                    if (typeof showNotification === 'function') {
+                        showNotification('\u26a0\ufe0f That image could not be read. Please try another file.');
+                    }
+                };
                 img.src = e.target.result;
+            };
+            reader.onerror = function() {
+                hideUploadLoader();
+                if (typeof showNotification === 'function') {
+                    showNotification('\u26a0\ufe0f Could not read the file. Please try again.');
+                }
             };
             reader.readAsDataURL(file);
         }
@@ -2101,8 +2660,14 @@
             wrapper.style.top = storedTop;
             wrapper.style.transform = `translate(-50%, -50%) rotate(${storedRotation}deg)`;
             
-            const initialPrice = pos && pos.p !== undefined ? pos.p : 580;
-            const initialSzName = pos && pos.sz !== undefined ? pos.sz : 'A3';
+            const overridePrice = stickerDesignPriceOverride(url);
+            const lockedPrice = (pos && pos.lockedPrice !== undefined)
+                ? !!pos.lockedPrice
+                : overridePrice !== null;
+            const initialPrice = pos && pos.p !== undefined
+                ? Number(pos.p)
+                : (overridePrice !== null ? overridePrice : (stickerPrices[stickerDefaultSize] || 580));
+            const initialSzName = pos && pos.sz !== undefined ? pos.sz : stickerDefaultSize;
             
             // Check if there is a local HD version in localStorage
             const localHd = localStorage.getItem('hd_mapping_' + url);
@@ -2116,7 +2681,7 @@
                 <div class="handle rotate-handle"><i data-lucide="rotate-cw" style="width:16px"></i></div>
             `;
             document.getElementById('canvas').appendChild(wrapper);
-            activeStickers.push({ id, url, price: initialPrice, szName: initialSzName });
+            activeStickers.push({ id, url, price: initialPrice, szName: initialSzName, lockedPrice: lockedPrice });
             initInteractions(wrapper);
             selectSticker(id);
             updateTotal();
@@ -2129,9 +2694,11 @@
             if (!activeEl) return;
             const sticker = activeStickers.find(s => s.id === activeEl.id);
             if (sticker) {
-                const prices = { 'A2': 800, 'A3': 580, 'A4': 320, 'A5': 150, 'A6': 100 };
                 sticker.szName = sz;
-                sticker.price = prices[sz];
+                // Designs with a fixed database price keep that price.
+                if (!sticker.lockedPrice) {
+                    sticker.price = Number(stickerPrices[sz]) || 0;
+                }
                 const tag = activeEl.querySelector('.sticker-size-tag');
                 if (tag) tag.innerText = sz;
 
@@ -2181,7 +2748,8 @@
                 w: activeEl.style.width,
                 r: activeEl.dataset.rotation || 0,
                 sz: sticker.szName,
-                p: sticker.price
+                p: sticker.price,
+                lockedPrice: sticker.lockedPrice
             });
         }
 
@@ -2202,13 +2770,13 @@
             if (summaryBox) {
                 summaryBox.innerHTML = `<div class="summary-item"><span>Base (${currentTshirtType})</span><span>Rs. ${baseTshirtPrice}</span></div>`;
                 activeStickers.forEach((s, idx) => {
-                    const price = s.price || 100;
+                    const price = Number.isFinite(Number(s.price)) ? Number(s.price) : 100;
                     const sz = s.szName || 'A6';
                     total += price;
                     summaryBox.innerHTML += `<div class="summary-item"><span>Design ${idx + 1} (${sz})</span><span>Rs. ${price}</span></div>`;
                 });
             } else {
-                total += activeStickers.reduce((sum, s) => sum + (s.price || 100), 0);
+                total += activeStickers.reduce((sum, s) => sum + (Number.isFinite(Number(s.price)) ? Number(s.price) : 100), 0);
             }
             const grandTotal = document.getElementById('grand-total-display');
             const studioTotal = document.getElementById('studio-total');
@@ -2340,7 +2908,7 @@
                     savedStickers.forEach(s => {
                         if (!s || !s.url) return;
                         addNewSticker(s.url, s);
-                        if (!stickerMap[s.url]) {
+                        if (!isKnownStickerDesign(s.url)) {
                             addCustomStickerToGrid(s.url, false);
                         }
                     });
@@ -2377,35 +2945,117 @@
             document.getElementById('btn-cart').style.display = 'none';
             document.getElementById('btn-edit').style.display = 'none';
         }
+        function captureTeeDesignPreview() {
+            try {
+                const offscreen = document.createElement('canvas');
+                offscreen.width = 1000;
+                offscreen.height = 1000;
+                const ctx = offscreen.getContext('2d');
+                if (!ctx) return null;
+
+                // Fill clean background
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, 1000, 1000);
+
+                // 1. Draw T-Shirt silhouette & fabric multiply
+                const shirtImg = document.querySelector('.tshirt-img');
+                const isBlack = selectedColor === '#0A0A0A' || /black/i.test(selectedColorName);
+                const shirtColor = isBlack ? '#0A0A0A' : '#FFFFFF';
+
+                if (shirtImg && (shirtImg.naturalWidth || shirtImg.complete)) {
+                    const layer = document.createElement('canvas');
+                    layer.width = 1000;
+                    layer.height = 1000;
+                    const lctx = layer.getContext('2d');
+                    lctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                    lctx.globalCompositeOperation = 'source-in';
+                    lctx.fillStyle = shirtColor;
+                    lctx.fillRect(0, 0, 1000, 1000);
+                    ctx.drawImage(layer, 0, 0);
+
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'multiply';
+                    ctx.drawImage(shirtImg, 0, 0, 1000, 1000);
+                    ctx.restore();
+                }
+
+                // 2. Draw placed stickers
+                const canvasEl = document.getElementById('canvas');
+                const cW = (canvasEl && canvasEl.offsetWidth) || 500;
+                const cH = (canvasEl && canvasEl.offsetHeight) || cW;
+
+                activeStickers.forEach(s => {
+                    const el = document.getElementById(s.id);
+                    if (!el) return;
+                    const imgEl = el.querySelector('img');
+                    if (!imgEl) return;
+
+                    const leftPct = parseFloat(el.style.left) || 50;
+                    const topPct = parseFloat(el.style.top) || 45;
+                    const elW = el.offsetWidth || 160;
+                    const wRatio = elW / cW;
+                    const targetW = 1000 * wRatio;
+                    const imgNaturalW = imgEl.naturalWidth || 1;
+                    const imgNaturalH = imgEl.naturalHeight || 1;
+                    const targetH = targetW * (imgNaturalH / imgNaturalW);
+                    const cx = 1000 * (leftPct / 100);
+                    const cy = 1000 * (topPct / 100);
+                    const rot = (parseFloat(el.dataset.rotation) || 0) * Math.PI / 180;
+
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(rot);
+                    try {
+                        ctx.drawImage(imgEl, -targetW / 2, -targetH / 2, targetW, targetH);
+                    } catch (e) {}
+                    ctx.restore();
+                });
+
+                return offscreen.toDataURL('image/jpeg', 0.88);
+            } catch (err) {
+                console.warn('captureTeeDesignPreview error:', err);
+                return null;
+            }
+        }
+
         function addCustomToCart() {
             try {
                 const canvas = document.getElementById('canvas');
-                const canvasW = canvas ? canvas.offsetWidth : 1;
+                const canvasW = (canvas && canvas.offsetWidth) || 500;
 
                 const details = activeStickers.map(s => {
                     const el = document.getElementById(s.id);
                     if (!el) return null;
-                    // Save width as % of canvas for accurate scaling on invoice
-                    const pxW = el.getBoundingClientRect().width || el.offsetWidth;
+                    // Use unrotated offsetWidth for exact scaling on invoice
+                    const pxW = el.offsetWidth || 160;
                     const pctW = ((pxW / canvasW) * 100).toFixed(4) + '%';
                     
                     let uVal = stickerMap[s.url] || s.url;
                     if (uVal.startsWith('data:')) {
                         uVal = 'offline_' + s.id;
-                        // Copy HD mapping to this offline key so it can be resolved locally
                         const localHd = localStorage.getItem('hd_mapping_' + s.url);
                         if (localHd) {
-                            try {
-                                localStorage.setItem('hd_mapping_' + uVal, localHd);
-                            } catch (e) {
-                                console.warn("Failed to copy HD mapping", e);
-                            }
+                            try { localStorage.setItem('hd_mapping_' + uVal, localHd); } catch (e) {}
                         }
                     }
-                    return { u: uVal, sz: s.szName, p: s.price, t: el.style.top, l: el.style.left, w: pctW, r: el.dataset.rotation || 0 };
+                    return {
+                        u: uVal,
+                        url: s.url,
+                        sz: s.szName || 'A3',
+                        p: s.price,
+                        t: el.style.top || '45%',
+                        l: el.style.left || '50%',
+                        w: pctW,
+                        r: parseFloat(el.dataset.rotation || 0) || 0
+                    };
                 }).filter(d => d !== null);
 
-                const total = baseTshirtPrice + activeStickers.reduce((sum, s) => sum + (s.price || 250), 0);
+                const total = baseTshirtPrice + activeStickers.reduce((sum, s) => sum + (Number.isFinite(Number(s.price)) ? Number(s.price) : 250), 0);
+
+                let previewDataUrl = null;
+                try {
+                    previewDataUrl = captureTeeDesignPreview();
+                } catch (e) {}
 
                 // Safe cart checking & initialization
                 let tempCart;
@@ -2423,8 +3073,9 @@
                     window.cart = tempCart;
                 }
 
-                tempCart.push({
-                    id: 'custom-' + Date.now(),
+                const cartItemId = 'custom-' + Date.now();
+                const cartItem = {
+                    id: cartItemId,
                     name: currentTshirtType + ' (Custom)',
                     price: total,
                     quantity: 1,
@@ -2432,9 +3083,18 @@
                     color: selectedColorName,
                     isCustom: true,
                     customStickers: details,
-                    image: 'https://i.ibb.co/NnQrQr7y/T-Shirt.png',
+                    previewImage: previewDataUrl || '',
+                    image: previewDataUrl || 'https://i.ibb.co/NnQrQr7y/T-Shirt.png',
                     basePrice: baseTshirtPrice
-                });
+                };
+                tempCart.push(cartItem);
+
+                if (previewDataUrl) {
+                    try {
+                        localStorage.setItem('python_custom_preview_' + cartItemId, previewDataUrl);
+                        localStorage.setItem('python_last_custom_preview', previewDataUrl);
+                    } catch (e) {}
+                }
 
                 if (typeof saveCart === 'function') {
                     if (typeof cart !== 'undefined') {
@@ -2453,19 +3113,353 @@
                 alert("Something went wrong: " + err.message);
             }
         }
-        window.onload = () => { loadSavedDesign(); updateCartCount(); lucide.createIcons(); };
-        function filterStickers(cat, btn) {
-            document.querySelectorAll('.category-tabs .selector-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const items = document.querySelectorAll('#main-sticker-grid .sticker-item');
-            items.forEach(item => {
-                if (cat === 'all' || item.dataset.cat === cat) {
-                    item.style.display = 'flex';
-                } else {
-                    item.style.display = 'none';
-                }
+        // ═══════════════════════════════════════════════════════════════
+        // Sticker studio database: prices, designs, categories
+        // Firestore: settings/stickerStudio + stickerLibrary collection
+        // ═══════════════════════════════════════════════════════════════
+        const STICKER_SIZE_CHART = {
+            A2: { w: 42.0, h: 59.4 },
+            A3: { w: 29.7, h: 42.0 },
+            A4: { w: 21.0, h: 29.7 },
+            A5: { w: 14.8, h: 21.0 },
+            A6: { w: 10.5, h: 14.8 }
+        };
+        const STICKER_DEFAULT_PRICES = { A2: 800, A3: 580, A4: 320, A5: 150, A6: 100 };
+        const STICKER_BASE_CATEGORIES = [
+            { slug: 'bw', label: 'Black & White' },
+            { slug: 'python', label: 'Python Collection' },
+            { slug: 'custom', label: 'Your Stickers' }
+        ];
+        const STICKER_CACHE_KEY = 'python_sticker_studio_v1';
+        const STICKER_ADMIN_PASS = 'python123';
+
+        let stickerPrices = Object.assign({}, STICKER_DEFAULT_PRICES);
+        let stickerDefaultSize = 'A3';
+        let stickerCategories = [];
+        let stickerLibraryDesigns = [];
+        let stickerDesignPrices = {};
+        let stickerCategoryOverrides = {};
+        let stickerHiddenDesigns = [];
+        let builtInStickerDesigns = [];
+        let activeStickerCategoryName = 'all';
+        let stickerManagerUnlocked = false;
+        let stickerManagerPrevOverflow = '';
+
+        function isStudioAdmin() {
+            try { return localStorage.getItem('python_admin_session') === 'authenticated'; }
+            catch (e) { return false; }
+        }
+
+        function stickerDb() {
+            if (typeof window !== 'undefined' && window.db) return window.db;
+            try { if (typeof db !== 'undefined' && db) return db; } catch (e) {}
+            return null;
+        }
+
+        function smEsc(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
             });
         }
+
+        function stickerCategoryLabel(slug) {
+            const base = STICKER_BASE_CATEGORIES.find(function (c) { return c.slug === slug; });
+            if (base) return base.label;
+            const custom = stickerCategories.find(function (c) { return c.slug === slug; });
+            return custom ? custom.label : slug;
+        }
+
+        function allStickerCategories() {
+            const list = STICKER_BASE_CATEGORIES.slice();
+            stickerCategories.forEach(function (c) {
+                if (!list.some(function (x) { return x.slug === c.slug; })) list.push(c);
+            });
+            return list;
+        }
+
+        function stickerNameFromUrl(url) {
+            try {
+                const clean = String(url || '').split('?')[0].split('#')[0];
+                let name = decodeURIComponent(clean.substring(clean.lastIndexOf('/') + 1));
+                name = name.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim();
+                return name || 'Sticker design';
+            } catch (e) { return 'Sticker design'; }
+        }
+
+        function saveStickerCache() {
+            try {
+                localStorage.setItem(STICKER_CACHE_KEY, JSON.stringify({
+                    prices: stickerPrices,
+                    defaultSize: stickerDefaultSize,
+                    categories: stickerCategories,
+                    designs: stickerLibraryDesigns,
+                    designPrices: stickerDesignPrices,
+                    categoryOverrides: stickerCategoryOverrides,
+                    hidden: stickerHiddenDesigns
+                }));
+            } catch (e) {}
+        }
+
+        function loadStickerCache() {
+            try {
+                const raw = localStorage.getItem(STICKER_CACHE_KEY);
+                if (!raw) return;
+                applyStickerConfig(JSON.parse(raw), true);
+            } catch (e) {}
+        }
+
+        function applyStickerConfig(config, fromCache) {
+            if (!config || typeof config !== 'object') return;
+            if (config.prices && typeof config.prices === 'object') {
+                Object.keys(STICKER_DEFAULT_PRICES).forEach(function (sz) {
+                    const v = Number(config.prices[sz]);
+                    if (isFinite(v) && v >= 0) stickerPrices[sz] = v;
+                });
+            }
+            if (typeof config.defaultSize === 'string' && STICKER_SIZE_CHART[config.defaultSize]) {
+                stickerDefaultSize = config.defaultSize;
+            }
+            if (Array.isArray(config.categories)) {
+                stickerCategories = config.categories.filter(function (x) { return x && x.slug && x.label; });
+            }
+            if (fromCache && Array.isArray(config.designs)) {
+                stickerLibraryDesigns = config.designs.filter(function (d) { return d && d.url; });
+            }
+            if (config.designPrices && typeof config.designPrices === 'object') {
+                stickerDesignPrices = {};
+                Object.keys(config.designPrices).forEach(function (url) {
+                    const v = Number(config.designPrices[url]);
+                    if (isFinite(v) && v >= 0) stickerDesignPrices[url] = v;
+                });
+            }
+            if (config.categoryOverrides && typeof config.categoryOverrides === 'object') {
+                stickerCategoryOverrides = config.categoryOverrides;
+            }
+            if (Array.isArray(config.hidden)) {
+                stickerHiddenDesigns = config.hidden.filter(function (h) { return h && h.url; });
+            }
+        }
+
+        async function saveStickerConfig() {
+            saveStickerCache();
+            const database = stickerDb();
+            if (!database) return false;
+            try {
+                const payload = {
+                    prices: Object.assign({}, stickerPrices),
+                    defaultSize: stickerDefaultSize,
+                    categories: stickerCategories,
+                    designPrices: stickerDesignPrices,
+                    categoryOverrides: stickerCategoryOverrides,
+                    hidden: stickerHiddenDesigns
+                };
+                try {
+                    if (typeof firebase !== 'undefined' && firebase.firestore && firebase.firestore.FieldValue) {
+                        payload.updatedAt = firebase.firestore.FieldValue.serverTimestamp();
+                    }
+                } catch (e) {}
+                await database.collection('settings').doc('stickerStudio').set(payload, { merge: true });
+                return true;
+            } catch (e) {
+                console.warn('Sticker config save failed:', e);
+                return false;
+            }
+        }
+
+        async function loadStickerStudioFromDb() {
+            const database = stickerDb();
+            if (!database) return;
+            try {
+                const doc = await database.collection('settings').doc('stickerStudio').get();
+                if (doc && doc.exists) {
+                    applyStickerConfig(doc.data(), false);
+                    saveStickerCache();
+                    syncStickerUiFromState();
+                }
+            } catch (e) {
+                console.warn('Sticker settings load failed:', e);
+            }
+            try {
+                const snap = await database.collection('stickerLibrary').get();
+                const designs = [];
+                snap.forEach(function (entry) {
+                    const d = entry.data() || {};
+                    if (!d.url) return;
+                    designs.push({
+                        docId: entry.id,
+                        name: d.name || stickerNameFromUrl(d.url),
+                        url: d.url,
+                        category: d.category || 'python',
+                        price: (d.price === null || d.price === undefined || d.price === '') ? null : Number(d.price)
+                    });
+                });
+                stickerLibraryDesigns = designs;
+                saveStickerCache();
+                syncStickerUiFromState();
+            } catch (e) {
+                console.warn('Sticker library load failed:', e);
+            }
+        }
+
+        function captureBuiltInStickers() {
+            const grid = document.getElementById('main-sticker-grid');
+            if (!grid) return;
+            builtInStickerDesigns = [];
+            grid.querySelectorAll('.sticker-item[data-cat]').forEach(function (item) {
+                const img = item.querySelector('img');
+                const url = (img && (img.dataset.url || img.getAttribute('src'))) || '';
+                if (!url || /^data:/i.test(url)) return;
+                builtInStickerDesigns.push({
+                    url: url,
+                    category: item.dataset.cat || 'python',
+                    name: stickerNameFromUrl(url)
+                });
+            });
+        }
+
+        function isKnownStickerDesign(url) {
+            const raw = String(url || '');
+            if (!raw) return false;
+            if (/^data:|^offline_/i.test(raw)) return true;
+            try { if (stickerMap[raw]) return true; } catch (e) {}
+            return builtInStickerDesigns.some(function (d) { return d.url === raw; }) ||
+                stickerLibraryDesigns.some(function (d) { return d.url === raw; });
+        }
+
+        // Fixed price for a design (map override for built-ins, doc price for
+        // database designs). Returns null when the size price table should apply.
+        function stickerDesignPriceOverride(url) {
+            if (stickerDesignPrices[url] !== undefined && stickerDesignPrices[url] !== null) {
+                const v = Number(stickerDesignPrices[url]);
+                if (isFinite(v) && v >= 0) return v;
+            }
+            const doc = stickerLibraryDesigns.find(function (d) { return d.url === url; });
+            if (doc && doc.price !== null && doc.price !== undefined && doc.price !== '') {
+                const v = Number(doc.price);
+                if (isFinite(v) && v >= 0) return v;
+            }
+            return null;
+        }
+
+        function buildStickerTabs() {
+            const wrap = document.querySelector('.category-tabs');
+            if (!wrap) return;
+            const cats = [{ slug: 'all', label: 'All Designs' }].concat(allStickerCategories());
+            if (!cats.some(function (c) { return c.slug === activeStickerCategoryName; })) {
+                activeStickerCategoryName = 'all';
+            }
+            wrap.innerHTML = cats.map(function (c) {
+                return '<div class="selector-btn' + (c.slug === activeStickerCategoryName ? ' active' : '') +
+                    '" data-cat="' + smEsc(c.slug) + '">' + smEsc(c.label) + '</div>';
+            }).join('');
+            wrap.querySelectorAll('.selector-btn').forEach(function (btn) {
+                btn.addEventListener('click', function () { filterStickers(btn.dataset.cat, btn); });
+            });
+        }
+
+        function syncStickerUiFromState() {
+            const grid = document.getElementById('main-sticker-grid');
+            if (grid) {
+                grid.querySelectorAll('.sticker-item[data-cat]').forEach(function (item) {
+                    if (item.dataset.source === 'library') return;
+                    const img = item.querySelector('img');
+                    const url = (img && (img.dataset.url || img.getAttribute('src'))) || '';
+                    if (!url) return;
+                    const override = stickerCategoryOverrides[url];
+                    if (override) item.dataset.cat = override;
+                    const hidden = stickerHiddenDesigns.some(function (h) { return h.url === url; });
+                    item.dataset.hidden = hidden ? '1' : '0';
+                    if (hidden) item.style.display = 'none';
+                });
+
+                grid.querySelectorAll('.sticker-item[data-source="library"]').forEach(function (el) { el.remove(); });
+
+                stickerLibraryDesigns.forEach(function (d) {
+                    if (!d || !d.url) return;
+                    if (stickerHiddenDesigns.some(function (h) { return h.url === d.url; })) return;
+                    const item = document.createElement('div');
+                    item.className = 'sticker-item';
+                    item.dataset.cat = d.category || 'python';
+                    item.dataset.source = 'library';
+                    item.dataset.url = d.url;
+                    item.title = d.name || 'Sticker design';
+                    item.onclick = function () { addNewSticker(d.url); };
+                    const img = document.createElement('img');
+                    img.src = d.url;
+                    img.alt = d.name || 'Sticker design';
+                    img.dataset.url = d.url;
+                    img.loading = 'lazy';
+                    item.appendChild(img);
+                    grid.appendChild(item);
+                });
+            }
+            buildStickerTabs();
+            applyStickerFilter(activeStickerCategoryName);
+            renderStickerSizeChart();
+        }
+
+        function applyStickerFilter(cat) {
+            document.querySelectorAll('#main-sticker-grid .sticker-item').forEach(function (item) {
+                const hidden = item.dataset.hidden === '1';
+                item.style.display = (hidden || (cat !== 'all' && item.dataset.cat !== cat)) ? 'none' : 'flex';
+            });
+        }
+
+        function filterStickers(cat, btn) {
+            activeStickerCategoryName = cat || 'all';
+            document.querySelectorAll('.category-tabs .selector-btn').forEach(function (b) { b.classList.remove('active'); });
+            if (btn) btn.classList.add('active');
+            applyStickerFilter(activeStickerCategoryName);
+        }
+
+        function renderStickerSizeChart() {
+            const body = document.getElementById('sticker-size-chart-body');
+            if (!body) return;
+            const rows = Object.keys(STICKER_SIZE_CHART).map(function (sz) {
+                const dim = STICKER_SIZE_CHART[sz];
+                const isDefault = sz === stickerDefaultSize;
+                return '<tr' + (isDefault ? ' class="is-default"' : '') + '>' +
+                    '<td>' + sz + (isDefault ? ' <span style="font-size:0.5rem;color:#8B0000;letter-spacing:1px;">DEFAULT</span>' : '') + '</td>' +
+                    '<td>' + dim.w.toFixed(1) + ' × ' + dim.h.toFixed(1) + ' cm</td>' +
+                    '<td>Rs. ' + Number(stickerPrices[sz] || 0).toLocaleString() + '</td>' +
+                '</tr>';
+            }).join('');
+            body.innerHTML = '<div class="sm-chart-wrap">' +
+                '<table class="sm-size-table"><thead><tr><th>Size</th><th>Max print area</th><th>Price</th></tr></thead><tbody>' +
+                rows + '</tbody></table>' +
+                '<p class="sm-size-note">Prices are set by the store admin and apply to every sticker at checkout. ' +
+                'Designs with a fixed price keep that price even when a different print size is selected.</p></div>';
+        }
+
+        function openStickerSizeChart() {
+            const el = document.getElementById('sticker-size-chart');
+            if (!el) return;
+            renderStickerSizeChart();
+            el.classList.add('open');
+            el.setAttribute('aria-hidden', 'false');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function closeStickerSizeChart() {
+            const el = document.getElementById('sticker-size-chart');
+            if (!el) return;
+            el.classList.remove('open');
+            el.setAttribute('aria-hidden', 'true');
+        }
+
+        function initStickerStudio() {
+            captureBuiltInStickers();
+            loadStickerCache();
+            syncStickerUiFromState();
+            loadStickerStudioFromDb();
+        }
+
+        window.onload = () => {
+            initStickerStudio();
+            loadSavedDesign();
+            updateCartCount();
+            lucide.createIcons();
+        };
     </script>
 </body>
 

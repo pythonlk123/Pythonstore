@@ -72,6 +72,13 @@
         }
         .btn-back:hover { background: #222222; transform: translateY(-2px); }
 
+        .btn-design {
+            background: #FFFFFF;
+            color: #0A0A0A;
+            border: 1.5px solid #0A0A0A;
+        }
+        .btn-design:hover { background: #F2F2F2; transform: translateY(-2px); }
+
         /* ══ A4 SHEET ══ */
         .a4-sheet-wrapper {
             width: 210mm;
@@ -175,22 +182,24 @@
         /* ── INFO GRID 2-COL ── */
         .info-grid-2col {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 24px;
+            grid-template-columns: 0.86fr 1.14fr;
+            gap: 18px;
             position: relative;
             margin-bottom: 16px;
         }
-        .info-grid-2col::after {
-            content: '';
-            position: absolute;
-            left: 50%;
-            top: 0; bottom: 0;
-            width: 1px;
-            background: #CCCCCC;
-        }
+        .info-grid-2col::after { display: none; }
 
-        .info-col-box { padding-right: 8px; }
-        .info-col-box:last-child { padding-right: 0; padding-left: 8px; }
+        .info-col-box { padding-right: 10px; }
+        .info-col-box:last-child {
+            padding-right: 0;
+            padding-left: 14px;
+            border-left: 1px solid #CCCCCC;
+        }
+        /* Give the shipping address values more room */
+        .info-col-box:last-child .info-data-label {
+            width: 108px;
+            min-width: 108px;
+        }
 
         .info-box-title {
             font-size: 0.8rem;
@@ -387,23 +396,309 @@
             color: #0A0A0A;
         }
 
+        /* ══ CUSTOM DESIGN PREVIEW SHEET ══ */
+        .design-sheet { margin-top: 26px; }
+
+        .design-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 18px;
+            padding-bottom: 6px;
+        }
+        .design-kicker {
+            font-size: 0.6rem;
+            font-weight: 900;
+            letter-spacing: 2.6px;
+            text-transform: uppercase;
+            color: #8B0000;
+        }
+        .design-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            color: #0A0A0A;
+            line-height: 1.05;
+            margin: 3px 0 4px;
+            text-transform: uppercase;
+        }
+        .design-sub {
+            font-size: 0.69rem;
+            font-weight: 700;
+            color: #555555;
+        }
+        .design-meta {
+            text-align: right;
+            font-size: 0.69rem;
+            font-weight: 700;
+            color: #444444;
+            line-height: 1.75;
+        }
+        .design-meta strong { color: #0A0A0A; font-weight: 900; }
+
+        .design-body {
+            display: grid;
+            grid-template-columns: 72mm 1fr;
+            gap: 18px;
+            align-items: flex-start;
+        }
+        .design-preview-col { min-width: 0; }
+        .design-canvas-frame {
+            border: 1.5px solid #0A0A0A;
+            padding: 5px;
+            background: #FFFFFF;
+        }
+        .design-canvas-live {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            background: #FFFFFF;
+            overflow: hidden;
+        }
+        .design-canvas-live canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+        .design-canvas-loading {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: #FFFFFF;
+            color: #888888;
+            font-size: 0.58rem;
+            font-weight: 900;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+        }
+        .design-canvas-loading.is-hidden { display: none; }
+        .design-mini-spinner {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 2px solid #E5E5E5;
+            border-top-color: #8B0000;
+            animation: designSpin 0.8s linear infinite;
+        }
+        @keyframes designSpin { to { transform: rotate(360deg); } }
+        .design-preview-caption {
+            text-align: center;
+            font-size: 0.56rem;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #777777;
+            margin-top: 6px;
+        }
+
+        .design-spec-table { width: 100%; border-collapse: collapse; font-size: 0.71rem; }
+        .design-spec-table td {
+            padding: 3px 0;
+            border-bottom: 1px dotted #DDDDDD;
+            vertical-align: top;
+        }
+        .design-spec-table td:first-child { width: 118px; color: #555555; font-weight: 800; }
+        .design-spec-table td:last-child { color: #0A0A0A; font-weight: 700; text-align: right; }
+
+        .design-subtitle {
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: #0A0A0A;
+            border-bottom: 1.5px solid #0A0A0A;
+            padding-bottom: 3px;
+            margin: 14px 0 6px;
+        }
+
+        .design-table { width: 100%; border-collapse: collapse; font-size: 0.66rem; }
+        .design-table thead th {
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-size: 0.56rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            padding: 5px 4px;
+            text-align: left;
+        }
+        .design-table thead th.num { text-align: right; }
+        .design-table tbody td {
+            padding: 4px;
+            border-bottom: 1px solid #EEEEEE;
+            font-weight: 600;
+            color: #222222;
+            vertical-align: middle;
+        }
+        .design-table tbody tr:nth-child(even) td { background: #FAFAFA; }
+        .design-table tbody td.num { text-align: right; white-space: nowrap; }
+        .design-table tbody td.art-cell { width: 20px; text-align: center; font-weight: 800; color: #8B0000; }
+        .design-table tfoot td {
+            padding: 4px;
+            font-size: 0.69rem;
+            font-weight: 800;
+            border-top: 1px solid #CCCCCC;
+            color: #333333;
+        }
+        .design-table tfoot td.num { text-align: right; white-space: nowrap; }
+        .design-table tfoot tr.grand td {
+            border-top: 2px solid #0A0A0A;
+            color: #8B0000;
+            font-size: 0.8rem;
+            font-weight: 900;
+        }
+        .art-tag {
+            display: inline-block;
+            background: #F0F0F0;
+            border: 1px solid #DDDDDD;
+            color: #555555;
+            border-radius: 3px;
+            font-size: 0.5rem;
+            font-weight: 900;
+            letter-spacing: 0.4px;
+            padding: 1px 4px;
+            margin-left: 3px;
+            text-transform: uppercase;
+            vertical-align: middle;
+        }
+        .art-tag.upload { background: #8B0000; border-color: #6b0000; color: #FFFFFF; }
+
+        .artwork-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(52mm, 1fr));
+            gap: 7px;
+        }
+        .artwork-card {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 5px;
+            border: 1px solid #DDDDDD;
+            border-radius: 5px;
+            background: #FAFAFA;
+            min-width: 0;
+        }
+        .artwork-thumb {
+            width: 32px;
+            height: 32px;
+            object-fit: contain;
+            background: #FFFFFF;
+            border: 1px solid #EEEEEE;
+            border-radius: 3px;
+            flex-shrink: 0;
+        }
+        .artwork-info { min-width: 0; flex: 1; }
+        .artwork-name {
+            font-size: 0.6rem;
+            font-weight: 800;
+            color: #0A0A0A;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .artwork-dim { font-size: 0.54rem; color: #777777; font-weight: 600; }
+        .artwork-dl {
+            flex-shrink: 0;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            background: #8B0000;
+            color: #FFFFFF;
+            border: 1px solid #6b0000;
+            border-radius: 4px;
+            font-size: 0.52rem;
+            font-weight: 900;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 4px 6px;
+            text-decoration: none;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+        .artwork-dl:hover { background: #a50000; }
+        .artwork-dl.is-busy { opacity: 0.6; pointer-events: none; }
+        .hd-note {
+            font-size: 0.58rem;
+            color: #777777;
+            margin-top: 6px;
+            font-style: italic;
+            line-height: 1.4;
+        }
+        .artwork-none { font-size: 0.66rem; color: #777777; font-weight: 600; }
+
+        .design-footer-note {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            font-size: 0.62rem;
+            color: #555555;
+            font-weight: 600;
+        }
+
+        /* Floating toast for download feedback */
+        .inv-toast {
+            position: fixed;
+            left: 50%;
+            bottom: 26px;
+            transform: translateX(-50%) translateY(20px);
+            background: #0A0A0A;
+            color: #FFFFFF;
+            border: 1px solid #333333;
+            border-left: 3px solid #8B0000;
+            border-radius: 6px;
+            padding: 10px 18px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            z-index: 9999;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            max-width: 90vw;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+        }
+        .inv-toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
         /* ══ PRINT ══ */
         @media print {
             @page { size: A4 portrait; margin: 0; }
             html, body {
-                width: 210mm !important; height: 297mm !important;
+                width: 210mm !important;
                 margin: 0 !important; padding: 0 !important;
                 background: #FFFFFF !important;
+                height: auto !important;
+                overflow: visible !important;
                 -webkit-print-color-adjust: exact !important;
                 print-color-adjust: exact !important;
-                overflow: hidden !important;
             }
             .invoice-actions-bar { display: none !important; }
+            .inv-toast { display: none !important; }
             .a4-sheet-wrapper {
-                width: 210mm !important; height: 297mm !important;
-                max-height: 297mm !important; padding: 8mm !important;
-                margin: 0 !important; box-shadow: none !important;
+                width: 210mm !important;
+                padding: 8mm !important;
+                margin: 0 !important;
+                box-shadow: none !important;
+            }
+            .a4-sheet-wrapper.invoice-sheet {
+                height: 297mm !important;
+                min-height: 297mm !important;
+                max-height: 297mm !important;
                 overflow: hidden !important;
+            }
+            .a4-sheet-wrapper.design-sheet {
+                height: auto !important;
+                min-height: 297mm !important;
+                max-height: none !important;
+                overflow: visible !important;
+                margin: 0 !important;
+                page-break-before: always;
+                break-before: page;
+                page-break-inside: avoid;
             }
             .invoice-outer-frame {
                 border: 2.5px solid #0A0A0A !important;
@@ -414,10 +709,14 @@
                 padding: 22px 26px !important;
                 height: 100% !important;
             }
+            .design-sheet .invoice-outer-frame,
+            .design-sheet .invoice-inner-frame { height: auto !important; }
             .items-table thead th {
                 background: #0A0A0A !important;
                 color: #FFFFFF !important;
             }
+            .design-table thead th { background: #0A0A0A !important; color: #FFFFFF !important; }
+            .design-canvas-loading { display: none !important; }
         }
 
         /* ══ MOBILE ══ */
@@ -433,11 +732,17 @@
             .info-grid-2col { grid-template-columns: 1fr; gap: 14px; }
             .info-grid-2col::after { display: none; }
             .info-col-box { padding: 0 !important; }
+            .info-col-box:last-child { border-left: none !important; }
             .bottom-summary-grid { grid-template-columns: 1fr; gap: 16px; }
             .codes-block { justify-content: center; }
             .totals-table-wrap { max-width: 100%; }
             .invoice-footer { flex-direction: column; align-items: flex-start; gap: 14px; }
             .footer-signature { width: 100%; margin-top: 10px; }
+            .design-header { flex-direction: column; gap: 10px; }
+            .design-meta { text-align: left; }
+            .design-body { grid-template-columns: 1fr; gap: 14px; }
+            .design-preview-col { width: 100%; max-width: 330px; margin: 0 auto; }
+            .artwork-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
@@ -448,13 +753,16 @@
         <a href="index.html" class="btn-action btn-back">
             <i data-lucide="arrow-left" style="width: 16px; height: 16px;"></i> Return to Store
         </a>
-        <button onclick="window.print()" class="btn-action btn-print">
+        <a href="#design-sheets-root" class="btn-action btn-design" id="btn-design-preview" style="display: none;">
+            <i data-lucide="shirt" style="width: 16px; height: 16px;"></i> Design Preview
+        </a>
+        <button onclick="printInvoice()" class="btn-action btn-print">
             <i data-lucide="printer" style="width: 16px; height: 16px;"></i> Print / Download PDF
         </button>
     </div>
 
     <!-- ════ A4 SHEET CONTAINER (210mm x 297mm) ════ -->
-    <div class="a4-sheet-wrapper">
+    <div class="a4-sheet-wrapper invoice-sheet">
         <!-- Outer Black Border -->
         <div class="invoice-outer-frame">
             <!-- Inner Dark Red Border -->
@@ -485,7 +793,7 @@
                             </tr>
                             <tr>
                                 <td class="meta-label">Payment Method:</td>
-                                <td class="meta-val">Cash on Delivery</td>
+                                <td class="meta-val" id="inv-payment">Cash on Delivery</td>
                             </tr>
                             <tr>
                                 <td class="meta-label">Order Status:</td>
@@ -658,6 +966,9 @@
         </div><!-- /.invoice-outer-frame -->
     </div><!-- /.a4-sheet-wrapper -->
 
+    <!-- ════ CUSTOM DESIGN PREVIEW PAGE(S) — one A4 sheet per customised tee ════ -->
+    <div id="design-sheets-root"></div>
+
     <!-- ══ Script: Data Loader & Barcode/QR Generator ══ -->
     <script>
         function formatLKR(num) {
@@ -759,6 +1070,650 @@
             return { city, district, postal, street };
         }
 
+        /* ═══════════════════════════════════════════════════════════════════
+           CUSTOM DESIGN PREVIEW
+           Every customised t-shirt is rendered on its own A4 page with:
+             • an exact placement preview (same geometry as the studio)
+             • full design / sticker / price breakdown
+             • HD download links for uploaded artwork
+           ═══════════════════════════════════════════════════════════════════ */
+
+        // Library artwork: URL → studio code (kept in sync with customize.html)
+        const STICKER_URL_TO_CODE = {
+            'https://i.ibb.co/gMrCJPnN/A3-1.png': 'S1', 'https://i.ibb.co/QFRLTykz/A3-2.png': 'S2',
+            'https://i.ibb.co/S7f8ZfJs/A3-3.png': 'S3', 'https://i.ibb.co/tMccn0qh/A3-4.png': 'S4',
+            'https://i.ibb.co/B5s9qhyX/A3-5.png': 'S5', 'https://i.ibb.co/bj43Hcks/A3-6.png': 'S6',
+            'https://i.ibb.co/7B5DZmx/A3-7.png': 'S7', 'https://i.ibb.co/SXdG9PTc/A3-8.png': 'S8',
+            'https://i.ibb.co/tp3krXPp/A3-9.png': 'S9', 'https://i.ibb.co/VY90dG3G/A3-10.png': 'S10',
+            'https://i.ibb.co/1JQ00QMd/A3-11.png': 'S11',
+            'https://i.ibb.co/XkDb3jmB/Nike.png': 'S12',
+            'https://i.ibb.co/gLS0w69Y/Python-BMW.png': 'S13',
+            'https://i.ibb.co/4w34h3hZ/Python-Infinity-w.png': 'S14',
+            'https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png': 'S15',
+            'https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png': 'S16',
+            'https://i.ibb.co/0VKQ1GX2/download-23.png': 'S17',
+            'https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png': 'S18',
+            'https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png': 'S19',
+            'https://i.ibb.co/8g3YLLRP/download-25.png': 'S20',
+            'https://i.ibb.co/rf382jbv/download-26.png': 'S21',
+            'https://i.ibb.co/gFXHwFCX/download-27.png': 'S22',
+            'https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png': 'S23',
+            'https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png': 'S24',
+            'https://i.ibb.co/MyV1gShG/download-28.png': 'S25',
+            'https://i.ibb.co/k2V8LGH8/download-29.png': 'S26',
+            'https://i.ibb.co/XfMfT2Pc/download-30.png': 'S27',
+            'https://i.ibb.co/v9nFCm5/download-31.png': 'S28',
+            'https://i.ibb.co/0jNxLvYv/Believe.png': 'S29',
+            'https://i.ibb.co/jnJPTYN/download-34.png': 'S30',
+            'https://i.ibb.co/prLnyfzg/download-35.png': 'S31',
+            'https://i.ibb.co/WW2ZJCcC/download-36.png': 'S32',
+            'https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png': 'S33',
+            'https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png': 'S34',
+            'https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png': 'S35',
+            'https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png': 'S36',
+            'https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png': 'S37',
+            'https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png': 'S38',
+            'https://i.ibb.co/zHGbqMn0/honor-design.png': 'S39'
+        };
+
+        const STICKER_CODE_TO_URL = (function () {
+            const out = {};
+            Object.keys(STICKER_URL_TO_CODE).forEach(function (url) {
+                out[STICKER_URL_TO_CODE[url]] = url;
+            });
+            return out;
+        })();
+
+        function invEscape(value) {
+            return String(value === undefined || value === null ? '' : value)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
+        }
+        function invEscapeAttr(value) { return invEscape(value); }
+
+        function invParseNum(value, fallback) {
+            const n = parseFloat(value);
+            return isFinite(n) ? n : fallback;
+        }
+
+        function isUploadedArtwork(key) {
+            const raw = String(key || '').trim();
+            if (!raw) return false;
+            if (/^data:image\//i.test(raw)) return true;
+            if (/^offline_/i.test(raw)) return true;
+            if (STICKER_CODE_TO_URL[raw]) return false;
+            if (!STICKER_URL_TO_CODE[raw] && /^https?:\/\//i.test(raw)) return true;
+            return false;
+        }
+
+        // Returns the highest-quality URL available for an artwork reference.
+        function resolveArtworkUrl(key) {
+            const raw = String(key || '').trim();
+            if (!raw) return '';
+            if (/^data:image\//i.test(raw)) return raw;
+            if (/^https?:\/\//i.test(raw)) return raw;
+            if (STICKER_CODE_TO_URL[raw]) return STICKER_CODE_TO_URL[raw];
+            // offline_* keys only exist on the device that uploaded the file
+            try { return localStorage.getItem('hd_mapping_' + raw) || ''; } catch (e) { return ''; }
+        }
+
+        function artworkLabel(key, url) {
+            const raw = String(key || '').trim();
+            if (STICKER_CODE_TO_URL[raw]) return 'Library Artwork ' + raw;
+            if (/^offline_/i.test(raw) || /^data:/i.test(raw)) return 'Uploaded Image';
+            try {
+                const clean = String(url || (raw.indexOf('data:') === 0 ? '' : raw)).split('?')[0].split('#')[0];
+                const last = clean.substring(clean.lastIndexOf('/') + 1);
+                let name = last ? decodeURIComponent(last) : 'Uploaded Image';
+                if (name.length > 44) name = name.slice(0, 20) + '…' + name.slice(-18);
+                return name || 'Uploaded Image';
+            } catch (e) { return 'Uploaded Image'; }
+        }
+
+        function artworkFileName(key, url) {
+            let base = artworkLabel(key, url)
+                .replace(/[\\/:*?"<>|…]+/g, '-')
+                .replace(/\s+/g, '-')
+                .replace(/\.(png|jpe?g|webp|gif)$/i, '')
+                .replace(/-+/g, '-')
+                .replace(/^-|-$/g, '');
+            if (!base) base = 'python-artwork';
+            return base;
+        }
+
+        function artworkExtension(url) {
+            try {
+                const match = String(url || '').split('?')[0].match(/\.(png|jpe?g|webp|gif|svg)$/i);
+                return match ? '.' + match[1].toLowerCase().replace('jpeg', 'jpg') : '.png';
+            } catch (e) { return '.png'; }
+        }
+
+        let invToastTimer = null;
+        function invToast(message) {
+            let el = document.getElementById('inv-toast');
+            if (!el) {
+                el = document.createElement('div');
+                el.id = 'inv-toast';
+                el.className = 'inv-toast';
+                document.body.appendChild(el);
+            }
+            el.textContent = message;
+            // force reflow so repeated messages re-animate
+            void el.offsetWidth;
+            el.classList.add('show');
+            clearTimeout(invToastTimer);
+            invToastTimer = setTimeout(function () { el.classList.remove('show'); }, 4200);
+        }
+
+        function invTriggerBlobDownload(blob, filename) {
+            const objectUrl = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = objectUrl;
+            link.download = filename;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            setTimeout(function () { URL.revokeObjectURL(objectUrl); }, 5000);
+        }
+
+        async function downloadArtwork(event, btn) {
+            if (event) event.preventDefault();
+            const url = (btn.getAttribute('data-hd') || btn.getAttribute('href') || '').trim();
+            const base = btn.getAttribute('data-filename') || 'python-artwork';
+            if (!url) {
+                invToast('⚠ HD file is not available on this device. Open this invoice on the device where the artwork was uploaded.');
+                return;
+            }
+            const originalHtml = btn.innerHTML;
+            btn.classList.add('is-busy');
+            btn.innerHTML = 'HD …';
+            try {
+                const res = await fetch(url, { mode: 'cors', cache: 'force-cache' });
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const blob = await res.blob();
+                if (!blob || !blob.size) throw new Error('Empty file');
+                const type = String(blob.type || '').toLowerCase();
+                const ext = type.indexOf('jpeg') !== -1 ? '.jpg'
+                    : type.indexOf('webp') !== -1 ? '.webp'
+                    : type.indexOf('gif') !== -1 ? '.gif'
+                    : type.indexOf('svg') !== -1 ? '.svg'
+                    : '.png';
+                invTriggerBlobDownload(blob, base + ext);
+                invToast('✅ HD artwork downloaded (' + Math.round(blob.size / 1024) + ' KB).');
+            } catch (err) {
+                try {
+                    if (/^data:/i.test(url)) {
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = base + '.png';
+                        document.body.appendChild(link);
+                        link.click();
+                        link.remove();
+                        invToast('✅ HD artwork downloaded.');
+                    } else {
+                        window.open(url, '_blank', 'noopener');
+                        invToast('HD image opened in a new tab — right-click → “Save image as…”.');
+                    }
+                } catch (e2) {
+                    invToast('⚠ Could not download this file. Please try again.');
+                }
+            } finally {
+                btn.classList.remove('is-busy');
+                btn.innerHTML = originalHtml;
+            }
+        }
+
+        // Some older/alternate order records may hold the sticker list as a JSON
+        // string or under a different key — normalise everything to an array.
+        function getCustomStickers(item) {
+            if (!item) return [];
+            let raw = item.customStickers;
+            if (raw === undefined || raw === null) raw = item.customDesign;
+            if (raw === undefined || raw === null) raw = item.designStickers;
+            if (raw === undefined || raw === null) raw = item.stickers;
+            if (typeof raw === 'string') {
+                try { raw = JSON.parse(raw); } catch (e) { raw = []; }
+            }
+            if (!Array.isArray(raw)) return [];
+            return raw.filter(function (s) { return s && (s.u || s.url || s.src); });
+        }
+
+        function isCustomItem(item) {
+            if (!item) return false;
+            if (item.isCustom === true) return true;
+            if (getCustomStickers(item).length > 0) return true;
+            return /\(custom\)/i.test(String(item.name || ''));
+        }
+
+        const PREVIEW_SIZE = 1000;
+        // Resolves when every design-preview canvas has finished painting, so
+        // printing never captures a half-drawn preview.
+        let designPreviewReady = Promise.resolve();
+
+        async function printInvoice() {
+            try {
+                await Promise.race([
+                    designPreviewReady,
+                    new Promise(function (resolve) { setTimeout(resolve, 12000); })
+                ]);
+            } catch (e) { /* print anyway */ }
+            window.print();
+        }
+        const SHIRT_IMAGE_SOURCES = ['https://i.ibb.co/NnQrQr7y/T-Shirt.png', 'T Shirt.png'];
+        const previewImageCache = new Map();
+
+        function loadPreviewImage(url, timeoutMs) {
+            return new Promise(function (resolve, reject) {
+                if (!url) { reject(new Error('No image URL')); return; }
+                if (previewImageCache.has(url)) {
+                    const cached = previewImageCache.get(url);
+                    if (cached instanceof Error) reject(cached);
+                    else resolve(cached);
+                    return;
+                }
+                const img = new Image();
+                img.crossOrigin = 'anonymous';
+                let settled = false;
+                const timer = setTimeout(function () {
+                    if (settled) return;
+                    settled = true;
+                    const err = new Error('Image timeout');
+                    previewImageCache.set(url, err);
+                    reject(err);
+                }, timeoutMs || 6000);
+                img.onload = function () {
+                    if (settled) return;
+                    settled = true;
+                    clearTimeout(timer);
+                    previewImageCache.set(url, img);
+                    resolve(img);
+                };
+                img.onerror = function () {
+                    if (settled) return;
+                    settled = true;
+                    clearTimeout(timer);
+                    const err = new Error('Image failed to load');
+                    previewImageCache.set(url, err);
+                    reject(err);
+                };
+                img.src = url;
+            });
+        }
+
+        async function loadFirstPreviewImage(urls) {
+            for (let i = 0; i < urls.length; i++) {
+                try { return await loadPreviewImage(urls[i]); } catch (e) { /* try next source */ }
+            }
+            return null;
+        }
+
+        function stickerImageUrl(sticker) {
+            if (!sticker) return '';
+            return resolveArtworkUrl(sticker.u || sticker.url || sticker.src || '');
+        }
+
+        // Vector tee used only when the shirt PNG cannot load (offline / blocked
+        // CDN). Guarantees the bill always shows a tee instead of a blank box.
+        function drawFallbackShirt(ctx, shirtColor) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(370, 170);
+            ctx.lineTo(292, 214);
+            ctx.lineTo(150, 340);
+            ctx.lineTo(238, 448);
+            ctx.lineTo(330, 392);
+            ctx.lineTo(330, 838);
+            ctx.lineTo(670, 838);
+            ctx.lineTo(670, 392);
+            ctx.lineTo(762, 448);
+            ctx.lineTo(850, 340);
+            ctx.lineTo(708, 214);
+            ctx.lineTo(630, 170);
+            ctx.quadraticCurveTo(500, 262, 370, 170);
+            ctx.closePath();
+            ctx.fillStyle = shirtColor;
+            ctx.fill();
+            ctx.lineWidth = 6;
+            ctx.strokeStyle = (shirtColor === '#FFFFFF') ? '#D8D8D8' : '#2A2A2A';
+            ctx.stroke();
+            ctx.restore();
+        }
+
+        // Draws the t-shirt + artwork exactly like the studio canvas, but onto a
+        // real <canvas>. This removes any dependency on CSS mask images, so the
+        // preview still appears when the invoice is hosted somewhere the local
+        // shirt PNG or remote mask is unavailable.
+        async function drawDesignPreview(canvas, item, loadingEl) {
+            try {
+                canvas.width = PREVIEW_SIZE;
+                canvas.height = PREVIEW_SIZE;
+                const ctx = canvas.getContext('2d');
+                if (!ctx) throw new Error('Canvas 2D not supported');
+
+                ctx.fillStyle = '#FFFFFF';
+                ctx.fillRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+
+                // ── Fast path: use the snapshot captured by customize.html ──
+                const snapshotUrl = item.previewImage || item.image || '';
+                const isSnapshot = snapshotUrl && snapshotUrl.startsWith('data:');
+
+                if (isSnapshot) {
+                    // Draw the captured snapshot directly — fastest + most accurate
+                    try {
+                        const snapImg = await loadPreviewImage(snapshotUrl, 8000);
+                        if (snapImg && snapImg.naturalWidth) {
+                            ctx.drawImage(snapImg, 0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+                            if (loadingEl) loadingEl.classList.add('is-hidden');
+                            return;
+                        }
+                    } catch (e) {
+                        console.warn('Snapshot load failed, falling back to vector render:', e);
+                    }
+                }
+
+                // ── Fallback: re-render from sticker data + shirt PNG ──
+                const colorName = getColorNameSafe(item.color);
+                const rawColor = String(item.color || '');
+                const isBlack = /black/i.test(rawColor) || /black/i.test(colorName) ||
+                    /#(0a0a0a|000000|2b2b2b|111111|161616|1a1a1a)/i.test(rawColor);
+                const shirtColor = isBlack ? '#0A0A0A' : '#FFFFFF';
+
+                const stickers = getCustomStickers(item);
+                const stickerJobs = stickers.map(function (s) {
+                    const url = stickerImageUrl(s);
+                    if (!url) return Promise.resolve(null);
+                    return loadPreviewImage(url, 6000).catch(function () { return null; });
+                });
+
+                const results = await Promise.all([
+                    loadFirstPreviewImage(SHIRT_IMAGE_SOURCES),
+                    Promise.all(stickerJobs)
+                ]);
+                const shirtImg = results[0];
+                const stickerImgs = results[1];
+
+                // 1) Colored t-shirt silhouette
+                if (shirtImg && shirtImg.naturalWidth) {
+                    const layer = document.createElement('canvas');
+                    layer.width = PREVIEW_SIZE;
+                    layer.height = PREVIEW_SIZE;
+                    const lctx = layer.getContext('2d');
+                    lctx.drawImage(shirtImg, 0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+                    lctx.globalCompositeOperation = 'source-in';
+                    lctx.fillStyle = shirtColor;
+                    lctx.fillRect(0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+                    ctx.drawImage(layer, 0, 0);
+
+                    // 2) Fabric shading (same multiply effect as the studio)
+                    ctx.save();
+                    ctx.globalCompositeOperation = 'multiply';
+                    ctx.drawImage(shirtImg, 0, 0, PREVIEW_SIZE, PREVIEW_SIZE);
+                    ctx.restore();
+                } else {
+                    drawFallbackShirt(ctx, shirtColor);
+                }
+
+                // 3) Artwork layers, positioned/scaled/rotated from saved data
+                stickers.forEach(function (s, i) {
+                    const img = stickerImgs[i];
+                    if (!img || !img.naturalWidth) return;
+                    const w = PREVIEW_SIZE * (invParseNum(s.w, 22) / 100);
+                    const h = w * (img.naturalHeight / img.naturalWidth);
+                    const cx = PREVIEW_SIZE * (invParseNum(s.l, 50) / 100);
+                    const cy = PREVIEW_SIZE * (invParseNum(s.t, 45) / 100);
+                    const rotation = invParseNum(s.r, 0) * Math.PI / 180;
+
+                    ctx.save();
+                    ctx.translate(cx, cy);
+                    ctx.rotate(rotation);
+                    ctx.drawImage(img, -w / 2, -h / 2, w, h);
+                    ctx.restore();
+                });
+
+                if (loadingEl) loadingEl.classList.add('is-hidden');
+            } catch (err) {
+                console.warn('Design preview render failed:', err);
+                if (loadingEl) {
+                    loadingEl.classList.remove('is-hidden');
+                    loadingEl.innerHTML = '<span style="font-size:0.58rem;">Preview unavailable</span>';
+                }
+            }
+        }
+
+        function buildDesignCanvas(item, index) {
+            return '<div class="design-canvas-frame">' +
+                '<div class="design-canvas-live">' +
+                    '<canvas data-preview-canvas="' + index + '" width="' + PREVIEW_SIZE + '" height="' + PREVIEW_SIZE +
+                        '" aria-label="Custom t-shirt design preview"></canvas>' +
+                    '<div class="design-canvas-loading" data-preview-loading="' + index + '">' +
+                        '<span class="design-mini-spinner"></span>' +
+                        '<span>Rendering preview…</span>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function buildDesignSheet(item, index, totalDesigns, order, orderId) {
+            const stickers = getCustomStickers(item);
+            const qty       = Math.max(1, Number(item.quantity) || 1);
+            const unitPrice = Number(item.price) || 0;
+            const lineTotal = unitPrice * qty;
+            const stickerTotal = stickers.reduce(function (sum, s) {
+                return sum + (Number(s && s.p) || 0);
+            }, 0);
+            const basePrice = Number(item.basePrice) || Math.max(0, unitPrice - stickerTotal);
+            const colorName = getColorNameSafe(item.color);
+            const size      = item.size || 'M';
+            const designCode = String(orderId || 'PS-ORD') + '-D' + String(index + 1).padStart(2, '0');
+            const itemName   = String(item.name || 'Regular Fit Tee').replace(/\s*\(Custom\)\s*$/i, '');
+
+            let pricingRows = '';
+            const uploads = [];
+            stickers.forEach(function (s, i) {
+                if (!s) return;
+                const artKey = s.u || s.url || s.src || '';
+                const resolved = resolveArtworkUrl(artKey);
+                const uploaded = isUploadedArtwork(artKey);
+                if (uploaded && resolved && !uploads.some(function (u) { return u.key === artKey; })) {
+                    uploads.push({ key: artKey, url: resolved });
+                }
+                pricingRows +=
+                    '<tr>' +
+                        '<td class="art-cell">' + (i + 1) + '</td>' +
+                        '<td>' + invEscape(artworkLabel(artKey, resolved)) +
+                            (uploaded
+                                ? ' <span class="art-tag upload">Your upload</span>'
+                                : ' <span class="art-tag">Print</span>') +
+                        '</td>' +
+                        '<td>' + invEscape(s.sz || 'A6') + '</td>' +
+                        '<td class="num">' + formatLKR(Number(s.p) || 0) + '</td>' +
+                    '</tr>';
+            });
+            if (!pricingRows) {
+                pricingRows = '<tr><td colspan="4" style="text-align:center;color:#888;padding:8px;">No artwork recorded for this design.</td></tr>';
+            }
+
+            let uploadCards = '';
+            uploads.forEach(function (u) {
+                const fname = artworkFileName(u.key, u.url);
+                const fext = artworkExtension(u.url);
+                uploadCards +=
+                    '<div class="artwork-card">' +
+                        '<img class="artwork-thumb" src="' + invEscapeAttr(u.url) + '" alt="">' +
+                        '<div class="artwork-info">' +
+                            '<div class="artwork-name">' + invEscape(artworkLabel(u.key, u.url)) + '</div>' +
+                            '<div class="artwork-dim" data-thumb-dim>HD original</div>' +
+                        '</div>' +
+                        '<a class="artwork-dl" href="' + invEscapeAttr(u.url) + '"' +
+                            ' data-hd="' + invEscapeAttr(u.url) + '"' +
+                            ' data-filename="' + invEscapeAttr(fname) + '"' +
+                            ' download="' + invEscapeAttr(fname + fext) + '"' +
+                            ' onclick="downloadArtwork(event, this)"' +
+                            ' title="Download this image in full HD">HD ↓</a>' +
+                    '</div>';
+            });
+
+            const uploadsHtml = uploadCards
+                ? '<div class="artwork-grid">' + uploadCards + '</div>' +
+                  '<div class="hd-note">Click “HD ↓” to download the original uploaded artwork at full resolution. ' +
+                  'On phones, if the download does not start, the image opens in a new tab — press and hold → Save image.</div>'
+                : '<div class="artwork-none">No customer-uploaded images on this design — all artwork is from the Python studio library.</div>';
+
+            return '' +
+            '<div class="a4-sheet-wrapper design-sheet" data-design-index="' + index + '">' +
+                '<div class="invoice-outer-frame">' +
+                    '<div class="invoice-inner-frame">' +
+                        '<header class="design-header">' +
+                            '<div>' +
+                                '<div class="design-kicker">CUSTOM DESIGN PREVIEW</div>' +
+                                '<h2 class="design-title">' + invEscape(itemName) + '</h2>' +
+                                '<div class="design-sub">Design ' + (index + 1) + ' of ' + totalDesigns +
+                                    ' &nbsp;•&nbsp; Placed on the front of the tee</div>' +
+                            '</div>' +
+                            '<div class="design-meta">' +
+                                '<div>Order: <strong>' + invEscape(orderId) + '</strong></div>' +
+                                '<div>Design Code: <strong>' + invEscape(designCode) + '</strong></div>' +
+                                '<div>Customer: <strong>' + invEscape(order.name || order.userName || 'Customer') + '</strong></div>' +
+                                '<div>Date: <strong>' + invEscape(order.date || new Date().toLocaleDateString()) + '</strong></div>' +
+                            '</div>' +
+                        '</header>' +
+
+                        '<hr class="double-divider">' +
+
+                        '<section class="design-body">' +
+                            '<div class="design-preview-col">' +
+                                buildDesignCanvas(item, index) +
+                                '<div class="design-preview-caption">Live placement preview · ' +
+                                    qty + ' × ' + invEscape(size) + ' / ' + invEscape(colorName) + '</div>' +
+                            '</div>' +
+
+                            '<div class="design-info-col">' +
+                                '<div class="info-box-title">DESIGN SPECIFICATION</div>' +
+                                '<table class="design-spec-table">' +
+                                    '<tr><td>Product</td><td>' + invEscape(itemName) + '</td></tr>' +
+                                    '<tr><td>Fit / Fabric</td><td>Regular Fit · 220 GSM</td></tr>' +
+                                    '<tr><td>Colour</td><td>' + invEscape(colorName) + '</td></tr>' +
+                                    '<tr><td>Size</td><td>' + invEscape(size) + '</td></tr>' +
+                                    '<tr><td>Quantity</td><td>' + qty + '</td></tr>' +
+                                    '<tr><td>Artwork Pieces</td><td>' + stickers.length + '</td></tr>' +
+                                    '<tr><td>Print Area</td><td>Front · Full colour DTF</td></tr>' +
+                                    '<tr><td>Design Code</td><td>' + invEscape(designCode) + '</td></tr>' +
+                                '</table>' +
+
+                                '<div class="design-subtitle">DESIGN &amp; STICKER PRICING</div>' +
+                                '<table class="design-table">' +
+                                    '<thead>' +
+                                        '<tr>' +
+                                            '<th style="width:20px;">#</th>' +
+                                            '<th>ARTWORK / CODE</th>' +
+                                            '<th style="width:42px;">SIZE</th>' +
+                                            '<th class="num" style="width:74px;">PRICE (LKR)</th>' +
+                                        '</tr>' +
+                                    '</thead>' +
+                                    '<tbody>' + pricingRows + '</tbody>' +
+                                    '<tfoot>' +
+                                        '<tr><td colspan="3">Sticker / Artwork Total</td><td class="num">' + formatLKR(stickerTotal) + '</td></tr>' +
+                                        '<tr><td colspan="3">Base Tee Price</td><td class="num">' + formatLKR(basePrice) + '</td></tr>' +
+                                        '<tr><td colspan="3">Design Total (per unit)</td><td class="num">' + formatLKR(unitPrice) + '</td></tr>' +
+                                        '<tr class="grand"><td colspan="3">LINE TOTAL (× ' + qty + ')</td><td class="num">LKR ' + formatLKR(lineTotal) + '</td></tr>' +
+                                    '</tfoot>' +
+                                '</table>' +
+                            '</div>' +
+                        '</section>' +
+
+                        '<section style="margin-top:14px;">' +
+                            '<div class="design-subtitle">UPLOADED IMAGES — HD DOWNLOAD</div>' +
+                            uploadsHtml +
+                        '</section>' +
+
+                        '<div class="invoice-spacer"></div>' +
+                        '<hr class="double-divider">' +
+                        '<footer class="design-footer-note">' +
+                            '<span><strong>PYTHON STORE</strong> · Custom Studio · Order ' + invEscape(orderId) + '</span>' +
+                            '<span>Preview generated from the artwork selected at checkout.</span>' +
+                        '</footer>' +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function renderDesignSheets(order, orderId) {
+            const root = document.getElementById('design-sheets-root');
+            if (!root) return;
+            try {
+                const items = Array.isArray(order.items) ? order.items : [];
+                const customItems = items.filter(isCustomItem);
+                if (customItems.length === 0) {
+                    root.innerHTML = '';
+                    designPreviewReady = Promise.resolve();
+                    return;
+                }
+                const previewBtn = document.getElementById('btn-design-preview');
+                if (previewBtn) previewBtn.style.display = 'inline-flex';
+                root.innerHTML = customItems.map(function (item, idx) {
+                    return buildDesignSheet(item, idx, customItems.length, order, orderId);
+                }).join('');
+
+                // Paint every preview onto its own canvas (async image loading)
+                const paintJobs = [];
+                root.querySelectorAll('canvas[data-preview-canvas]').forEach(function (canvas) {
+                    const idx = parseInt(canvas.getAttribute('data-preview-canvas'), 10);
+                    const item = customItems[idx];
+                    const loadingEl = root.querySelector('[data-preview-loading="' + idx + '"]');
+                    if (item) paintJobs.push(drawDesignPreview(canvas, item, loadingEl));
+                });
+                designPreviewReady = Promise.all(paintJobs);
+
+                // Fill in real pixel dimensions once thumbnails have loaded
+                root.querySelectorAll('.artwork-card').forEach(function (card) {
+                    const thumb = card.querySelector('img.artwork-thumb');
+                    const dimEl = card.querySelector('[data-thumb-dim]');
+                    if (!thumb || !dimEl) return;
+                    const update = function () {
+                        if (thumb.naturalWidth && thumb.naturalHeight) {
+                            dimEl.textContent = thumb.naturalWidth + ' × ' + thumb.naturalHeight + ' px · HD';
+                        }
+                    };
+                    if (thumb.complete) update();
+                    else thumb.addEventListener('load', update);
+                    thumb.addEventListener('error', function () {
+                        dimEl.textContent = 'Preview unavailable';
+                    });
+                });
+            } catch (err) {
+                console.warn('Design preview page error:', err);
+            }
+        }
+
+        // ── Builds the description cell for the items table ──
+        // For custom tee items: shows a mini thumbnail of the designed shirt + name + badge.
+        function buildItemDescCell(it) {
+            const isCustomItem = it.isCustom || (it.id && String(it.id).startsWith('custom-')) ||
+                (it.customStickers && it.customStickers.length > 0);
+            const name = it.name || 'Python Streetwear Piece';
+
+            if (!isCustomItem) {
+                // Regular product: show product image (small) + name
+                const imgSrc = it.image || '';
+                const imgTag = imgSrc
+                    ? '<img src="' + imgSrc + '" onerror="this.style.display=\'none\'" style="width:36px;height:36px;object-fit:cover;border-radius:6px;border:1px solid #E2E8F0;vertical-align:middle;margin-right:8px;">'
+                    : '';
+                return imgTag + name;
+            }
+
+            // Custom tee: snapshot > plain tee image > nothing
+            const previewSrc = it.previewImage || it.image || '';
+            let thumbHtml = '';
+            if (previewSrc) {
+                thumbHtml = '<img src="' + previewSrc + '" onerror="this.style.display=\'none\'" style="width:44px;height:44px;object-fit:contain;border-radius:6px;border:1.5px solid #E2E8F0;background:#F8FAFC;vertical-align:middle;margin-right:8px;">';
+            }
+            const badge = '<span style="display:inline-block;padding:1px 6px;border-radius:4px;font-size:0.65rem;font-weight:800;background:#FFF3CD;color:#92400e;border:1px solid #FDE68A;vertical-align:middle;margin-left:4px;">CUSTOM DESIGN</span>';
+            return thumbHtml + name + badge;
+        }
+
         function loadInvoice() {
             const params = new URLSearchParams(window.location.search);
             const raw = params.get('data');
@@ -819,6 +1774,11 @@
                 document.getElementById('inv-status').innerText = String(order.status).toUpperCase();
             }
 
+            const paymentEl = document.getElementById('inv-payment');
+            if (paymentEl) {
+                paymentEl.innerText = order.paymentMethod || 'Cash on Delivery';
+            }
+
             // ── Customer & Shipping Info ──
             const custName    = order.name || order.userName || 'Customer';
             const custPhone   = order.phone || order.userPhone || '-';
@@ -864,7 +1824,7 @@
 
                     return '<tr>' +
                         '<td class="col-no">' + (idx + 1) + '</td>' +
-                        '<td class="col-desc">' + (it.name || 'Python Streetwear Piece') + '</td>' +
+                        '<td class="col-desc">' + buildItemDescCell(it) + '</td>' +
                         '<td class="col-variant">' + variant + '</td>' +
                         '<td class="col-price">' + formatLKR(price) + '</td>' +
                         '<td class="col-qty">' + qty + '</td>' +
@@ -898,6 +1858,9 @@
 
             document.getElementById('summary-grandtotal').innerText = 'LKR ' + formatLKR(order.total || grandTotal);
 
+            // ── Custom Design Preview Page(s) ──
+            renderDesignSheets(order, orderId);
+
             // ── Barcode Generator (JsBarcode) ──
             try {
                 if (typeof JsBarcode !== 'undefined') {
@@ -929,7 +1892,9 @@
 
                 if (typeof QRCode !== 'undefined') {
                     new QRCode(qrContainer, {
-                        text:         window.location.href.includes('data=') ? window.location.href : qrPayload,
+                        // Keep the payload compact — the full invoice URL can become very
+                        // long once a custom design is attached and would overflow the QR.
+                        text:         qrPayload,
                         width:        70,
                         height:       70,
                         colorDark:    '#0A0A0A',

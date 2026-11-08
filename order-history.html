@@ -1060,7 +1060,10 @@
               color: it.color || '',
               price: it.price || 0,
               quantity: it.quantity || 1,
-              image: it.image || 'logo.png'
+              image: it.image || 'logo.png',
+              isCustom: it.isCustom || (it.id && String(it.id).startsWith('custom-')) || false,
+              basePrice: it.basePrice || 0,
+              customStickers: Array.isArray(it.customStickers) ? it.customStickers : []
             })),
             subtotal: o.subtotal || o.total || 0,
             delivery: o.delivery !== undefined ? o.delivery : (o.deliveryFee !== undefined ? o.deliveryFee : 500),

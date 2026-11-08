@@ -608,6 +608,852 @@
             text-align: left;
         }
 
+        /* ════════════════════════════════════════════════════════
+           CUSTOM STUDIO & STICKER LIBRARY
+           ════════════════════════════════════════════════════════ */
+
+        /* ── Hero header ── */
+        .studio-hero {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 18px;
+            flex-wrap: wrap;
+            padding: 20px 22px;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            background: linear-gradient(135deg, #FFFFFF 0%, #FBFAFA 55%, #FDF5F5 100%);
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 18px;
+            position: relative;
+            overflow: hidden;
+        }
+        .studio-hero::after {
+            content: '';
+            position: absolute;
+            right: -70px;
+            top: -90px;
+            width: 240px;
+            height: 240px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(139, 0, 0, 0.10), transparent 70%);
+            pointer-events: none;
+        }
+        .studio-hero > div { position: relative; z-index: 1; }
+        .studio-kicker {
+            display: block;
+            font-size: 0.58rem;
+            letter-spacing: 2.4px;
+            font-weight: 800;
+            color: var(--dark-red);
+            margin-bottom: 6px;
+        }
+        .studio-title {
+            font-family: var(--font-head);
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #0A0A0A;
+            line-height: 1.25;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .studio-hero p {
+            font-size: 0.76rem;
+            color: var(--text-muted);
+            margin-top: 7px;
+            max-width: 540px;
+            line-height: 1.6;
+        }
+        .studio-hero-actions {
+            display: flex;
+            gap: 9px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .studio-badge {
+            font-family: var(--font-mono);
+            font-size: 0.66rem;
+            font-weight: 700;
+            padding: 4px 11px;
+            border-radius: 50px;
+            background: rgba(139, 0, 0, 0.08);
+            border: 1px solid rgba(139, 0, 0, 0.22);
+            color: var(--dark-red);
+            white-space: nowrap;
+        }
+
+        /* ── KPI stats ── */
+        .studio-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(188px, 1fr));
+            gap: 13px;
+            margin-bottom: 18px;
+        }
+        .studio-stat {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 15px 17px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+        }
+        .studio-stat:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-dark);
+        }
+        .studio-stat::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: var(--dark-red);
+            opacity: 0;
+            transition: opacity 0.22s;
+        }
+        .studio-stat:hover::before { opacity: 1; }
+        .studio-stat .label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 1.4px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .studio-stat .label svg { width: 15px; height: 15px; color: var(--dark-red); flex-shrink: 0; }
+        .studio-stat .value {
+            font-family: var(--font-head);
+            font-size: 1.55rem;
+            font-weight: 900;
+            line-height: 1.1;
+            color: #0A0A0A;
+        }
+        .studio-stat .sub {
+            font-size: 0.66rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 4px;
+        }
+
+        /* ── Cards ── */
+        .studio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+            gap: 16px;
+            margin-bottom: 18px;
+            align-items: start;
+        }
+        .studio-card {
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-sm);
+            overflow: hidden;
+            margin-bottom: 18px;
+        }
+        .studio-grid .studio-card { margin-bottom: 0; }
+        .studio-card-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            flex-wrap: wrap;
+            padding: 15px 19px;
+            border-bottom: 1px solid var(--border);
+            background: linear-gradient(180deg, #FFFFFF, #FCFCFD);
+        }
+        .studio-card-head h3 {
+            font-size: 0.86rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            color: #0A0A0A;
+            line-height: 1.2;
+        }
+        .studio-card-head p {
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            margin-top: 3px;
+            line-height: 1.5;
+        }
+        .studio-card-icon {
+            width: 29px;
+            height: 29px;
+            border-radius: 8px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            background: var(--dark-red-light);
+            color: var(--dark-red);
+        }
+        .studio-card-icon svg { width: 15px; height: 15px; }
+        .studio-card-icon.green { background: rgba(21, 128, 61, 0.10); color: #15803d; }
+        .studio-card-icon.blue { background: rgba(29, 78, 216, 0.10); color: #1d4ed8; }
+        .studio-card-icon.amber { background: rgba(180, 83, 9, 0.12); color: #b45309; }
+        .studio-card-body { padding: 16px 19px 18px; }
+
+        /* ── Print size price cards ── */
+        .studio-price-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+            gap: 10px;
+        }
+        .studio-price-card {
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-md);
+            background: #FAFAFA;
+            padding: 10px 11px 11px;
+            transition: border-color 0.18s, box-shadow 0.18s, background 0.18s;
+        }
+        .studio-price-card:hover {
+            border-color: var(--dark-red-border);
+            background: #FFFFFF;
+            box-shadow: 0 0 0 3px var(--dark-red-light);
+        }
+        .studio-price-card.is-default {
+            border-color: var(--dark-red-border);
+            background: #FFFBFB;
+        }
+        .studio-price-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 6px;
+            margin-bottom: 3px;
+        }
+        .studio-price-size {
+            font-family: var(--font-head);
+            font-size: 0.98rem;
+            font-weight: 900;
+            color: #0A0A0A;
+        }
+        .studio-price-tag {
+            font-size: 0.5rem;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--dark-red);
+            background: var(--dark-red-light);
+            border-radius: 4px;
+            padding: 2px 5px;
+        }
+        .studio-price-dims {
+            font-size: 0.6rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+            margin-bottom: 8px;
+            white-space: nowrap;
+        }
+        .studio-price-input {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 5px 8px;
+            transition: border-color 0.18s, box-shadow 0.18s;
+        }
+        .studio-price-input:focus-within {
+            border-color: var(--dark-red);
+            box-shadow: 0 0 0 3px var(--dark-red-light);
+        }
+        .studio-price-input span {
+            font-size: 0.58rem;
+            font-weight: 800;
+            color: var(--text-dim);
+            letter-spacing: 0.4px;
+        }
+        .studio-price-input input {
+            width: 100%;
+            min-width: 0;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-family: var(--font-mono);
+            font-size: 0.84rem;
+            font-weight: 800;
+            color: #0A0A0A;
+            text-align: right;
+        }
+
+        /* ── Category chips ── */
+        .studio-cat-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            padding: 11px;
+            border: 1px dashed var(--border-dark);
+            border-radius: var(--radius-md);
+            background: var(--bg-surface);
+            min-height: 52px;
+            margin-bottom: 12px;
+            align-content: flex-start;
+        }
+        .studio-cat-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 5px 11px;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 800;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            color: var(--text);
+            transition: transform 0.18s, box-shadow 0.18s;
+        }
+        .studio-cat-chip:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.07);
+        }
+        .studio-cat-chip.custom {
+            background: var(--dark-red-light);
+            border-color: var(--dark-red-border);
+            color: var(--dark-red);
+        }
+        .studio-cat-chip .chip-count {
+            font-family: var(--font-mono);
+            font-size: 0.58rem;
+            padding: 1px 6px;
+            border-radius: 50px;
+            background: rgba(0, 0, 0, 0.06);
+        }
+        .studio-cat-chip.custom .chip-count { background: rgba(139, 0, 0, 0.12); }
+        .studio-cat-chip button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            line-height: 1;
+            color: inherit;
+            opacity: 0.55;
+            padding: 0 1px;
+        }
+        .studio-cat-chip button:hover { opacity: 1; color: #dc2626; }
+        .studio-cat-empty {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            padding: 4px 2px;
+        }
+
+        .studio-inline-form { display: flex; gap: 8px; align-items: stretch; }
+        .studio-inline-form .form-control {
+            font-size: 0.78rem;
+            padding: 8px 12px;
+            flex: 1 1 auto;
+            min-width: 0;
+        }
+        .studio-inline-form .btn-top {
+            white-space: nowrap;
+            font-size: 0.74rem;
+            padding: 8px 14px;
+        }
+
+        .studio-status {
+            font-size: 0.68rem;
+            font-weight: 700;
+            color: var(--green);
+            min-height: 15px;
+            margin-top: 8px;
+            line-height: 1.4;
+        }
+        .studio-status.is-error { color: #b91c1c; }
+
+        /* ── Toolbar / search ── */
+        .studio-toolbar {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            flex-wrap: wrap;
+        }
+        .studio-toolbar .search-wrap { flex: 0 1 auto; }
+        .studio-toolbar .search-input { width: 210px; }
+        .studio-toolbar select.form-control {
+            width: 158px;
+            padding: 8px 11px;
+            font-size: 0.76rem;
+            font-weight: 700;
+        }
+
+        /* ── Design table ── */
+        .studio-table-wrap { width: 100%; overflow-x: auto; }
+        #stickers-table { width: 100%; border-collapse: collapse; min-width: 720px; }
+        #stickers-table thead th {
+            background: #FAFAFB;
+            font-size: 0.6rem;
+            letter-spacing: 1.1px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            font-weight: 800;
+            padding: 10px 13px;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+            text-align: left;
+        }
+        #stickers-table tbody td {
+            padding: 10px 13px;
+            border-bottom: 1px solid #F2F3F5;
+            vertical-align: middle;
+            font-size: 0.8rem;
+        }
+        #stickers-table tbody tr:last-child td { border-bottom: none; }
+        #stickers-table tbody tr:hover { background: #FCFAFA; }
+        .studio-thumb {
+            width: 46px;
+            height: 46px;
+            border-radius: 9px;
+            border: 1.5px solid var(--border);
+            background: #FAFAFA;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 4px;
+            transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+        }
+        #stickers-table tbody tr:hover .studio-thumb {
+            border-color: var(--dark-red-border);
+            box-shadow: 0 0 0 3px var(--dark-red-light);
+            transform: scale(1.06);
+        }
+        .studio-thumb img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; }
+        .studio-design-name {
+            font-weight: 800;
+            font-size: 0.84rem;
+            color: var(--text);
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        .studio-design-meta {
+            font-size: 0.64rem;
+            color: var(--text-dim);
+            font-family: var(--font-mono);
+            margin-top: 2px;
+        }
+        .studio-design-meta a { color: var(--dark-red); text-decoration: none; }
+        .studio-design-meta a:hover { text-decoration: underline; }
+        .studio-cat-tag {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 50px;
+            font-size: 0.68rem;
+            font-weight: 700;
+            background: var(--bg-surface2);
+            border: 1px solid var(--border);
+            color: var(--text);
+            white-space: nowrap;
+        }
+        .studio-price-fixed {
+            font-weight: 800;
+            color: var(--green);
+            font-size: 0.78rem;
+        }
+        .studio-price-size-based {
+            color: var(--text-dim);
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+        .studio-source {
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        .studio-source.cloud { color: var(--dark-red); }
+        .studio-row-actions {
+            display: flex;
+            gap: 6px;
+            justify-content: flex-end;
+            flex-wrap: nowrap;
+        }
+        .btn-table.ghost { color: var(--text-muted); }
+        .btn-table.danger { color: #dc2626; border-color: rgba(220, 38, 38, 0.25); background: rgba(220, 38, 38, 0.04); }
+        .btn-table.danger:hover { background: rgba(220, 38, 38, 0.1); border-color: #dc2626; }
+
+        /* ── Archive panel ── */
+        .studio-archive { border-color: rgba(180, 83, 9, 0.35); }
+        .studio-archive .studio-card-head {
+            background: linear-gradient(180deg, #FFFDF7, #FFFBF2);
+            border-bottom-color: rgba(180, 83, 9, 0.2);
+        }
+        .studio-archive .studio-card-icon { background: rgba(180, 83, 9, 0.12); color: #b45309; }
+        #admin-hidden-stickers-tbody td { font-size: 0.78rem; }
+        .studio-url {
+            font-size: 0.64rem;
+            font-family: var(--font-mono);
+            color: var(--dark-red);
+            text-decoration: underline;
+            word-break: break-all;
+            max-width: 260px;
+            display: inline-block;
+        }
+
+        /* ── Empty states ── */
+        .studio-empty {
+            padding: 26px 18px;
+            text-align: center;
+            color: var(--text-dim);
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+        .studio-empty svg { width: 26px; height: 26px; opacity: 0.35; margin-bottom: 6px; }
+
+        /* ── Add sticker modal (scroll safe) ── */
+        #add-sticker-modal { padding: 14px; }
+        #add-sticker-modal .modal-card {
+            display: flex;
+            flex-direction: column;
+            max-width: 600px;
+            max-height: 92vh;
+            overflow: hidden;
+        }
+        #add-sticker-modal form {
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+            flex: 1 1 auto;
+        }
+        #add-sticker-modal .modal-header {
+            position: static;
+            flex-shrink: 0;
+            background: linear-gradient(135deg, #0A0A0A 0%, #1C1C1C 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 15px 20px;
+        }
+        #add-sticker-modal .modal-header h3 { color: #FFFFFF; font-size: 1rem; }
+        #add-sticker-modal .modal-sub {
+            color: rgba(255, 255, 255, 0.55);
+            font-size: 0.62rem;
+            font-weight: 600;
+            margin-top: 3px;
+            letter-spacing: 0.4px;
+        }
+        #add-sticker-modal .modal-close { color: rgba(255, 255, 255, 0.65); font-size: 1.5rem; }
+        #add-sticker-modal .modal-close:hover { color: #FFFFFF; }
+        #add-sticker-modal .modal-body { padding: 18px 20px; overflow-y: auto; }
+        #add-sticker-modal .modal-footer {
+            flex-shrink: 0;
+            padding: 13px 20px;
+            background: #F9FAFB;
+        }
+        #add-sticker-modal .form-grid { gap: 12px; margin-bottom: 14px; }
+        .studio-optional {
+            font-size: 0.56rem;
+            font-weight: 700;
+            color: var(--text-dim);
+            background: var(--bg-surface2);
+            border-radius: 4px;
+            padding: 1px 6px;
+            margin-left: 4px;
+            letter-spacing: 0.4px;
+        }
+        .studio-file { padding: 8px 10px; font-size: 0.72rem; background: #FFFFFF; }
+        .studio-file::file-selector-button {
+            font-family: inherit;
+            font-size: 0.7rem;
+            font-weight: 800;
+            border: 1px solid var(--border);
+            background: var(--bg-surface);
+            color: var(--text);
+            border-radius: 6px;
+            padding: 5px 10px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        .studio-file::file-selector-button:hover { border-color: var(--dark-red); color: var(--dark-red); }
+        .studio-or {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+            color: var(--text-dim);
+            font-size: 0.6rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .studio-or::before,
+        .studio-or::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+        #admin-sticker-preview-box {
+            width: 100%;
+            height: 148px;
+            background: #F8FAFC;
+            border: 1.5px dashed var(--border);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+            transition: border-color 0.2s, background 0.2s;
+            margin-top: 10px;
+        }
+        #admin-sticker-preview-box.has-image {
+            border-color: var(--dark-red-border);
+            background: #FDFAFA;
+        }
+        #admin-sticker-preview-img {
+            max-height: 128px;
+            max-width: 160px;
+            object-fit: contain;
+            display: none;
+        }
+        #admin-sticker-preview-empty {
+            font-size: 0.72rem;
+            color: var(--text-dim);
+            font-weight: 600;
+        }
+        #admin-sticker-upload-spinner {
+            display: none;
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.94);
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        #admin-sticker-upload-spinner .spinner { margin: 0 0 2px; }
+        #admin-sticker-upload-spinner span {
+            font-size: 0.72rem;
+            font-weight: 800;
+            color: var(--dark-red);
+        }
+
+        /* ── Table action buttons ── */
+        .btn-table {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 10px;
+            border-radius: var(--radius-sm);
+            font-family: inherit;
+            font-size: 0.72rem;
+            font-weight: 700;
+            line-height: 1.2;
+            cursor: pointer;
+            transition: all 0.18s;
+            border: 1px solid var(--border);
+            background: #FFFFFF;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+        .btn-table:hover { border-color: #0A0A0A; color: #0A0A0A; background: var(--bg-surface2); }
+        .btn-table.restore { color: var(--green); border-color: rgba(21, 128, 61, 0.25); background: rgba(21, 128, 61, 0.04); }
+        .btn-table.restore:hover { background: var(--green-light); border-color: var(--green); }
+
+        /* ── Modal action buttons ── */
+        .btn-cancel {
+            padding: 9px 18px;
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            background: #FFFFFF;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .btn-cancel:hover { border-color: #0A0A0A; color: #0A0A0A; background: var(--bg-surface2); }
+        .btn-save {
+            padding: 9px 20px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: #0A0A0A;
+            color: #FFFFFF;
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            cursor: pointer;
+            transition: all 0.18s;
+        }
+        .btn-save:hover { background: var(--dark-red); transform: translateY(-1px); box-shadow: 0 4px 14px var(--dark-red-light); }
+        .btn-save:disabled { opacity: 0.55; pointer-events: none; }
+
+        /* ── Form group (sticker modal) ── */
+        .form-group { margin-bottom: 14px; }
+        .modal-overlay.active { display: flex; animation: modalIn 0.22s ease; }
+
+        /* ── Bulk add (multi sticker) UI ── */
+        .studio-mode-switch {
+            display: flex;
+            gap: 6px;
+            padding: 4px;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            margin-bottom: 16px;
+        }
+        .studio-mode-btn {
+            flex: 1 1 0;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 8px 10px;
+            border: none;
+            border-radius: var(--radius-sm);
+            background: transparent;
+            color: var(--text-muted);
+            font-family: inherit;
+            font-size: 0.74rem;
+            font-weight: 800;
+            cursor: pointer;
+            transition: background 0.18s, color 0.18s, box-shadow 0.18s;
+            white-space: nowrap;
+        }
+        .studio-mode-btn:hover { color: #0A0A0A; }
+        .studio-mode-btn.is-active {
+            background: #0A0A0A;
+            color: #FFFFFF;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.16);
+        }
+        .studio-mode-btn.is-active svg { color: #FFFFFF; }
+        .studio-bulk-textarea {
+            min-height: 92px;
+            resize: vertical;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            line-height: 1.7;
+            padding: 9px 11px;
+        }
+        .studio-bulk-preview-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 9px;
+        }
+        .studio-bulk-preview-list img {
+            width: 42px;
+            height: 42px;
+            object-fit: contain;
+            padding: 3px;
+            background: #FFFFFF;
+            border: 1px solid var(--border);
+            border-radius: 7px;
+        }
+        .studio-bulk-preview-list .more {
+            width: 42px;
+            height: 42px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px dashed var(--border-dark);
+            border-radius: 7px;
+            background: var(--bg-surface);
+            font-size: 0.66rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+        .studio-bulk-foot {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-top: 9px;
+        }
+        .studio-bulk-count {
+            font-size: 0.7rem;
+            font-weight: 800;
+            color: var(--text-muted);
+        }
+        .studio-bulk-count.is-over { color: #dc2626; }
+        .studio-bulk-hint { font-size: 0.62rem; color: var(--text-dim); font-weight: 600; }
+        .studio-bulk-progress { margin-top: 11px; }
+        .studio-bulk-bar {
+            height: 7px;
+            border-radius: 50px;
+            background: var(--bg-surface2);
+            overflow: hidden;
+        }
+        .studio-bulk-bar > span {
+            display: block;
+            height: 100%;
+            width: 0%;
+            border-radius: 50px;
+            background: linear-gradient(90deg, #8B0000, #C81E1E);
+            transition: width 0.25s ease;
+        }
+        #bulk-sticker-progress-text {
+            display: block;
+            margin-top: 5px;
+            font-size: 0.66rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+        @media (max-width: 480px) {
+            .studio-mode-btn { font-size: 0.66rem; padding: 7px 6px; }
+            .studio-bulk-hint { display: none; }
+        }
+
+        /* ── Admin layout responsiveness ── */
+        @media (max-width: 1080px) {
+            .topbar { flex-wrap: wrap; gap: 10px; padding: 12px 16px; }
+            .topbar-right { flex-wrap: wrap; }
+            .layout { flex-direction: column; }
+            .sidebar {
+                position: static;
+                width: 100%;
+                min-width: 0;
+                height: auto;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+                padding: 10px 12px;
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+                overflow: visible;
+            }
+            .sidebar-heading { display: none; }
+            .sidebar > div[style*="margin-top"] {
+                margin-top: 0 !important;
+                padding-top: 0 !important;
+                border-top: none !important;
+                width: auto;
+            }
+            .nav-btn { width: auto; padding: 8px 12px; }
+            .main-content { padding: 20px 16px; overflow: visible; }
+            .studio-badge { white-space: nowrap; }
+        }
+        @media (max-width: 640px) {
+            .studio-hero { padding: 16px; }
+            .studio-title { font-size: 1.08rem; }
+            .studio-stats { grid-template-columns: 1fr 1fr; }
+            .studio-toolbar { width: 100%; }
+            .studio-toolbar .search-wrap { flex: 1 1 100%; }
+            .studio-toolbar .search-input,
+            .studio-toolbar select.form-control { width: 100%; }
+            .studio-hero-actions { width: 100%; }
+            .studio-hero-actions .btn-top { flex: 1 1 auto; justify-content: center; }
+            .studio-price-grid { grid-template-columns: 1fr 1fr; }
+            .studio-inline-form { flex-wrap: wrap; }
+            .studio-inline-form .btn-top { width: 100%; justify-content: center; }
+        }
+        @media (max-width: 420px) {
+            .studio-stats { grid-template-columns: 1fr; }
+            .studio-price-grid { grid-template-columns: 1fr; }
+        }
     </style>
 </head>
 <body>
@@ -723,6 +1569,13 @@
                     <span>Users & Customers</span>
                 </div>
                 <span class="nav-badge" id="badge-customers-count">0</span>
+            </button>
+            <button class="nav-btn" id="btn-stickers" onclick="switchTab('stickers')">
+                <div class="nav-btn-inner">
+                    <i data-lucide="palette" style="width: 17px;"></i>
+                    <span>Custom Studio &amp; Stickers</span>
+                </div>
+                <span class="nav-badge" id="badge-stickers-count">0</span>
             </button>
 
             <div class="sidebar-heading">ENGAGEMENT</div>
@@ -1000,7 +1853,7 @@
                             <input type="text" class="search-input" placeholder="Search name, phone, email..." oninput="filterCustomersTable(this.value)">
                         </div>
                     
-                        <button onclick="clearAllRegisteredUsers()" class="btn-top" style="background:#DC2626;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:0.78rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;"><i data-lucide=\"trash-2\" style=\"width:13px;\"></i> Clear All Users</button>
+                        <button onclick="clearAllRegisteredUsers()" class="btn-top" style="background:#DC2626;color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:0.78rem;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;"><i data-lucide="trash-2" style="width: 13px;"></i> Clear All Users</button>
 </div>
                 </div>
 
@@ -1249,6 +2102,166 @@
                 </div>
             </section>
 
+            <!-- ── TAB 7: CUSTOM STUDIO & STICKERS MANAGEMENT ── -->
+            <section class="tab-section" id="tab-stickers">
+
+                <div class="studio-hero">
+                    <div>
+                        <span class="studio-kicker">CUSTOMIZE STUDIO</span>
+                        <h2 class="studio-title">
+                            Sticker Library &amp; Pricing
+                            <span class="studio-badge" id="sticker-total-badge">0 Designs</span>
+                        </h2>
+                        <p>Print sizes (A2–A6), per-design prices, categories and artwork for the customer
+                            Customize Studio. Every change syncs to every device in real time.</p>
+                    </div>
+                    <div class="studio-hero-actions">
+                        <button type="button" onclick="loadStickerStudioData(true)" class="btn-top" title="Reload from the database">
+                            <i data-lucide="refresh-cw" style="width:14px;"></i> Refresh
+                        </button>
+                        <button type="button" onclick="openAddStickerModal()" class="btn-top accent" id="btn-open-add-sticker">
+                            <i data-lucide="plus" style="width:15px;"></i> Add New Sticker
+                        </button>
+                    </div>
+                </div>
+
+                <div class="studio-stats">
+                    <div class="studio-stat">
+                        <div class="label"><span>Active Designs</span><i data-lucide="image"></i></div>
+                        <div class="value" id="kpi-stickers-active">0</div>
+                        <div class="sub">Visible in Customize Studio</div>
+                    </div>
+                    <div class="studio-stat">
+                        <div class="label"><span>Design Categories</span><i data-lucide="tags"></i></div>
+                        <div class="value" id="kpi-stickers-cats">3</div>
+                        <div class="sub" id="kpi-stickers-cats-sub">BW, Python, Custom</div>
+                    </div>
+                    <div class="studio-stat">
+                        <div class="label"><span>A3 Print Price</span><i data-lucide="tag"></i></div>
+                        <div class="value" id="kpi-stickers-a3">LKR 580</div>
+                        <div class="sub">Default studio size</div>
+                    </div>
+                    <div class="studio-stat">
+                        <div class="label"><span>Deleted Designs</span><i data-lucide="archive"></i></div>
+                        <div class="value" id="kpi-stickers-hidden">0</div>
+                        <div class="sub">Restorable from the archive</div>
+                    </div>
+                </div>
+
+                <div class="studio-grid">
+                    <!-- Print size pricing -->
+                    <section class="studio-card">
+                        <div class="studio-card-head">
+                            <div>
+                                <h3><span class="studio-card-icon"><i data-lucide="printer"></i></span> Print Size Pricing</h3>
+                                <p>LKR per sticker · Full-colour DTF print</p>
+                            </div>
+                            <button type="button" onclick="saveStickerPricesFromAdmin()" id="btn-save-sticker-prices"
+                                class="btn-top accent" style="font-size:0.74rem;padding:7px 13px;">
+                                <i data-lucide="save" style="width:13px;"></i> Save Prices
+                            </button>
+                        </div>
+                        <div class="studio-card-body">
+                            <div id="admin-size-prices-grid" class="studio-price-grid"></div>
+                            <div id="admin-price-status" class="studio-status"></div>
+                        </div>
+                    </section>
+
+                    <!-- Categories -->
+                    <section class="studio-card">
+                        <div class="studio-card-head">
+                            <div>
+                                <h3><span class="studio-card-icon green"><i data-lucide="folder-open"></i></span> Artwork Categories</h3>
+                                <p>Filter tabs shown on the customer studio</p>
+                            </div>
+                        </div>
+                        <div class="studio-card-body">
+                            <div id="admin-category-pill-list" class="studio-cat-list"></div>
+                            <div class="studio-inline-form">
+                                <input type="text" id="new-cat-label-input" class="form-control"
+                                    placeholder="New category (e.g. Cyberpunk)"
+                                    onkeydown="if(event.key==='Enter'){event.preventDefault();createAdminStickerCategory();}">
+                                <button type="button" onclick="createAdminStickerCategory()" class="btn-top primary">
+                                    <i data-lucide="plus" style="width:14px;"></i> Add
+                                </button>
+                            </div>
+                            <div id="admin-cat-status" class="studio-status"></div>
+                        </div>
+                    </section>
+                </div>
+
+                <!-- All designs -->
+                <section class="studio-card">
+                    <div class="studio-card-head">
+                        <div>
+                            <h3><span class="studio-card-icon blue"><i data-lucide="layout-grid"></i></span> All Sticker Designs</h3>
+                            <p>Built-in and cloud artwork visible in Customize Studio</p>
+                        </div>
+                        <div class="studio-toolbar">
+                            <div class="search-wrap">
+                                <i data-lucide="search" class="search-icon"></i>
+                                <input type="text" class="search-input" id="admin-sticker-search"
+                                    placeholder="Search name or code..."
+                                    oninput="filterAdminStickersTable()">
+                            </div>
+                            <select id="admin-sticker-cat-filter" class="form-control"
+                                onchange="filterAdminStickersTable()">
+                                <option value="all">All Categories</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="studio-table-wrap">
+                        <table class="dtable" id="stickers-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:66px;padding-left:20px;">Artwork</th>
+                                    <th>Design Name</th>
+                                    <th>Category</th>
+                                    <th>Price Rule</th>
+                                    <th>Source</th>
+                                    <th style="text-align:right;width:190px;padding-right:20px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="stickers-tbody">
+                                <tr>
+                                    <td colspan="6" class="empty-state">
+                                        <div class="spinner"></div>
+                                        Loading sticker designs...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- Deleted / archived designs -->
+                <section class="studio-card studio-archive" id="admin-hidden-stickers-panel" style="display:none;">
+                    <div class="studio-card-head">
+                        <div>
+                            <h3><span class="studio-card-icon amber"><i data-lucide="archive"></i></span> Deleted Designs</h3>
+                            <p>Removed from the customer studio — restore anytime</p>
+                        </div>
+                        <span class="studio-badge" id="admin-hidden-count">0 removed</span>
+                    </div>
+                    <div class="studio-table-wrap">
+                        <table class="dtable">
+                            <thead>
+                                <tr>
+                                    <th style="width:64px;padding-left:20px;">Artwork</th>
+                                    <th>Design Name</th>
+                                    <th>Source</th>
+                                    <th>Original URL</th>
+                                    <th style="text-align:right;width:210px;padding-right:20px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="admin-hidden-stickers-tbody"></tbody>
+                        </table>
+                    </div>
+                </section>
+
+            </section>
+</section>
+
         </main>
     </div>
 
@@ -1459,6 +2472,120 @@
         </div>
     </div>
 
+    <!-- ── ADD STICKER MODAL ── -->
+    <div class="modal-overlay" id="add-sticker-modal">
+        <div class="modal-card" style="max-width: 620px;">
+            <div class="modal-header">
+                <div>
+                    <h3>Add Sticker Designs</h3>
+                    <p class="modal-sub">One sticker, or up to 30 at once — PNG with a transparent background works best</p>
+                </div>
+                <button class="modal-close" type="button" onclick="closeAddStickerModal()">&times;</button>
+            </div>
+            <form onsubmit="handleAdminStickerSubmit(event)">
+                <div class="modal-body">
+
+                    <div class="studio-mode-switch" id="admin-sticker-mode-switch">
+                        <button type="button" class="studio-mode-btn is-active" id="mode-single-btn"
+                            onclick="setAdminStickerMode('single')">
+                            <i data-lucide="image" style="width:13px;height:13px;"></i> Single Sticker
+                        </button>
+                        <button type="button" class="studio-mode-btn" id="mode-bulk-btn"
+                            onclick="setAdminStickerMode('bulk')">
+                            <i data-lucide="images" style="width:13px;height:13px;"></i> Bulk Add · Max 30
+                        </button>
+                    </div>
+
+                    <!-- Single sticker -->
+                    <div id="admin-sticker-single-pane">
+                        <div class="form-group">
+                            <label class="form-label">Sticker Name / Title *</label>
+                            <input type="text" id="form-sticker-name" class="form-control" required
+                                placeholder="e.g. Cyber Skull HD">
+                        </div>
+
+                        <div class="form-grid">
+                            <div>
+                                <label class="form-label">Category *</label>
+                                <select id="form-sticker-cat" class="form-control" required></select>
+                            </div>
+                            <div>
+                                <label class="form-label">Fixed Price <span class="studio-optional">Optional</span></label>
+                                <input type="number" id="form-sticker-price" class="form-control" min="0" step="10"
+                                    placeholder="Blank = size price">
+                            </div>
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label">Artwork Image *</label>
+                            <input type="file" id="form-sticker-file" accept="image/*" class="form-control studio-file"
+                                onchange="handleAdminStickerFileUpload(this)">
+                            <div class="studio-or"><span>or paste a direct image URL</span></div>
+                            <input type="url" id="form-sticker-url" class="form-control"
+                                placeholder="https://i.ibb.co/xxxx/design.png"
+                                oninput="onAdminStickerUrlInput(this.value)">
+                            <div id="admin-sticker-preview-box">
+                                <img id="admin-sticker-preview-img" src="" alt="Sticker preview">
+                                <span id="admin-sticker-preview-empty">No image selected yet</span>
+                                <div id="admin-sticker-upload-spinner">
+                                    <div class="spinner"></div>
+                                    <span>Uploading to ImgBB...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bulk stickers -->
+                    <div id="admin-sticker-bulk-pane" style="display:none;">
+                        <div class="form-grid">
+                            <div>
+                                <label class="form-label">Category for all stickers *</label>
+                                <select id="bulk-sticker-cat" class="form-control"></select>
+                            </div>
+                            <div>
+                                <label class="form-label">Fixed Price (each) <span class="studio-optional">Optional</span></label>
+                                <input type="number" id="bulk-sticker-price" class="form-control" min="0" step="10"
+                                    placeholder="Blank = size price">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="form-label">Name Prefix <span class="studio-optional">Optional</span></label>
+                            <input type="text" id="bulk-sticker-prefix" class="form-control"
+                                placeholder="e.g. Cyber — names become “Cyber file-name”">
+                        </div>
+
+                        <div class="form-group" style="margin-bottom:0;">
+                            <label class="form-label">Artwork Images <span class="studio-optional">Max 30 at once</span></label>
+                            <input type="file" id="bulk-sticker-files" accept="image/*" multiple
+                                class="form-control studio-file" onchange="handleAdminBulkFileChange(this)">
+                            <div id="bulk-sticker-preview-list" class="studio-bulk-preview-list" style="display:none;"></div>
+                            <div class="studio-or"><span>or paste image URLs — one per line</span></div>
+                            <textarea id="bulk-sticker-urls" class="form-control studio-bulk-textarea" rows="4"
+                                placeholder="https://i.ibb.co/xxxx/design-1.png&#10;https://i.ibb.co/xxxx/design-2.png&#10;Custom Name | https://i.ibb.co/xxxx/design-3.png"
+                                oninput="updateAdminBulkCount()"></textarea>
+                        </div>
+
+                        <div class="studio-bulk-foot">
+                            <span id="bulk-sticker-count" class="studio-bulk-count">0 / 30 selected</span>
+                            <span class="studio-bulk-hint">Every sticker gets its own auto ID</span>
+                        </div>
+
+                        <div id="bulk-sticker-progress" class="studio-bulk-progress" style="display:none;">
+                            <div class="studio-bulk-bar"><span id="bulk-sticker-bar"></span></div>
+                            <span id="bulk-sticker-progress-text">Preparing…</span>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn-cancel" onclick="closeAddStickerModal()">Cancel</button>
+                    <button type="submit" class="btn-save" id="btn-submit-sticker">Save to Library</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast">✅ Notification message</div>
 
@@ -1576,6 +2703,7 @@
             if (targetSec) targetSec.classList.add('active');
             if (targetBtn) targetBtn.classList.add('active');
             if (tabId === 'banner') loadBannerSettings();
+            if (tabId === 'stickers') loadStickerStudioData();
             lucide.createIcons();
         }
 
@@ -3395,6 +4523,7 @@
             fetchCategories();
             fetchReviews();
             loadBannerSettings();
+            loadStickerStudioData();
         }
 
         // Initialize on page load
@@ -3561,6 +4690,1620 @@
             saveBannerSettings();
             showToast("Banner images reset to defaults.");
         }
+
+        // ──────────────────────────────────────────────────────────
+        // 6. CUSTOM STUDIO & STICKER LIBRARY MANAGEMENT
+        // ──────────────────────────────────────────────────────────
+
+        const BUILTIN_STUDIO_DESIGNS = [
+          {
+                    "id": "builtin-1",
+                    "code": "S1",
+                    "cat": "bw",
+                    "url": "https://i.ibb.co/MyV1gShG/download-28.png",
+                    "name": "download 28"
+          },
+          {
+                    "id": "builtin-2",
+                    "code": "S2",
+                    "cat": "bw",
+                    "url": "https://i.ibb.co/k2V8LGH8/download-29.png",
+                    "name": "download 29"
+          },
+          {
+                    "id": "builtin-3",
+                    "code": "S3",
+                    "cat": "bw",
+                    "url": "https://i.ibb.co/XfMfT2Pc/download-30.png",
+                    "name": "download 30"
+          },
+          {
+                    "id": "builtin-4",
+                    "code": "S4",
+                    "cat": "bw",
+                    "url": "https://i.ibb.co/v9nFCm5/download-31.png",
+                    "name": "download 31"
+          },
+          {
+                    "id": "builtin-5",
+                    "code": "S5",
+                    "cat": "bw",
+                    "url": "https://i.ibb.co/0jNxLvYv/Believe.png",
+                    "name": "Believe"
+          },
+          {
+                    "id": "builtin-6",
+                    "code": "S6",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/XfbrZJLh/Whats-App-Image-2026-04-28-at-16-06-31.png",
+                    "name": "Whats App Image 2026 04 28 at 16 06 31"
+          },
+          {
+                    "id": "builtin-7",
+                    "code": "S7",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/pvszmzQC/Whats-App-Image-2026-04-28-at-16-06-29-1.png",
+                    "name": "Whats App Image 2026 04 28 at 16 06 29 1"
+          },
+          {
+                    "id": "builtin-8",
+                    "code": "S8",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/0VKQ1GX2/download-23.png",
+                    "name": "download 23"
+          },
+          {
+                    "id": "builtin-9",
+                    "code": "S9",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/8g3YLLRP/download-25.png",
+                    "name": "download 25"
+          },
+          {
+                    "id": "builtin-10",
+                    "code": "S10",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/rf382jbv/download-26.png",
+                    "name": "download 26"
+          },
+          {
+                    "id": "builtin-11",
+                    "code": "S11",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/gFXHwFCX/download-27.png",
+                    "name": "download 27"
+          },
+          {
+                    "id": "builtin-12",
+                    "code": "S12",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/rGGMkwkb/Ford-Mustang-Built-to-Be-Legendary.png",
+                    "name": "Ford Mustang Built to Be Legendary"
+          },
+          {
+                    "id": "builtin-13",
+                    "code": "S13",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/Sw7MG9wS/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png",
+                    "name": "Kids The Flintstones Fred And Barney Let s Rock Png Fred And Barney The Flintstones Fred Barney"
+          },
+          {
+                    "id": "builtin-14",
+                    "code": "S14",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/84sH5Qvb/Chat-GPT-Image-Apr-29-2026-10-06-33-PM.png",
+                    "name": "Chat GPT Image Apr 29 2026 10 06 33 PM"
+          },
+          {
+                    "id": "builtin-15",
+                    "code": "S15",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/NdBPMyjn/Chat-GPT-Image-Apr-30-2026-02-22-11-PM.png",
+                    "name": "Chat GPT Image Apr 30 2026 02 22 11 PM"
+          },
+          {
+                    "id": "builtin-16",
+                    "code": "S16",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/jnJPTYN/download-34.png",
+                    "name": "download 34"
+          },
+          {
+                    "id": "builtin-17",
+                    "code": "S17",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/prLnyfzg/download-35.png",
+                    "name": "download 35"
+          },
+          {
+                    "id": "builtin-18",
+                    "code": "S18",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/WW2ZJCcC/download-36.png",
+                    "name": "download 36"
+          },
+          {
+                    "id": "builtin-19",
+                    "code": "S19",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/gMrCJPnN/A3-1.png",
+                    "name": "A3 1"
+          },
+          {
+                    "id": "builtin-20",
+                    "code": "S20",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/QFRLTykz/A3-2.png",
+                    "name": "A3 2"
+          },
+          {
+                    "id": "builtin-21",
+                    "code": "S21",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/S7f8ZfJs/A3-3.png",
+                    "name": "A3 3"
+          },
+          {
+                    "id": "builtin-22",
+                    "code": "S22",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/tMccn0qh/A3-4.png",
+                    "name": "A3 4"
+          },
+          {
+                    "id": "builtin-23",
+                    "code": "S23",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/B5s9qhyX/A3-5.png",
+                    "name": "A3 5"
+          },
+          {
+                    "id": "builtin-24",
+                    "code": "S24",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/bj43Hcks/A3-6.png",
+                    "name": "A3 6"
+          },
+          {
+                    "id": "builtin-25",
+                    "code": "S25",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/7B5DZmx/A3-7.png",
+                    "name": "A3 7"
+          },
+          {
+                    "id": "builtin-26",
+                    "code": "S26",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/SXdG9PTc/A3-8.png",
+                    "name": "A3 8"
+          },
+          {
+                    "id": "builtin-27",
+                    "code": "S27",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/tp3krXPp/A3-9.png",
+                    "name": "A3 9"
+          },
+          {
+                    "id": "builtin-28",
+                    "code": "S28",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/VY90dG3G/A3-10.png",
+                    "name": "A3 10"
+          },
+          {
+                    "id": "builtin-29",
+                    "code": "S29",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/1JQ00QMd/A3-11.png",
+                    "name": "A3 11"
+          },
+          {
+                    "id": "builtin-30",
+                    "code": "S30",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/35ZHqgy3/Chat-GPT-Image-May-20-2026-07-59-26-PM.png",
+                    "name": "Chat GPT Image May 20 2026 07 59 26 PM"
+          },
+          {
+                    "id": "builtin-31",
+                    "code": "S31",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/YTcqN8B8/Chat-GPT-Image-May-20-2026-08-08-16-PM.png",
+                    "name": "Chat GPT Image May 20 2026 08 08 16 PM"
+          },
+          {
+                    "id": "builtin-32",
+                    "code": "S32",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/Pv9K2vTz/Ford-Mustang-Built-to-Be-Legendary.png",
+                    "name": "Ford Mustang Built to Be Legendary"
+          },
+          {
+                    "id": "builtin-33",
+                    "code": "S33",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/4ZnJMRK2/Kids-The-Flintstones-Fred-And-Barney-Let-s-Rock-Png-Fred-And-Barney-The-Flintstones-Fred-Barney.png",
+                    "name": "Kids The Flintstones Fred And Barney Let s Rock Png Fred And Barney The Flintstones Fred Barney"
+          },
+          {
+                    "id": "builtin-34",
+                    "code": "S34",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/2Ys8HnPd/Whats-App-Image-2026-05-20-at-17-27-58-1-copy.png",
+                    "name": "Whats App Image 2026 05 20 at 17 27 58 1 copy"
+          },
+          {
+                    "id": "builtin-35",
+                    "code": "S35",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/BHf6fLxr/Whats-App-Image-2026-05-20-at-17-27-59.png",
+                    "name": "Whats App Image 2026 05 20 at 17 27 59"
+          },
+          {
+                    "id": "builtin-36",
+                    "code": "S36",
+                    "cat": "python",
+                    "url": "https://i.ibb.co/zHGbqMn0/honor-design.png",
+                    "name": "honor design"
+          }
+];
+
+        const STICKER_ADMIN_SIZE_META = {
+            A2: { label: 'A2', dims: '42.0 × 59.4 cm', defaultPrice: 800 },
+            A3: { label: 'A3', dims: '29.7 × 42.0 cm', defaultPrice: 580 },
+            A4: { label: 'A4', dims: '21.0 × 29.7 cm', defaultPrice: 320 },
+            A5: { label: 'A5', dims: '14.8 × 21.0 cm', defaultPrice: 150 },
+            A6: { label: 'A6', dims: '10.5 × 14.8 cm', defaultPrice: 100 }
+        };
+
+        const STICKER_BASE_CATS = [
+            { slug: 'bw', label: 'Black & White' },
+            { slug: 'python', label: 'Python Collection' },
+            { slug: 'custom', label: 'Your Stickers' }
+        ];
+
+        const STICKER_CACHE_KEY = 'python_sticker_studio_v1';
+
+        let adminStickerPrices = { A2: 800, A3: 580, A4: 320, A5: 150, A6: 100 };
+        let adminStickerDefaultSize = 'A3';
+        let adminStickerCategories = [];
+        let adminStickerLibrary = [];
+        let adminStickerHidden = [];
+        let adminStickerDesignPrices = {};
+        let adminStickerCategoryOverrides = {};
+        let adminStickersLoading = false;
+        let adminStickersLoadedAt = 0;
+
+        // ── Small, safe helpers ──
+        function adminDb() {
+            try { return (typeof db !== 'undefined' && db) ? db : null; } catch (e) { return null; }
+        }
+
+        function adminTimestamp() {
+            try {
+                if (typeof firebase !== 'undefined' && firebase.firestore &&
+                    firebase.firestore.FieldValue && firebase.firestore.FieldValue.serverTimestamp) {
+                    return firebase.firestore.FieldValue.serverTimestamp();
+                }
+            } catch (e) {}
+            return Date.now();
+        }
+
+        function adminEsc(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+
+        function adminNotify(message, isError) {
+            try {
+                if (typeof showToast === 'function') showToast(message, !!isError);
+                else console.log(message);
+            } catch (e) { console.warn(message); }
+        }
+
+        function adminSetStatus(id, message, isError) {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = message || '';
+            el.classList.toggle('is-error', !!isError);
+            clearTimeout(el._statusTimer);
+            if (message) {
+                el._statusTimer = setTimeout(function () {
+                    el.textContent = '';
+                    el.classList.remove('is-error');
+                }, 4500);
+            }
+        }
+
+        function adminStickerNameFromUrl(url) {
+            try {
+                const clean = String(url || '').split('?')[0].split('#')[0];
+                let name = decodeURIComponent(clean.substring(clean.lastIndexOf('/') + 1));
+                name = name.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ').trim();
+                return name || 'Sticker Artwork';
+            } catch (e) { return 'Sticker Artwork'; }
+        }
+
+        function adminStickerAllCategories() {
+            const list = STICKER_BASE_CATS.slice();
+            adminStickerCategories.forEach(function (c) {
+                if (c && c.slug && c.label && !list.some(function (x) { return x.slug === c.slug; })) {
+                    list.push({ slug: c.slug, label: c.label });
+                }
+            });
+            return list;
+        }
+
+        function adminStickerCatLabel(slug) {
+            const match = adminStickerAllCategories().find(function (c) { return c.slug === slug; });
+            return match ? match.label : slug;
+        }
+
+        function adminStickerCategoryOf(item) {
+            if (item.type === 'builtin') {
+                return adminStickerCategoryOverrides[item.url] || item.baseCat || 'python';
+            }
+            return item.category || 'python';
+        }
+
+        // ── Cache (mirrors the customer customize page) ──
+        function saveAdminStickerCache() {
+            try {
+                localStorage.setItem(STICKER_CACHE_KEY, JSON.stringify({
+                    prices: adminStickerPrices,
+                    defaultSize: adminStickerDefaultSize,
+                    categories: adminStickerCategories,
+                    hidden: adminStickerHidden,
+                    designPrices: adminStickerDesignPrices,
+                    categoryOverrides: adminStickerCategoryOverrides,
+                    designs: adminStickerLibrary,
+                    updatedAt: Date.now()
+                }));
+            } catch (e) {}
+        }
+
+        function syncStickerSettingsDoc() {
+            const database = adminDb();
+            if (!database) return Promise.resolve(false);
+            return database.collection('settings').doc('stickerStudio').set({
+                prices: adminStickerPrices,
+                defaultSize: adminStickerDefaultSize,
+                categories: adminStickerCategories,
+                hidden: adminStickerHidden,
+                designPrices: adminStickerDesignPrices,
+                categoryOverrides: adminStickerCategoryOverrides,
+                updatedAt: adminTimestamp()
+            }, { merge: true }).then(function () {
+                return true;
+            }).catch(function (err) {
+                console.warn('Sticker settings sync failed:', err);
+                return false;
+            });
+        }
+
+        function renderAllStickerAdminUI() {
+            renderAdminSizePrices();
+            renderAdminCategories();
+            renderAdminStickersTable();
+            updateStickerKPIs();
+        }
+
+        // ── Load ──
+        async function loadStickerStudioData(force) {
+            if (adminStickersLoading) return;
+            const now = Date.now();
+            if (!force && adminStickersLoadedAt && (now - adminStickersLoadedAt) < 20000) {
+                renderAllStickerAdminUI();
+                return;
+            }
+            adminStickersLoading = true;
+
+            // 1. Instant paint from the local cache
+            try {
+                const cached = localStorage.getItem(STICKER_CACHE_KEY);
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    if (parsed && typeof parsed === 'object') {
+                        if (parsed.prices && typeof parsed.prices === 'object') {
+                            Object.keys(STICKER_ADMIN_SIZE_META).forEach(function (sz) {
+                                const v = Number(parsed.prices[sz]);
+                                if (isFinite(v) && v >= 0) adminStickerPrices[sz] = v;
+                            });
+                        }
+                        if (parsed.defaultSize && STICKER_ADMIN_SIZE_META[parsed.defaultSize]) {
+                            adminStickerDefaultSize = parsed.defaultSize;
+                        }
+                        if (Array.isArray(parsed.categories)) {
+                            adminStickerCategories = parsed.categories.filter(function (c) { return c && c.slug && c.label; });
+                        }
+                        if (Array.isArray(parsed.hidden)) {
+                            adminStickerHidden = parsed.hidden.filter(function (h) { return h && h.url; });
+                        }
+                        if (parsed.designPrices && typeof parsed.designPrices === 'object') {
+                            adminStickerDesignPrices = parsed.designPrices;
+                        }
+                        if (parsed.categoryOverrides && typeof parsed.categoryOverrides === 'object') {
+                            adminStickerCategoryOverrides = parsed.categoryOverrides;
+                        }
+                        if (Array.isArray(parsed.designs)) {
+                            adminStickerLibrary = parsed.designs.filter(function (d) { return d && d.url; });
+                        }
+                    }
+                }
+            } catch (e) {
+                console.warn('Sticker cache read warning:', e);
+            }
+
+            renderAllStickerAdminUI();
+
+            // 2. Then refresh from Firestore
+            const database = adminDb();
+            if (!database) {
+                adminStickersLoading = false;
+                adminStickersLoadedAt = Date.now();
+                return;
+            }
+
+            try {
+                const studioDoc = await database.collection('settings').doc('stickerStudio').get();
+                if (studioDoc && studioDoc.exists) {
+                    const data = studioDoc.data() || {};
+                    if (data.prices && typeof data.prices === 'object') {
+                        Object.keys(STICKER_ADMIN_SIZE_META).forEach(function (sz) {
+                            const v = Number(data.prices[sz]);
+                            if (isFinite(v) && v >= 0) adminStickerPrices[sz] = v;
+                        });
+                    }
+                    if (data.defaultSize && STICKER_ADMIN_SIZE_META[data.defaultSize]) {
+                        adminStickerDefaultSize = data.defaultSize;
+                    }
+                    if (Array.isArray(data.categories)) {
+                        adminStickerCategories = data.categories.filter(function (c) { return c && c.slug && c.label; });
+                    }
+                    if (Array.isArray(data.hidden)) {
+                        adminStickerHidden = data.hidden.filter(function (h) { return h && h.url; });
+                    }
+                    if (data.designPrices && typeof data.designPrices === 'object') {
+                        adminStickerDesignPrices = data.designPrices;
+                    }
+                    if (data.categoryOverrides && typeof data.categoryOverrides === 'object') {
+                        adminStickerCategoryOverrides = data.categoryOverrides;
+                    }
+                }
+
+                const libSnap = await database.collection('stickerLibrary').get();
+                const lib = [];
+                if (libSnap && typeof libSnap.forEach === 'function') {
+                    libSnap.forEach(function (doc) {
+                        const d = (typeof doc.data === 'function' ? doc.data() : null) || {};
+                        if (!d.url) return;
+                        lib.push({
+                            id: doc.id,
+                            name: d.name || adminStickerNameFromUrl(d.url),
+                            url: d.url,
+                            category: d.category || 'python',
+                            code: d.code || '',
+                            price: (d.price === null || d.price === undefined || d.price === '') ? null : Number(d.price),
+                            createdAt: d.createdAt || null
+                        });
+                    });
+                }
+                adminStickerLibrary = lib;
+                saveAdminStickerCache();
+            } catch (err) {
+                console.warn('loadStickerStudioData warning:', err);
+            } finally {
+                adminStickersLoading = false;
+                adminStickersLoadedAt = Date.now();
+                renderAllStickerAdminUI();
+            }
+        }
+
+        // ── KPIs ──
+        function updateStickerKPIs() {
+            const hiddenSet = new Set(adminStickerHidden.map(function (h) { return h.url; }));
+            const restorable = adminStickerHidden.filter(function (h) { return !h.permanent; });
+            const activeBuiltins = BUILTIN_STUDIO_DESIGNS.filter(function (d) { return !hiddenSet.has(d.url); }).length;
+            const activeLibrary = adminStickerLibrary.filter(function (d) { return !hiddenSet.has(d.url); }).length;
+            const totalActive = activeBuiltins + activeLibrary;
+
+            const badge = document.getElementById('sticker-total-badge');
+            if (badge) badge.textContent = totalActive + ' Designs';
+
+            const navBadge = document.getElementById('badge-stickers-count');
+            if (navBadge) navBadge.textContent = totalActive;
+
+            const kpiActive = document.getElementById('kpi-stickers-active');
+            if (kpiActive) kpiActive.textContent = totalActive;
+
+            const cats = adminStickerAllCategories();
+            const kpiCats = document.getElementById('kpi-stickers-cats');
+            if (kpiCats) kpiCats.textContent = cats.length;
+
+            const kpiCatsSub = document.getElementById('kpi-stickers-cats-sub');
+            if (kpiCatsSub) {
+                kpiCatsSub.textContent = cats.map(function (c) { return c.label; }).slice(0, 3).join(', ') +
+                    (cats.length > 3 ? '…' : '');
+            }
+
+            const kpiA3 = document.getElementById('kpi-stickers-a3');
+            if (kpiA3) kpiA3.textContent = 'LKR ' + Number(adminStickerPrices.A3 || 0).toLocaleString();
+
+            const kpiHidden = document.getElementById('kpi-stickers-hidden');
+            if (kpiHidden) kpiHidden.textContent = restorable.length;
+        }
+
+        // ── Size prices ──
+        function renderAdminSizePrices() {
+            const grid = document.getElementById('admin-size-prices-grid');
+            if (!grid) return;
+            grid.innerHTML = Object.keys(STICKER_ADMIN_SIZE_META).map(function (sz) {
+                const meta = STICKER_ADMIN_SIZE_META[sz];
+                const price = adminStickerPrices[sz] !== undefined ? adminStickerPrices[sz] : meta.defaultPrice;
+                const isDefault = sz === adminStickerDefaultSize;
+                return '<div class="studio-price-card' + (isDefault ? ' is-default' : '') + '">' +
+                    '<div class="studio-price-top">' +
+                        '<span class="studio-price-size">' + sz + '</span>' +
+                        (isDefault ? '<span class="studio-price-tag">Default</span>' : '') +
+                    '</div>' +
+                    '<div class="studio-price-dims">' + meta.dims + '</div>' +
+                    '<div class="studio-price-input">' +
+                        '<span>LKR</span>' +
+                        '<input type="number" id="admin-price-' + sz + '" min="0" step="10" value="' + Number(price) + '">' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+        }
+
+        async function saveStickerPricesFromAdmin() {
+            const saveBtn = document.getElementById('btn-save-sticker-prices');
+            const original = saveBtn ? saveBtn.innerHTML : '';
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = '<div class="spinner" style="width:13px;height:13px;border-width:2px;margin:0;"></div> Saving...';
+            }
+
+            try {
+                const sizes = Object.keys(STICKER_ADMIN_SIZE_META);
+                let invalid = false;
+                sizes.forEach(function (sz) {
+                    const input = document.getElementById('admin-price-' + sz);
+                    if (!input) return;
+                    const val = Number(input.value);
+                    if (!isFinite(val) || val < 0) { invalid = true; return; }
+                    adminStickerPrices[sz] = Math.round(val);
+                });
+
+                if (invalid) {
+                    adminSetStatus('admin-price-status', 'Enter a valid price for every size.', true);
+                    adminNotify('Enter a valid price for every size.', true);
+                    return;
+                }
+
+                saveAdminStickerCache();
+                const synced = await syncStickerSettingsDoc();
+                renderAdminSizePrices();
+                updateStickerKPIs();
+
+                if (synced) {
+                    adminSetStatus('admin-price-status', 'Prices saved and synced to the Customize Studio.');
+                    adminNotify('✓ Sticker prices saved to the database.');
+                } else {
+                    adminSetStatus('admin-price-status', 'Prices saved on this device — database sync failed.', true);
+                    adminNotify('Saved on this device only. Database sync failed.', true);
+                }
+            } catch (err) {
+                console.warn('saveStickerPricesFromAdmin error:', err);
+                adminSetStatus('admin-price-status', 'Could not save prices. Try again.', true);
+                adminNotify('Failed to save prices: ' + (err.message || 'Error'), true);
+            } finally {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = original;
+                    if (typeof lucide !== 'undefined') lucide.createIcons();
+                }
+            }
+        }
+
+        // ── Categories ──
+        function adminCategoryCounts() {
+            const counts = {};
+            const hiddenSet = new Set(adminStickerHidden.map(function (h) { return h.url; }));
+            BUILTIN_STUDIO_DESIGNS.forEach(function (d) {
+                if (hiddenSet.has(d.url)) return;
+                const cat = adminStickerCategoryOverrides[d.url] || d.cat;
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+            adminStickerLibrary.forEach(function (d) {
+                if (!d.url || hiddenSet.has(d.url)) return;
+                const cat = d.category || 'python';
+                counts[cat] = (counts[cat] || 0) + 1;
+            });
+            return counts;
+        }
+
+        function renderAdminCategories() {
+            const pillList = document.getElementById('admin-category-pill-list');
+            const filterSelect = document.getElementById('admin-sticker-cat-filter');
+            const modalSelect = document.getElementById('form-sticker-cat');
+            const allCats = adminStickerAllCategories();
+            const counts = adminCategoryCounts();
+
+            if (pillList) {
+                pillList.innerHTML = allCats.map(function (c) {
+                    const isBase = STICKER_BASE_CATS.some(function (b) { return b.slug === c.slug; });
+                    return '<span class="studio-cat-chip' + (isBase ? '' : ' custom') + '">' +
+                        '<span>' + adminEsc(c.label) + '</span>' +
+                        '<span class="chip-count">' + (counts[c.slug] || 0) + '</span>' +
+                        (isBase
+                            ? '<i data-lucide="lock" style="width:10px;height:10px;opacity:0.35;"></i>'
+                            : '<button type="button" title="Delete category" onclick="deleteAdminStickerCategory(\'' + adminEsc(c.slug) + '\')">&times;</button>') +
+                    '</span>';
+                }).join('') || '<span class="studio-cat-empty">No categories yet.</span>';
+            }
+
+            if (filterSelect) {
+                const currVal = filterSelect.value || 'all';
+                filterSelect.innerHTML = '<option value="all">All Categories</option>' +
+                    allCats.map(function (c) {
+                        return '<option value="' + adminEsc(c.slug) + '">' + adminEsc(c.label) + '</option>';
+                    }).join('');
+                filterSelect.value = Array.from(filterSelect.options).some(function (o) { return o.value === currVal; })
+                    ? currVal : 'all';
+            }
+
+            if (modalSelect) {
+                const currModalVal = modalSelect.value || 'python';
+                modalSelect.innerHTML = allCats.map(function (c) {
+                    return '<option value="' + adminEsc(c.slug) + '">' + adminEsc(c.label) + '</option>';
+                }).join('');
+                modalSelect.value = Array.from(modalSelect.options).some(function (o) { return o.value === currModalVal; })
+                    ? currModalVal : 'python';
+            }
+
+            const bulkSelect = document.getElementById('bulk-sticker-cat');
+            if (bulkSelect) {
+                const currBulkVal = bulkSelect.value || 'python';
+                bulkSelect.innerHTML = allCats.map(function (c) {
+                    return '<option value="' + adminEsc(c.slug) + '">' + adminEsc(c.label) + '</option>';
+                }).join('');
+                bulkSelect.value = Array.from(bulkSelect.options).some(function (o) { return o.value === currBulkVal; })
+                    ? currBulkVal : 'python';
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        async function createAdminStickerCategory() {
+            const input = document.getElementById('new-cat-label-input');
+            if (!input) return;
+            const label = input.value.trim();
+            if (!label) {
+                adminSetStatus('admin-cat-status', 'Enter a category name first.', true);
+                return;
+            }
+
+            const slug = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+            if (!slug) {
+                adminSetStatus('admin-cat-status', 'Use letters or numbers in the category name.', true);
+                return;
+            }
+            if (adminStickerAllCategories().some(function (c) { return c.slug === slug; })) {
+                adminSetStatus('admin-cat-status', 'That category already exists.', true);
+                return;
+            }
+
+            adminStickerCategories.push({ slug: slug, label: label });
+            input.value = '';
+            saveAdminStickerCache();
+            const synced = await syncStickerSettingsDoc();
+            renderAdminCategories();
+            updateStickerKPIs();
+
+            const sel = document.getElementById('sm-new-cat');
+            if (sel) sel.value = slug;
+            adminSetStatus('admin-cat-status', synced
+                ? 'Category "' + label + '" created.'
+                : 'Category saved on this device — database sync failed.', !synced);
+        }
+
+        async function deleteAdminStickerCategory(slug) {
+            const label = adminStickerCatLabel(slug);
+            if (!confirm('Delete the category "' + label + '"?\n\nDesigns inside it are not deleted — they move to Python Collection.')) return;
+
+            adminStickerCategories = adminStickerCategories.filter(function (c) { return c.slug !== slug; });
+
+            // Move designs that used this category back to Python Collection
+            Object.keys(adminStickerCategoryOverrides).forEach(function (url) {
+                if (adminStickerCategoryOverrides[url] === slug) delete adminStickerCategoryOverrides[url];
+            });
+            const database = adminDb();
+            const moves = [];
+            adminStickerLibrary.forEach(function (d) {
+                if (d.category === slug) {
+                    d.category = 'python';
+                    if (database && d.id) {
+                        moves.push(database.collection('stickerLibrary').doc(d.id).set({ category: 'python' }, { merge: true }).catch(function () {}));
+                    }
+                }
+            });
+            if (moves.length) { try { await Promise.all(moves); } catch (e) {} }
+
+            saveAdminStickerCache();
+            const synced = await syncStickerSettingsDoc();
+            renderAdminCategories();
+            renderAdminStickersTable();
+            updateStickerKPIs();
+            adminSetStatus('admin-cat-status', synced ? 'Category deleted.' : 'Deleted on this device — database sync failed.', !synced);
+        }
+
+        // ── Design table ──
+        function filterAdminStickersTable() {
+            renderAdminStickersTable();
+        }
+
+        function adminStickerItems() {
+            const items = [];
+            BUILTIN_STUDIO_DESIGNS.forEach(function (b) {
+                items.push({
+                    type: 'builtin',
+                    id: b.id,
+                    code: b.code,
+                    name: b.name,
+                    url: b.url,
+                    baseCat: b.cat,
+                    category: adminStickerCategoryOverrides[b.url] || b.cat,
+                    price: adminStickerDesignPrices[b.url] !== undefined ? adminStickerDesignPrices[b.url] : null,
+                    source: 'Built-in',
+                    docId: ''
+                });
+            });
+            adminStickerLibrary.forEach(function (lib) {
+                items.push({
+                    type: 'library',
+                    id: lib.id,
+                    code: lib.code || ('LIB-' + String(lib.id || 'NEW').replace(/[^a-zA-Z0-9]/g, '').slice(0, 5).toUpperCase()),
+                    name: lib.name || adminStickerNameFromUrl(lib.url),
+                    url: lib.url,
+                    baseCat: lib.category || 'python',
+                    category: lib.category || 'python',
+                    price: (lib.price === null || lib.price === undefined || lib.price === '') ? null : Number(lib.price),
+                    source: 'Custom Cloud',
+                    docId: lib.id
+                });
+            });
+            return items;
+        }
+
+        function renderAdminStickersTable() {
+            const tbody = document.getElementById('stickers-tbody');
+            if (!tbody) return;
+
+            const searchInput = document.getElementById('admin-sticker-search');
+            const query = (searchInput ? searchInput.value : '').trim().toLowerCase();
+            const filterSelect = document.getElementById('admin-sticker-cat-filter');
+            const catFilter = filterSelect ? filterSelect.value : 'all';
+            const hiddenSet = new Set(adminStickerHidden.map(function (h) { return h.url; }));
+
+            const allItems = adminStickerItems().map(function (item) {
+                item.isHidden = hiddenSet.has(item.url);
+                return item;
+            });
+            const visibleItems = allItems.filter(function (item) { return !item.isHidden; });
+            const hiddenItems = allItems.filter(function (item) {
+                if (!item.isHidden) return false;
+                const entry = adminStickerHidden.find(function (h) { return h.url === item.url; });
+                return !(entry && entry.permanent);
+            });
+
+            const filtered = visibleItems.filter(function (item) {
+                if (catFilter !== 'all' && item.category !== catFilter) return false;
+                if (query) {
+                    const haystack = [item.name, item.code, item.category, adminStickerCatLabel(item.category)]
+                        .join(' ').toLowerCase();
+                    if (haystack.indexOf(query) === -1) return false;
+                }
+                return true;
+            });
+
+            if (!filtered.length) {
+                tbody.innerHTML = '<tr><td colspan="6" class="studio-empty">' +
+                    '<i data-lucide="image-off"></i><br>' +
+                    (visibleItems.length ? 'No designs match this search or filter.' : 'No designs yet. Use “Add New Sticker”.') +
+                    '</td></tr>';
+            } else {
+                tbody.innerHTML = filtered.map(function (item) {
+                    const priceLabel = (item.price !== null && item.price !== undefined && item.price !== '')
+                        ? '<span class="studio-price-fixed">LKR ' + Number(item.price).toLocaleString() + '</span>'
+                        : '<span class="studio-price-size-based">Size-based</span>';
+
+                    const actionKey = item.type === 'library'
+                        ? adminEsc(item.docId)
+                        : adminEsc(encodeURIComponent(item.url));
+                    const priceAttr = (item.price !== null && item.price !== undefined && item.price !== '') ? Number(item.price) : '';
+
+                    return '<tr>' +
+                        '<td style="padding-left:20px;">' +
+                            '<div class="studio-thumb">' +
+                                '<img src="' + adminEsc(item.url) + '" alt="' + adminEsc(item.name) + '" loading="lazy" ' +
+                                    'onerror="this.style.display=\'none\'">' +
+                            '</div>' +
+                        '</td>' +
+                        '<td>' +
+                            '<div class="studio-design-name">' + adminEsc(item.name) + '</div>' +
+                            '<div class="studio-design-meta">' + adminEsc(item.code) +
+                                ' &bull; <a href="' + adminEsc(item.url) + '" target="_blank" rel="noopener">View PNG</a></div>' +
+                        '</td>' +
+                        '<td><span class="studio-cat-tag">' + adminEsc(adminStickerCatLabel(item.category)) + '</span></td>' +
+                        '<td>' + priceLabel + '</td>' +
+                        '<td><span class="studio-source' + (item.type === 'library' ? ' cloud' : '') + '">' +
+                            adminEsc(item.source) + '</span></td>' +
+                        '<td style="padding-right:20px;">' +
+                            '<div class="studio-row-actions">' +
+                                '<button type="button" class="btn-table ghost" title="Set a fixed price" ' +
+                                    'onclick="editAdminStickerPrice(\'' + item.type + '\', \'' + actionKey + '\', \'' + priceAttr + '\')">' +
+                                    '<i data-lucide="tag" style="width:12px;"></i> Price</button>' +
+                                '<button type="button" class="btn-table danger" title="Delete design" ' +
+                                    'onclick="deleteAdminSticker(\'' + item.type + '\', \'' + actionKey + '\', \'' + adminEsc(encodeURIComponent(item.name)) + '\')">' +
+                                    '<i data-lucide="trash-2" style="width:12px;"></i> Delete</button>' +
+                            '</div>' +
+                        '</td>' +
+                    '</tr>';
+                }).join('');
+            }
+
+            const hiddenPanel = document.getElementById('admin-hidden-stickers-panel');
+            const hiddenTbody = document.getElementById('admin-hidden-stickers-tbody');
+            const hiddenCount = document.getElementById('admin-hidden-count');
+            if (hiddenCount) {
+                hiddenCount.textContent = hiddenItems.length + (hiddenItems.length === 1 ? ' removed' : ' removed');
+            }
+            if (hiddenPanel && hiddenTbody) {
+                if (hiddenItems.length) {
+                    hiddenPanel.style.display = 'block';
+                    hiddenTbody.innerHTML = hiddenItems.map(function (h) {
+                        return '<tr>' +
+                            '<td style="padding-left:20px;">' +
+                                '<div class="studio-thumb">' +
+                                    '<img src="' + adminEsc(h.url) + '" alt="' + adminEsc(h.name) + '" loading="lazy" ' +
+                                        'onerror="this.style.display=\'none\'">' +
+                                '</div>' +
+                            '</td>' +
+                            '<td><div class="studio-design-name">' + adminEsc(h.name) + '</div></td>' +
+                            '<td><span class="studio-source' + (h.type === 'library' ? ' cloud' : '') + '">' +
+                                adminEsc(h.source || 'Built-in') + '</span></td>' +
+                            '<td><a class="studio-url" href="' + adminEsc(h.url) + '" target="_blank" rel="noopener">' +
+                                adminEsc(String(h.url).replace(/^https?:\/\//, '').slice(0, 46)) + '</a></td>' +
+                            '<td style="padding-right:20px;">' +
+                                '<div class="studio-row-actions">' +
+                                    '<button type="button" class="btn-table restore" ' +
+                                        'onclick="restoreAdminSticker(\'' + adminEsc(encodeURIComponent(h.url)) + '\')">' +
+                                        '<i data-lucide="rotate-ccw" style="width:12px;"></i> Restore</button>' +
+                                    '<button type="button" class="btn-table danger" title="Delete permanently" ' +
+                                        'onclick="permanentlyDeleteAdminSticker(\'' + adminEsc(encodeURIComponent(h.url)) + '\', \'' + adminEsc(encodeURIComponent(h.name || '')) + '\')">' +
+                                        '<i data-lucide="x" style="width:12px;"></i> Forever</button>' +
+                                '</div>' +
+                            '</td>' +
+                        '</tr>';
+                    }).join('');
+                } else {
+                    hiddenPanel.style.display = 'none';
+                    hiddenTbody.innerHTML = '';
+                }
+            }
+
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        // ── Add sticker modal ──
+        const ADMIN_MAX_BULK_STICKERS = 30;
+        let adminStickerMode = 'single';
+        let adminBulkObjectUrls = [];
+
+        function setAdminStickerMode(mode) {
+            adminStickerMode = mode === 'bulk' ? 'bulk' : 'single';
+            const singlePane = document.getElementById('admin-sticker-single-pane');
+            const bulkPane = document.getElementById('admin-sticker-bulk-pane');
+            const singleBtn = document.getElementById('mode-single-btn');
+            const bulkBtn = document.getElementById('mode-bulk-btn');
+            if (singlePane) singlePane.style.display = adminStickerMode === 'single' ? 'block' : 'none';
+            if (bulkPane) bulkPane.style.display = adminStickerMode === 'bulk' ? 'block' : 'none';
+            if (singleBtn) singleBtn.classList.toggle('is-active', adminStickerMode === 'single');
+            if (bulkBtn) bulkBtn.classList.toggle('is-active', adminStickerMode === 'bulk');
+            const nameInput = document.getElementById('form-sticker-name');
+            if (nameInput) nameInput.required = adminStickerMode === 'single';
+            updateAdminBulkCount();
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+        }
+
+        function resetAdminStickerForm() {
+            adminBulkObjectUrls.forEach(function (u) {
+                try { URL.revokeObjectURL(u); } catch (e) {}
+            });
+            adminBulkObjectUrls = [];
+
+            const name = document.getElementById('form-sticker-name');
+            const price = document.getElementById('form-sticker-price');
+            const url = document.getElementById('form-sticker-url');
+            const file = document.getElementById('form-sticker-file');
+            const bulkFiles = document.getElementById('bulk-sticker-files');
+            const bulkUrls = document.getElementById('bulk-sticker-urls');
+            const bulkPrefix = document.getElementById('bulk-sticker-prefix');
+            const bulkPrice = document.getElementById('bulk-sticker-price');
+            const bulkPreview = document.getElementById('bulk-sticker-preview-list');
+
+            if (name) name.value = '';
+            if (price) price.value = '';
+            if (url) url.value = '';
+            if (file) file.value = '';
+            if (bulkFiles) bulkFiles.value = '';
+            if (bulkUrls) bulkUrls.value = '';
+            if (bulkPrefix) bulkPrefix.value = '';
+            if (bulkPrice) bulkPrice.value = '';
+            if (bulkPreview) {
+                bulkPreview.innerHTML = '';
+                bulkPreview.style.display = 'none';
+            }
+
+            adminSetStickerPreview('');
+            adminSetBulkProgress(null);
+            setAdminStickerMode('single');
+            const btn = document.getElementById('btn-submit-sticker');
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = 'Save to Library';
+            }
+        }
+
+        function adminSetStickerPreview(url) {
+            const box = document.getElementById('admin-sticker-preview-box');
+            const img = document.getElementById('admin-sticker-preview-img');
+            const empty = document.getElementById('admin-sticker-preview-empty');
+            const spinner = document.getElementById('admin-sticker-upload-spinner');
+            if (spinner) spinner.style.display = 'none';
+            if (img) {
+                if (url) {
+                    img.src = url;
+                    img.style.display = 'block';
+                } else {
+                    img.removeAttribute('src');
+                    img.style.display = 'none';
+                }
+            }
+            if (empty) empty.style.display = url ? 'none' : 'block';
+            if (box) box.classList.toggle('has-image', !!url);
+        }
+
+        function openAddStickerModal() {
+            const modal = document.getElementById('add-sticker-modal');
+            if (!modal) return;
+            resetAdminStickerForm();
+            renderAdminCategories();
+            const catSelect = document.getElementById('form-sticker-cat');
+            if (catSelect && !catSelect.value) catSelect.value = 'python';
+            const bulkCatSelect = document.getElementById('bulk-sticker-cat');
+            if (bulkCatSelect && !bulkCatSelect.value) bulkCatSelect.value = 'python';
+            modal.classList.add('active', 'open');
+            modal.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+            if (typeof lucide !== 'undefined') lucide.createIcons();
+            setTimeout(function () {
+                const name = document.getElementById('form-sticker-name');
+                if (name) name.focus();
+            }, 80);
+        }
+
+        function closeAddStickerModal() {
+            const modal = document.getElementById('add-sticker-modal');
+            if (!modal) return;
+            modal.classList.remove('active', 'open');
+            modal.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        function onAdminStickerUrlInput(url) {
+            const trimmed = String(url || '').trim();
+            const nameInput = document.getElementById('form-sticker-name');
+            adminSetStickerPreview(trimmed);
+            if (trimmed && nameInput && !nameInput.value.trim()) {
+                nameInput.value = adminStickerNameFromUrl(trimmed);
+            }
+        }
+
+        async function handleAdminStickerFileUpload(input) {
+            const file = input && input.files && input.files[0];
+            if (!file) return;
+            if (!file.type || file.type.indexOf('image/') !== 0) {
+                adminNotify('Please choose an image file.', true);
+                input.value = '';
+                return;
+            }
+
+            const spinner = document.getElementById('admin-sticker-upload-spinner');
+            const empty = document.getElementById('admin-sticker-preview-empty');
+            if (spinner) spinner.style.display = 'flex';
+            if (empty) empty.style.display = 'none';
+
+            try {
+                const uploadedUrl = await uploadImageToImgBB(file);
+                const urlInput = document.getElementById('form-sticker-url');
+                const nameInput = document.getElementById('form-sticker-name');
+                if (urlInput) urlInput.value = uploadedUrl;
+                adminSetStickerPreview(uploadedUrl);
+                if (nameInput && !nameInput.value.trim()) {
+                    nameInput.value = file.name.replace(/\.[a-z0-9]+$/i, '').replace(/[-_]+/g, ' ');
+                }
+                adminNotify('✓ Artwork uploaded to ImgBB.');
+            } catch (err) {
+                console.warn('ImgBB sticker upload error:', err);
+                adminNotify('ImgBB upload failed: ' + (err.message || 'Error'), true);
+                adminSetStickerPreview('');
+            } finally {
+                if (spinner) spinner.style.display = 'none';
+                input.value = '';
+            }
+        }
+
+        // ── Bulk add helpers ──
+        function adminBulkSelectedFiles() {
+            const input = document.getElementById('bulk-sticker-files');
+            if (!input || !input.files) return [];
+            return Array.prototype.slice.call(input.files);
+        }
+
+        function adminBulkUrlEntries() {
+            const area = document.getElementById('bulk-sticker-urls');
+            if (!area) return [];
+            return String(area.value || '').split(/\r?\n/).map(function (line) {
+                return line.trim();
+            }).filter(Boolean).map(function (line) {
+                const idx = line.indexOf('|');
+                if (idx === -1) return { name: '', url: line };
+                return { name: line.slice(0, idx).trim(), url: line.slice(idx + 1).trim() };
+            }).filter(function (entry) { return !!entry.url; });
+        }
+
+        function updateAdminBulkCount() {
+            const countEl = document.getElementById('bulk-sticker-count');
+            const btn = document.getElementById('btn-submit-sticker');
+            if (adminStickerMode !== 'bulk') {
+                if (btn && !btn.disabled) btn.textContent = 'Save to Library';
+                return;
+            }
+
+            const files = adminBulkSelectedFiles().length;
+            const urls = adminBulkUrlEntries().length;
+            const total = files + urls;
+
+            if (countEl) {
+                const parts = [total + ' / ' + ADMIN_MAX_BULK_STICKERS + ' selected'];
+                if (files) parts.push(files + ' image' + (files === 1 ? '' : 's'));
+                if (urls) parts.push(urls + ' URL' + (urls === 1 ? '' : 's'));
+                countEl.textContent = parts.join(' · ');
+                countEl.classList.toggle('is-over', total > ADMIN_MAX_BULK_STICKERS);
+            }
+
+            if (btn && !btn.disabled) {
+                btn.textContent = total > 1
+                    ? 'Add ' + Math.min(total, ADMIN_MAX_BULK_STICKERS) + ' Stickers'
+                    : 'Save to Library';
+            }
+        }
+
+        function renderAdminBulkPreview() {
+            const wrap = document.getElementById('bulk-sticker-preview-list');
+            if (!wrap) return;
+            adminBulkObjectUrls.forEach(function (u) {
+                try { URL.revokeObjectURL(u); } catch (e) {}
+            });
+            adminBulkObjectUrls = [];
+
+            const files = adminBulkSelectedFiles();
+            wrap.innerHTML = '';
+            if (!files.length) {
+                wrap.style.display = 'none';
+                return;
+            }
+
+            wrap.style.display = 'flex';
+            files.slice(0, 10).forEach(function (file) {
+                try {
+                    const objectUrl = URL.createObjectURL(file);
+                    adminBulkObjectUrls.push(objectUrl);
+                    const img = document.createElement('img');
+                    img.src = objectUrl;
+                    img.alt = file.name;
+                    img.title = file.name;
+                    wrap.appendChild(img);
+                } catch (e) {}
+            });
+
+            if (files.length > 10) {
+                const more = document.createElement('span');
+                more.className = 'more';
+                more.textContent = '+' + (files.length - 10);
+                wrap.appendChild(more);
+            }
+        }
+
+        function handleAdminBulkFileChange(input) {
+            let files = input && input.files ? Array.prototype.slice.call(input.files) : [];
+            const urlCount = adminBulkUrlEntries().length;
+
+            if (files.length + urlCount > ADMIN_MAX_BULK_STICKERS) {
+                const room = Math.max(0, ADMIN_MAX_BULK_STICKERS - urlCount);
+                if (room <= 0) {
+                    input.value = '';
+                    adminNotify('Maximum ' + ADMIN_MAX_BULK_STICKERS + ' stickers at once. Remove some URLs first.', true);
+                    files = [];
+                } else {
+                    adminNotify('Maximum ' + ADMIN_MAX_BULK_STICKERS + ' at once — only the first ' + room +
+                        ' image' + (room === 1 ? '' : 's') + ' kept.', true);
+                    try {
+                        const dt = new DataTransfer();
+                        files.slice(0, room).forEach(function (f) { dt.items.add(f); });
+                        input.files = dt.files;
+                        files = files.slice(0, room);
+                    } catch (e) {
+                        input.value = '';
+                        files = [];
+                    }
+                }
+            }
+
+            renderAdminBulkPreview();
+            updateAdminBulkCount();
+        }
+
+        function adminSetBulkProgress(percent, text) {
+            const wrap = document.getElementById('bulk-sticker-progress');
+            const bar = document.getElementById('bulk-sticker-bar');
+            const label = document.getElementById('bulk-sticker-progress-text');
+            if (!wrap) return;
+
+            if (percent === null || percent === undefined) {
+                wrap.style.display = 'none';
+                if (bar) bar.style.width = '0%';
+                if (label) label.textContent = '';
+                return;
+            }
+
+            wrap.style.display = 'block';
+            if (bar) bar.style.width = Math.max(0, Math.min(100, percent)) + '%';
+            if (label) label.textContent = text || '';
+        }
+
+        function adminBulkFileBaseName(file) {
+            const raw = (file && file.name ? file.name : 'Sticker')
+                .replace(/\.[a-z0-9]+$/i, '')
+                .replace(/[-_]+/g, ' ')
+                .trim();
+            return raw || 'Sticker';
+        }
+
+        function adminUniqueStickerCode(used) {
+            let code = '';
+            for (let i = 0; i < 60; i++) {
+                code = 'STK-' + Date.now().toString(36).toUpperCase().slice(-4) + '-' +
+                    Math.random().toString(36).slice(2, 5).toUpperCase();
+                if (!used.has(code)) break;
+            }
+            used.add(code);
+            return code;
+        }
+
+        async function submitAdminStickerBulk() {
+            const btn = document.getElementById('btn-submit-sticker');
+            const catSelect = document.getElementById('bulk-sticker-cat');
+            const priceInput = document.getElementById('bulk-sticker-price');
+            const prefixInput = document.getElementById('bulk-sticker-prefix');
+
+            const category = (catSelect && catSelect.value) || 'python';
+            const rawPrice = priceInput ? priceInput.value.trim() : '';
+            const price = rawPrice === '' ? null : Number(rawPrice);
+
+            if (price !== null && (!isFinite(price) || price < 0)) {
+                adminNotify('Enter a valid fixed price or leave it blank.', true);
+                if (priceInput) priceInput.focus();
+                return;
+            }
+
+            const files = adminBulkSelectedFiles();
+            const urlEntries = adminBulkUrlEntries();
+
+            if (!files.length && !urlEntries.length) {
+                adminNotify('Select images or paste image URLs first.', true);
+                return;
+            }
+            if (files.length + urlEntries.length > ADMIN_MAX_BULK_STICKERS) {
+                adminNotify('Maximum ' + ADMIN_MAX_BULK_STICKERS + ' stickers at once. Remove ' +
+                    (files.length + urlEntries.length - ADMIN_MAX_BULK_STICKERS) + '.', true);
+                return;
+            }
+
+            const badFiles = files.filter(function (f) { return !f.type || f.type.indexOf('image/') !== 0; });
+            if (badFiles.length) {
+                adminNotify('Only image files are allowed: ' + badFiles.slice(0, 3).map(function (f) { return f.name; }).join(', '), true);
+                return;
+            }
+
+            const tooBig = files.filter(function (f) { return f.size > MAX_IMAGE_UPLOAD_MB * 1024 * 1024; });
+            if (tooBig.length) {
+                adminNotify('These images are over ' + MAX_IMAGE_UPLOAD_MB + 'MB: ' +
+                    tooBig.slice(0, 3).map(function (f) { return f.name; }).join(', '), true);
+                return;
+            }
+
+            const validUrls = [];
+            const invalidUrls = [];
+            urlEntries.forEach(function (entry) {
+                if (/^(https?:\/\/|data:image\/)/i.test(entry.url)) validUrls.push(entry);
+                else invalidUrls.push(entry.url);
+            });
+            if (invalidUrls.length) {
+                adminNotify('Invalid image URL' + (invalidUrls.length === 1 ? '' : 's') + ': ' +
+                    invalidUrls.slice(0, 2).join(', ') + (invalidUrls.length > 2 ? '…' : ''), true);
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Uploading…';
+            }
+            adminSetBulkProgress(2, 'Preparing ' + (files.length + validUrls.length) + ' stickers…');
+
+            const entries = [];
+            const failures = [];
+
+            for (let i = 0; i < files.length; i++) {
+                adminSetBulkProgress(
+                    Math.max(2, Math.round((i / Math.max(1, files.length)) * 68)),
+                    'Uploading image ' + (i + 1) + ' / ' + files.length + ' to ImgBB…'
+                );
+                try {
+                    const uploadedUrl = await uploadImageToImgBB(files[i]);
+                    entries.push({ url: uploadedUrl, name: adminBulkFileBaseName(files[i]) });
+                } catch (err) {
+                    console.warn('Bulk upload error:', err);
+                    failures.push(adminBulkFileBaseName(files[i]) + ': ' + (err.message || 'upload failed'));
+                }
+            }
+
+            validUrls.forEach(function (entry) {
+                entries.push({
+                    url: entry.url,
+                    name: entry.name || adminStickerNameFromUrl(entry.url)
+                });
+            });
+
+            const prefix = prefixInput ? prefixInput.value.trim() : '';
+            const usedCodes = new Set();
+            adminStickerLibrary.forEach(function (d) { if (d.code) usedCodes.add(d.code); });
+            adminStickerItems().forEach(function (d) { if (d.code) usedCodes.add(d.code); });
+            const usedNames = new Set(adminStickerLibrary.map(function (d) { return d.name; }));
+            const seenUrls = new Set(
+                adminStickerLibrary.map(function (d) { return d.url; })
+                    .concat(BUILTIN_STUDIO_DESIGNS.map(function (d) { return d.url; }))
+            );
+
+            const database = adminDb();
+            let saved = 0;
+            let localOnly = 0;
+
+            for (let i = 0; i < entries.length; i++) {
+                const entry = entries[i];
+                adminSetBulkProgress(
+                    70 + Math.round((i / Math.max(1, entries.length)) * 30),
+                    'Saving ' + (i + 1) + ' / ' + entries.length + '…'
+                );
+
+                if (seenUrls.has(entry.url)) {
+                    failures.push((entry.name || 'Sticker') + ': already in the library');
+                    continue;
+                }
+                seenUrls.add(entry.url);
+
+                let baseName = String(entry.name || adminStickerNameFromUrl(entry.url)).trim() || 'Sticker';
+                if (prefix) baseName = prefix + ' ' + baseName;
+                let finalName = baseName;
+                let suffix = 2;
+                while (usedNames.has(finalName)) {
+                    finalName = baseName + ' ' + suffix;
+                    suffix++;
+                }
+                usedNames.add(finalName);
+
+                const code = adminUniqueStickerCode(usedCodes);
+                const payload = {
+                    name: finalName,
+                    code: code,
+                    category: category,
+                    url: entry.url,
+                    price: price,
+                    createdAt: adminTimestamp()
+                };
+
+                let docId = 'lib_' + Date.now() + '_' + i + '_' + Math.random().toString(36).slice(2, 6);
+                let synced = false;
+
+                if (database) {
+                    try {
+                        const docRef = await database.collection('stickerLibrary').add(payload);
+                        if (docRef && docRef.id) docId = docRef.id;
+                        synced = true;
+                    } catch (err) {
+                        console.warn('Bulk sticker save error:', err);
+                    }
+                }
+
+                adminStickerLibrary.push({
+                    id: docId,
+                    code: code,
+                    name: finalName,
+                    category: category,
+                    url: entry.url,
+                    price: price,
+                    createdAt: Date.now()
+                });
+                saved++;
+                if (!synced) localOnly++;
+            }
+
+            saveAdminStickerCache();
+            renderAllStickerAdminUI();
+            adminSetBulkProgress(100, 'Finished');
+
+            if (btn) btn.disabled = false;
+
+            if (!saved) {
+                if (btn) btn.textContent = 'Save to Library';
+                adminNotify('No stickers were added. ' + (failures[0] || 'Check the images and try again.'), true);
+                return;
+            }
+
+            closeAddStickerModal();
+
+            const parts = ['✓ ' + saved + ' sticker' + (saved === 1 ? '' : 's') + ' added to ' +
+                adminStickerCatLabel(category)];
+            if (localOnly) parts.push(localOnly + ' saved on this device only (database sync failed)');
+            if (failures.length) parts.push(failures.length + ' skipped: ' + failures.slice(0, 2).join('; '));
+            adminNotify(parts.join(' · '), !!(failures.length || localOnly));
+        }
+
+        async function handleAdminStickerSubmit(e) {
+            e.preventDefault();
+            if (adminStickerMode === 'bulk') return submitAdminStickerBulk();
+
+            const btn = document.getElementById('btn-submit-sticker');
+            const nameInput = document.getElementById('form-sticker-name');
+            const catSelect = document.getElementById('form-sticker-cat');
+            const priceInput = document.getElementById('form-sticker-price');
+            const urlInput = document.getElementById('form-sticker-url');
+
+            const name = (nameInput ? nameInput.value : '').trim();
+            const category = (catSelect && catSelect.value) || 'python';
+            const url = (urlInput ? urlInput.value : '').trim();
+            const rawPrice = priceInput ? priceInput.value.trim() : '';
+            const price = rawPrice === '' ? null : Number(rawPrice);
+
+            if (!name) {
+                adminNotify('Please enter a sticker title.', true);
+                if (nameInput) nameInput.focus();
+                return;
+            }
+            if (!/^(https?:\/\/|data:image\/)/i.test(url)) {
+                adminNotify('Upload an image or paste a valid image URL.', true);
+                if (urlInput) urlInput.focus();
+                return;
+            }
+            if (price !== null && (!isFinite(price) || price < 0)) {
+                adminNotify('Enter a valid fixed price or leave it blank.', true);
+                return;
+            }
+            if (adminStickerLibrary.some(function (d) { return d.url === url; }) ||
+                BUILTIN_STUDIO_DESIGNS.some(function (d) { return d.url === url; })) {
+                adminNotify('That artwork is already in the library.', true);
+                return;
+            }
+
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = 'Saving...';
+            }
+
+            const usedCodes = new Set();
+            adminStickerLibrary.forEach(function (d) { if (d.code) usedCodes.add(d.code); });
+            adminStickerItems().forEach(function (d) { if (d.code) usedCodes.add(d.code); });
+            const code = adminUniqueStickerCode(usedCodes);
+
+            let docId = 'lib_' + Date.now();
+            let synced = false;
+            const database = adminDb();
+            const payload = {
+                name: name,
+                code: code,
+                category: category,
+                url: url,
+                price: price,
+                createdAt: adminTimestamp()
+            };
+
+            if (database) {
+                try {
+                    const docRef = await database.collection('stickerLibrary').add(payload);
+                    if (docRef && docRef.id) docId = docRef.id;
+                    synced = true;
+                } catch (err) {
+                    console.warn('Sticker save warning:', err);
+                }
+            }
+
+            adminStickerLibrary.push({
+                id: docId,
+                code: code,
+                name: name,
+                category: category,
+                url: url,
+                price: price,
+                createdAt: Date.now()
+            });
+            saveAdminStickerCache();
+            renderAllStickerAdminUI();
+            closeAddStickerModal();
+
+            if (synced) adminNotify('✓ "' + name + '" added to the sticker library.');
+            else adminNotify('"' + name + '" added on this device — database sync failed.', true);
+
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = 'Save to Library';
+            }
+        }
+
+        // ── Per-design price ──
+        async function editAdminStickerPrice(type, key, currentValue) {
+            const label = type === 'library' ? 'this custom design' : 'this built-in design';
+            const answer = prompt('Fixed price in LKR for ' + label +
+                '\n\nLeave blank to use the print-size price.', currentValue === '' ? '' : currentValue);
+            if (answer === null) return;
+
+            const raw = String(answer).trim();
+            const price = raw === '' ? null : Math.round(Number(raw));
+            if (price !== null && (!isFinite(price) || price < 0)) {
+                adminNotify('Enter a valid price (0 or more).', true);
+                return;
+            }
+
+            try {
+                let synced = true;
+                if (type === 'library') {
+                    const item = adminStickerLibrary.find(function (d) { return d.id === key; });
+                    if (!item) { adminNotify('Design not found. Refresh and try again.', true); return; }
+                    item.price = price;
+                    const database = adminDb();
+                    if (database && key) {
+                        try {
+                            await database.collection('stickerLibrary').doc(key).set({ price: price }, { merge: true });
+                        } catch (e) { synced = false; console.warn('Design price sync:', e); }
+                    } else {
+                        synced = false;
+                    }
+                } else {
+                    const url = decodeURIComponent(key);
+                    if (price === null) delete adminStickerDesignPrices[url];
+                    else adminStickerDesignPrices[url] = price;
+                    synced = await syncStickerSettingsDoc();
+                }
+
+                saveAdminStickerCache();
+                renderAdminStickersTable();
+                adminNotify(synced
+                    ? (price === null ? 'Price reset to the print-size price.' : 'Fixed price saved: LKR ' + price.toLocaleString())
+                    : 'Price saved on this device — database sync failed.', !synced);
+            } catch (err) {
+                console.warn('editAdminStickerPrice error:', err);
+                adminNotify('Could not save the price: ' + (err.message || 'Error'), true);
+            }
+        }
+
+        // ── Delete / restore ──
+        async function deleteAdminSticker(type, key, rawName) {
+            const displayName = rawName ? decodeURIComponent(rawName) : 'this design';
+            const database = adminDb();
+
+            if (type === 'library') {
+                if (!confirm('Permanently delete "' + displayName + '"?\n\n' +
+                    'It is removed from the sticker library and cannot be restored.')) return;
+
+                try {
+                    const item = adminStickerLibrary.find(function (d) { return d.id === key; });
+                    if (database && key) {
+                        await database.collection('stickerLibrary').doc(key).delete();
+                    }
+                    if (item && item.url) {
+                        adminStickerHidden = adminStickerHidden.filter(function (h) { return h.url !== item.url; });
+                        delete adminStickerDesignPrices[item.url];
+                        delete adminStickerCategoryOverrides[item.url];
+                    }
+                    adminStickerLibrary = adminStickerLibrary.filter(function (d) { return d.id !== key; });
+                    saveAdminStickerCache();
+                    await syncStickerSettingsDoc();
+                    renderAllStickerAdminUI();
+                    adminNotify('✓ "' + displayName + '" was permanently deleted.');
+                } catch (err) {
+                    console.warn('deleteAdminSticker error:', err);
+                    adminNotify('Could not delete the design: ' + (err.message || 'Error'), true);
+                }
+                return;
+            }
+
+            if (!confirm('Delete "' + displayName + '" from the studio?\n\n' +
+                'It disappears from the Customize page on every device. You can restore it or delete it forever from "Deleted Designs".')) return;
+
+            const targetUrl = decodeURIComponent(key);
+            if (!adminStickerHidden.some(function (h) { return h.url === targetUrl; })) {
+                adminStickerHidden.push({
+                    url: targetUrl,
+                    name: displayName,
+                    type: 'builtin',
+                    source: 'Built-in',
+                    hiddenAt: Date.now(),
+                    permanent: false
+                });
+            }
+            saveAdminStickerCache();
+            const synced = await syncStickerSettingsDoc();
+            renderAllStickerAdminUI();
+            adminNotify(synced
+                ? '"' + displayName + '" removed from the studio.'
+                : '"' + displayName + '" removed on this device — database sync failed.', !synced);
+        }
+
+        async function restoreAdminSticker(encodedUrl) {
+            const url = decodeURIComponent(encodedUrl);
+            const entry = adminStickerHidden.find(function (h) { return h.url === url; });
+            if (entry && entry.permanent) {
+                adminNotify('This design was permanently deleted and cannot be restored.', true);
+                return;
+            }
+            adminStickerHidden = adminStickerHidden.filter(function (h) { return h.url !== url; });
+            saveAdminStickerCache();
+            const synced = await syncStickerSettingsDoc();
+            renderAllStickerAdminUI();
+            adminNotify(synced ? '✓ Design restored to the studio.' : 'Restored on this device — database sync failed.', !synced);
+        }
+
+        async function permanentlyDeleteAdminSticker(encodedUrl, rawName) {
+            const url = decodeURIComponent(encodedUrl);
+            const name = rawName ? decodeURIComponent(rawName) : 'this design';
+            if (!confirm('Delete "' + name + '" forever?\n\n' +
+                'It will never appear in the Customize Studio again. This cannot be undone.')) return;
+
+            adminStickerHidden = adminStickerHidden.map(function (h) {
+                if (h.url !== url) return h;
+                return Object.assign({}, h, { permanent: true, deletedAt: Date.now() });
+            });
+            saveAdminStickerCache();
+            const synced = await syncStickerSettingsDoc();
+            renderAllStickerAdminUI();
+            adminNotify(synced ? '✓ Deleted permanently.' : 'Deleted on this device — database sync failed.', !synced);
+        }
+
+        // ── Modal interactions ──
+        (function initAdminStickerModal() {
+            const modal = document.getElementById('add-sticker-modal');
+            if (modal) {
+                modal.addEventListener('click', function (e) {
+                    if (e.target === modal) closeAddStickerModal();
+                });
+            }
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') closeAddStickerModal();
+            });
+        })();
     </script>
 </body>
 </html>
