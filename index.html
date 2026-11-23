@@ -570,6 +570,55 @@
       flex-wrap: wrap;
       margin-bottom: 36px;
     }
+    .btn-hero-main-site {
+      background: linear-gradient(135deg, #8B0000 0%, #5E0000 100%);
+      color: #FFFFFF !important;
+      font-family: 'Anta', sans-serif !important;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 15px 32px;
+      border-radius: 6px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      border: 1px solid #8B0000;
+      box-shadow: 0 4px 18px rgba(139, 0, 0, 0.35);
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .btn-hero-main-site::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -60%;
+      width: 40%;
+      height: 200%;
+      background: linear-gradient(to right, rgba(255, 255, 255, 0) 0%, rgba(255, 255, 255, 0.28) 50%, rgba(255, 255, 255, 0) 100%);
+      transform: rotate(25deg);
+      transition: all 0.65s ease;
+    }
+    .btn-hero-main-site:hover::after {
+      left: 130%;
+    }
+    .btn-hero-main-site:hover {
+      background: linear-gradient(135deg, #A50000 0%, #750000 100%);
+      border-color: #A50000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(139, 0, 0, 0.55);
+      color: #FFFFFF !important;
+    }
+    .btn-hero-main-site i {
+      transition: transform 0.25s ease;
+    }
+    .btn-hero-main-site:hover i[data-lucide="external-link"] {
+      transform: translate(2px, -2px);
+    }
     .btn-hero-primary {
       background: var(--text-black);
       color: #FFFFFF !important;
@@ -1410,7 +1459,7 @@
         width: 100% !important;
         margin-bottom: 22px !important;
       }
-      .btn-hero-primary, .btn-hero-outline {
+      .btn-hero-primary, .btn-hero-outline, .btn-hero-main-site {
         width: 100% !important;
         justify-content: center !important;
         padding: 13px 20px !important;
@@ -2011,6 +2060,11 @@
 
           <!-- Action Buttons -->
           <div class="hero-cta-group">
+            <a href="https://onijawathsuka39-arch.github.io/Roohira-Online-Clothing-/" target="_blank" rel="noopener noreferrer" class="btn-hero-main-site">
+              <i data-lucide="globe" style="width: 16px; height: 16px;"></i>
+              <span>VISIT OUR MAIN SITE</span>
+              <i data-lucide="external-link" style="width: 14px; height: 14px; opacity: 0.85;"></i>
+            </a>
             <a href="#new-drop" class="btn-hero-primary">
               <i data-lucide="arrow-down" style="width: 16px;"></i> SHOP NEW DROP
             </a>
