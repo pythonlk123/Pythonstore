@@ -2165,6 +2165,57 @@
       </div>
     </section>
 
+    <!-- ================================================================
+         BLACK FRIDAY COUNTDOWN SHOWCASE SECTION
+         ================================================================ -->
+    <section class="bf-home-section" id="black-friday-home-section" aria-label="Black Friday Sale Countdown">
+      <div class="bf-home-banner">
+        <div class="bf-home-left">
+          <div class="bf-status-pill" id="bf-home-status-pill">
+            <span class="bf-live-dot"></span> BLACK FRIDAY EVENT • LIVE NOW
+          </div>
+          <h2 class="bf-home-title">BLACK FRIDAY <span>ARCHIVE DROP</span></h2>
+          <p class="bf-home-sub">
+            Exclusive limited-time price drops on selected heavyweight pieces. Discounts deactivate and regular prices automatically restore when the timer hits zero.
+          </p>
+          <div class="bf-home-actions">
+            <button type="button" class="bf-cta-btn" onclick="activateHomeBlackFridayDeals()">
+              <i data-lucide="flame" style="width: 15px; height: 15px;"></i> SHOP BLACK FRIDAY DEALS
+            </button>
+            <a href="shop.html?filter=blackfriday" class="bf-cta-secondary">
+              VIEW ALL IN SHOP <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="bf-home-right">
+          <span class="bf-timer-caption">OFFER ENDS IN</span>
+          <div id="bf-home-timer-row">
+            <div class="bf-timer-grid">
+              <div class="bf-time-box">
+                <span class="bf-time-val" id="bf-days">00</span>
+                <span class="bf-time-lbl">Days</span>
+              </div>
+              <span class="bf-time-sep">:</span>
+              <div class="bf-time-box">
+                <span class="bf-time-val" id="bf-hours">00</span>
+                <span class="bf-time-lbl">Hours</span>
+              </div>
+              <span class="bf-time-sep">:</span>
+              <div class="bf-time-box">
+                <span class="bf-time-val" id="bf-mins">00</span>
+                <span class="bf-time-lbl">Mins</span>
+              </div>
+              <span class="bf-time-sep">:</span>
+              <div class="bf-time-box">
+                <span class="bf-time-val" id="bf-secs">00</span>
+                <span class="bf-time-lbl">Secs</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ================================================================
          2. LIVE THE NEW DROP SECTION (Real-Time Database Driven)
@@ -2193,6 +2244,9 @@
         </button>
         <button type="button" class="home-drop-pill" data-home-filter="LIMITED" onclick="setHomeFilter(this)">
           <span class="hdp-dot"></span> LIMITED
+        </button>
+        <button type="button" class="home-drop-pill" data-home-filter="BLACK FRIDAY" onclick="setHomeFilter(this)">
+          <span class="hdp-dot"></span> BLACK FRIDAY
         </button>
       </div>
 
@@ -2378,6 +2432,20 @@
       renderHomeProducts();
     }
 
+    function activateHomeBlackFridayDeals() {
+      const bfBtn = document.querySelector('.home-drop-pill[data-home-filter="BLACK FRIDAY"]');
+      if (bfBtn) {
+        document.querySelectorAll('.home-drop-pill').forEach(b => b.classList.remove('active'));
+        bfBtn.classList.add('active');
+        homeProductFilter = 'BLACK FRIDAY';
+        renderHomeProducts();
+      }
+      const dropSection = document.getElementById('new-drop');
+      if (dropSection) {
+        dropSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
     // Renders the Homepage dynamic New Drop grid from the active products
     function renderHomeProducts() {
       const grid = document.getElementById('new-drop-grid');
@@ -2406,11 +2474,13 @@
         return;
       }
 
-      // Apply the selected quick filter (badge based)
+      // Apply the selected quick filter (badge based or Black Friday deals)
       const normalizeBadge = (v) => String(v || '').toUpperCase().replace(/[^A-Z]/g, '');
       const filteredHome = homeProductFilter === 'all'
         ? homeVisible
-        : homeVisible.filter(p => normalizeBadge(p.badge) === normalizeBadge(homeProductFilter));
+        : (normalizeBadge(homeProductFilter) === 'BLACKFRIDAY'
+            ? homeVisible.filter(p => (typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(p)))
+            : homeVisible.filter(p => normalizeBadge(p.badge) === normalizeBadge(homeProductFilter)));
 
       if (filteredHome.length === 0) {
         grid.innerHTML = `
@@ -2436,10 +2506,17 @@
         const colours = getProductColors(p);
         const wished = typeof isInWishlist === 'function' ? isInWishlist(p.id) : false;
         const stockOut = p.stock === 0 || p.stockStatus === 'out_of_stock';
+        const isBFLive = typeof isProductBlackFridayDeal === 'function' && isProductBlackFridayDeal(p);
+        const isBFTeaser = typeof isBlackFridayTeaser === 'function' && isBlackFridayTeaser() && typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(p);
+        const bfDiscountPct = (isBFLive && displayOldPrice > displayPrice)
+          ? Math.round(((displayOldPrice - displayPrice) / displayOldPrice) * 100)
+          : 0;
 
         return `
           <div class="fashion-card home-product-card" onclick="window.location.href='product-detail.html?id=${p.id}'">
             <div class="card-thumb-wrap">
+              ${isBFLive ? `<span class="home-bf-badge">BLACK FRIDAY${bfDiscountPct > 0 ? ` • -${bfDiscountPct}%` : ''}</span>` : ''}
+              ${isBFTeaser ? `<span class="home-bf-badge card-bf-teaser-badge" style="opacity:0.68;" title="Special price unlocks Friday, Nov 27">🔒 NOV 27: Rs. ${Number(p.blackFridayPrice).toLocaleString()}</span>` : ''}
               ${p.badge ? `<span class="card-badge">${escapeProductHtml(p.badge)}</span>` : ''}
               <button class="card-wish-btn" onclick="event.stopPropagation(); handleCardWishlistToggle('${p.id}', this)" title="Wishlist">
                 <i data-lucide="heart" style="width: 16px; height: 16px; ${wished ? 'color: var(--dark-red); fill: var(--dark-red);' : 'color: #0A0A0A;'}"></i>
@@ -2471,6 +2548,7 @@
                 <div class="card-price-line">
                   <span class="card-price-current">Rs. ${Number(displayPrice).toLocaleString()}</span>
                   ${displayOldPrice ? `<span class="card-price-old">Rs. ${Number(displayOldPrice).toLocaleString()}</span>` : ''}
+                  ${isBFTeaser ? `<div class="bf-card-price-preview">⚡ Friday: Rs. ${Number(p.blackFridayPrice).toLocaleString()}</div>` : ''}
                 </div>
                 <button class="card-add-btn" ${stockOut ? 'disabled' : ''} onclick="event.stopPropagation(); ${stockOut ? '' : `addCardToCart(event, '${p.id}')`}" title="${stockOut ? 'Out of stock' : 'Quick Add'}">
                   <i data-lucide="shopping-bag" style="width: 15px; height: 15px;"></i>

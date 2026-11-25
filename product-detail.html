@@ -748,6 +748,13 @@
 
                 <h1 id="detail-name" style="font-size: clamp(2rem, 4.5vw, 3.2rem); font-weight: 900; line-height: 1.1; color: var(--text-main); margin-bottom: 14px;">Product Name</h1>
                 
+                <!-- Black Friday Deal Banner (live or teaser) -->
+                <div id="bf-detail-badge-wrap" style="display: none; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; padding: 8px 14px; border-radius: 10px; background: linear-gradient(135deg, #0A0A0C 0%, #8B0000 100%); color: #FBBF24; border: 1px solid rgba(251, 191, 36, 0.45); width: fit-content; transition: opacity 0.3s ease;">
+                    <span id="bf-detail-deal-label" style="font-family: 'Anta', sans-serif; font-size: 0.72rem; font-weight: 900; letter-spacing: 1px;">BLACK FRIDAY DEAL</span>
+                    <span style="font-family: 'JetBrains Mono', monospace; font-size: 0.72rem; font-weight: 700; color: #FFFFFF; background: rgba(255,255,255,0.12); padding: 2px 8px; border-radius: 999px;"><span id="bf-detail-countdown-text">--:--:--</span></span>
+                </div>
+                <div id="bf-detail-teaser-hint" style="display: none; font-size: 0.78rem; color: #B91C1C; margin-bottom: 8px; font-weight: 700; opacity: 0.85;"></div>
+
                 <!-- Price Display -->
                 <div class="detail-price-wrapper" style="display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;">
                     <p id="detail-price" style="font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900; color: var(--dark-red); margin: 0; letter-spacing: -1px;">Rs. 0.00</p>
@@ -1466,6 +1473,46 @@
         }
 
         function updatePriceDisplay() {
+            if (product) {
+                const sizeData = (product.sizes && selectedSize) ? product.sizes[selectedSize] : null;
+                const regularPrice = (sizeData && typeof sizeData === 'object' ? Number(sizeData.price) : 0) || Number(product.price) || 0;
+                const regularOldPrice = (sizeData && typeof sizeData === 'object' ? Number(sizeData.oldPrice) : 0) || Number(product.oldPrice) || 0;
+                const isBFLive = typeof isProductBlackFridayDeal === 'function' && isProductBlackFridayDeal(product);
+                const isBFTeaser = typeof isBlackFridayTeaser === 'function' && isBlackFridayTeaser() && typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(product);
+
+                if (isBFLive) {
+                    currentPrice = Number(product.blackFridayPrice);
+                    currentOldPrice = regularPrice > currentPrice ? regularPrice : regularOldPrice;
+                } else {
+                    currentPrice = regularPrice;
+                    currentOldPrice = regularOldPrice;
+                }
+
+                const bfWrap = document.getElementById('bf-detail-badge-wrap');
+                const bfLabel = document.getElementById('bf-detail-deal-label');
+                const teaserHint = document.getElementById('bf-detail-teaser-hint');
+
+                if (bfWrap) {
+                    if (isBFLive) {
+                        bfWrap.style.display = 'inline-flex';
+                        bfWrap.style.opacity = '1';
+                        if (bfLabel) bfLabel.textContent = 'BLACK FRIDAY DEAL';
+                        if (teaserHint) teaserHint.style.display = 'none';
+                    } else if (isBFTeaser) {
+                        bfWrap.style.display = 'inline-flex';
+                        bfWrap.style.opacity = '0.7';
+                        if (bfLabel) bfLabel.textContent = '🔒 BLACK FRIDAY PREVIEW';
+                        if (teaserHint) {
+                            teaserHint.style.display = 'block';
+                            teaserHint.innerHTML = `⚡ Drops to <strong>Rs. ${Number(product.blackFridayPrice).toLocaleString()}</strong> on Friday Nov 27! Current checkout applies standard price.`;
+                        }
+                    } else {
+                        bfWrap.style.display = 'none';
+                        if (teaserHint) teaserHint.style.display = 'none';
+                    }
+                }
+            }
+
             const priceEl = document.getElementById('detail-price');
             const oldPriceEl = document.getElementById('detail-old-price');
             if (priceEl) priceEl.innerText = `Rs. ${Number(currentPrice || 0).toLocaleString()}.00`;
@@ -1478,6 +1525,10 @@
                 }
             }
         }
+
+        window.addEventListener('black-friday-status-changed', () => {
+            updatePriceDisplay();
+        });
 
         function addCurrentToCart() {
             if (!product) return;

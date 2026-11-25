@@ -4,6 +4,239 @@
     document.documentElement.setAttribute('data-theme', savedTheme);
 })();
 
+// ============================================================================
+// 3-PHASE BLACK FRIDAY PROMOTION ENGINE
+// Phase 1 (Upcoming / Teaser): before startDate (2026-11-27T00:00:00+05:30)
+//   - Countdown counts down to START
+//   - Products show regular price + reduced opacity teaser badge & Friday price preview
+// Phase 2 (Live): between startDate and endDate (2026-11-28T00:00:00+05:30)
+//   - Countdown counts down to END
+//   - Black Friday discount price applies automatically
+//   - Full Black Friday discount badge
+// Phase 3 (Ended): after endDate
+//   - Automatically expires, reverts to standard catalog prices everywhere
+// ============================================================================
+
+const DEFAULT_BLACK_FRIDAY_CONFIG = {
+    enabled: true,
+    startDate: '2026-11-27T00:00:00+05:30',
+    endDate: '2026-11-28T00:00:00+05:30'
+};
+
+function getBlackFridayConfig() {
+    try {
+        const saved = localStorage.getItem('python_bf_config');
+        if (saved) {
+            const parsed = JSON.parse(saved);
+            return {
+                enabled: parsed.enabled !== undefined ? parsed.enabled : DEFAULT_BLACK_FRIDAY_CONFIG.enabled,
+                startDate: parsed.startDate || DEFAULT_BLACK_FRIDAY_CONFIG.startDate,
+                endDate: parsed.endDate || DEFAULT_BLACK_FRIDAY_CONFIG.endDate
+            };
+        }
+    } catch (e) {
+        console.warn('Could not read BF config:', e);
+    }
+    return DEFAULT_BLACK_FRIDAY_CONFIG;
+}
+
+function getBlackFridayPhase() {
+    const config = getBlackFridayConfig();
+    if (!config.enabled) return 'ended';
+
+    const now = Date.now();
+    const startMs = new Date(config.startDate).getTime();
+    const endMs = new Date(config.endDate).getTime();
+
+    if (isNaN(startMs) || isNaN(endMs)) return 'ended';
+
+    if (now < startMs) {
+        return 'upcoming';
+    } else if (now >= startMs && now < endMs) {
+        return 'live';
+    } else {
+        return 'ended';
+    }
+}
+
+function isBlackFridayActive() {
+    return getBlackFridayPhase() === 'live';
+}
+
+function isBlackFridayTeaser() {
+    return getBlackFridayPhase() === 'upcoming';
+}
+
+function hasBlackFridayDeal(product) {
+    if (!product) return false;
+    if (product.isBlackFriday !== true && product.isBlackFriday !== 'true') return false;
+    const price = Number(product.blackFridayPrice);
+    return !isNaN(price) && price > 0;
+}
+
+function isProductBlackFridayDeal(product) {
+    return isBlackFridayActive() && hasBlackFridayDeal(product);
+}
+
+function getBlackFridayTimeRemaining() {
+    const config = getBlackFridayConfig();
+    const phase = getBlackFridayPhase();
+
+    if (phase === 'ended' || !config.enabled) {
+        return {
+            phase: 'ended',
+            active: false,
+            isTeaser: false,
+            days: '00',
+            hours: '00',
+            minutes: '00',
+            seconds: '00',
+            totalMs: 0
+        };
+    }
+
+    const now = Date.now();
+    const targetMs = phase === 'upcoming'
+        ? new Date(config.startDate).getTime()
+        : new Date(config.endDate).getTime();
+
+    const diff = Math.max(0, targetMs - now);
+
+    const d = Math.floor(diff / (1000 * 60 * 60 * 24));
+    const h = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const m = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    const s = Math.floor((diff % (1000 * 60)) / 1000);
+
+    return {
+        phase: phase,
+        active: phase === 'live',
+        isTeaser: phase === 'upcoming',
+        days: String(d).padStart(2, '0'),
+        hours: String(h).padStart(2, '0'),
+        minutes: String(m).padStart(2, '0'),
+        seconds: String(s).padStart(2, '0'),
+        totalMs: diff
+    };
+}
+
+let _lastBlackFridayPhase = null;
+
+function updateAllBlackFridayCountdowns() {
+    const t = getBlackFridayTimeRemaining();
+
+    // 1. Home Page Banner
+    const daysEl = document.getElementById('bf-days');
+    const hoursEl = document.getElementById('bf-hours');
+    const minsEl = document.getElementById('bf-mins');
+    const secsEl = document.getElementById('bf-secs');
+    if (daysEl) daysEl.textContent = t.days;
+    if (hoursEl) hoursEl.textContent = t.hours;
+    if (minsEl) minsEl.textContent = t.minutes;
+    if (secsEl) secsEl.textContent = t.seconds;
+
+    const homePill = document.getElementById('bf-home-status-pill');
+    if (homePill) {
+        if (t.phase === 'upcoming') {
+            homePill.innerHTML = '<span class="bf-live-dot" style="background:#FBBF24; box-shadow:0 0 10px rgba(251,191,36,0.6);"></span> BLACK FRIDAY EVENT • STARTS NOV 27';
+        } else if (t.phase === 'live') {
+            homePill.innerHTML = '<span class="bf-live-dot" style="background:#22C55E; box-shadow:0 0 10px rgba(34,197,94,0.6);"></span> BLACK FRIDAY EVENT • LIVE NOW';
+        } else {
+            homePill.innerHTML = '<span class="bf-live-dot" style="background:#9CA3AF;"></span> BLACK FRIDAY EVENT • CONCLUDED';
+        }
+    }
+
+    const homeCaption = document.querySelector('.bf-timer-caption');
+    if (homeCaption) {
+        if (t.phase === 'upcoming') {
+            homeCaption.textContent = 'DROPS IN';
+        } else if (t.phase === 'live') {
+            homeCaption.textContent = 'OFFER ENDS IN';
+        } else {
+            homeCaption.textContent = 'EVENT CONCLUDED';
+        }
+    }
+
+    // 2. Shop Page Strip
+    const shopTimer = document.getElementById('bf-shop-timer-text');
+    if (shopTimer) {
+        shopTimer.textContent = `${t.days}d : ${t.hours}h : ${t.minutes}m : ${t.seconds}s`;
+    }
+    const shopLabel = document.getElementById('bf-shop-label-text');
+    if (shopLabel) {
+        if (t.phase === 'upcoming') {
+            shopLabel.textContent = 'BLACK FRIDAY ARCHIVE DROP STARTS IN';
+        } else if (t.phase === 'live') {
+            shopLabel.textContent = 'BLACK FRIDAY ARCHIVE DROP ENDS IN';
+        } else {
+            shopLabel.textContent = 'BLACK FRIDAY DROP CONCLUDED';
+        }
+    }
+    const shopStrip = document.getElementById('bf-shop-countdown-strip');
+    if (shopStrip) {
+        if (t.phase === 'ended') {
+            shopStrip.classList.add('bf-ended');
+        } else {
+            shopStrip.classList.remove('bf-ended');
+        }
+    }
+
+    // 3. Product Detail Page
+    const detailCountdown = document.getElementById('bf-detail-countdown-text');
+    if (detailCountdown) {
+        if (t.phase === 'upcoming') {
+            detailCountdown.textContent = `Starts in ${t.days}d ${t.hours}h ${t.minutes}m ${t.seconds}s`;
+        } else if (t.phase === 'live') {
+            detailCountdown.textContent = `Ends in ${t.days}d ${t.hours}h ${t.minutes}m ${t.seconds}s`;
+        } else {
+            detailCountdown.textContent = 'Sale Ended';
+        }
+    }
+
+    // Phase transition event dispatch
+    if (_lastBlackFridayPhase !== null && _lastBlackFridayPhase !== t.phase) {
+        _lastBlackFridayPhase = t.phase;
+        try {
+            window.dispatchEvent(new CustomEvent('black-friday-status-changed', { detail: { phase: t.phase } }));
+        } catch (e) {}
+        if (typeof syncCartWithLivePrices === 'function') syncCartWithLivePrices();
+        if (typeof refreshActivePageProductViews === 'function') refreshActivePageProductViews();
+    } else if (_lastBlackFridayPhase === null) {
+        _lastBlackFridayPhase = t.phase;
+    }
+}
+
+function initBlackFridayEngine() {
+    updateAllBlackFridayCountdowns();
+    setInterval(updateAllBlackFridayCountdowns, 1000);
+
+    if (typeof db !== 'undefined' && db) {
+        db.collection('settings').doc('black_friday').onSnapshot(doc => {
+            if (doc.exists) {
+                const data = doc.data() || {};
+                const current = getBlackFridayConfig();
+                const updated = {
+                    enabled: data.enabled !== undefined ? !!data.enabled : current.enabled,
+                    startDate: data.startDate || current.startDate,
+                    endDate: data.endDate || current.endDate
+                };
+                localStorage.setItem('python_bf_config', JSON.stringify(updated));
+                updateAllBlackFridayCountdowns();
+            }
+        }, err => {
+            console.warn('BF settings sync notice:', err);
+        });
+    }
+}
+
+// Start countdown engine immediately
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBlackFridayEngine);
+} else {
+    initBlackFridayEngine();
+}
+
+
+
 // Centralized Color Configuration (Hex to Name Mapping)
 const colorNames = {
     '#ffffff': 'Pure White',
@@ -272,12 +505,19 @@ function getColorLabel(color, product) {
 
 function getProductDisplayPrice(product) {
     if (!product) return 0;
+    if (typeof isProductBlackFridayDeal === 'function' && isProductBlackFridayDeal(product)) {
+        return Number(product.blackFridayPrice);
+    }
     const fromSizes = getFirstSizePrice(product.sizes);
     return fromSizes || Number(product.price) || 0;
 }
 
 function getProductDisplayOldPrice(product) {
     if (!product) return 0;
+    if (typeof isProductBlackFridayDeal === 'function' && isProductBlackFridayDeal(product)) {
+        const regPrice = getFirstSizePrice(product.sizes) || Number(product.price) || 0;
+        return regPrice;
+    }
     const fromSizes = getFirstSizeOldPrice(product.sizes);
     return fromSizes || Number(product.oldPrice) || 0;
 }
@@ -321,6 +561,10 @@ function initFirestoreProductSync() {
                 liveProducts.push({
                     id: doc.id,
                     ...data,
+                    isBlackFriday: Boolean(data.isBlackFriday),
+                    blackFridayPrice: (data.blackFridayPrice !== undefined && data.blackFridayPrice !== null)
+                        ? Number(data.blackFridayPrice)
+                        : null,
                     images: (Array.isArray(data.images) && data.images.length > 0)
                         ? data.images.filter(Boolean)
                         : [data.image || 'T Shirt.png'],
@@ -341,6 +585,7 @@ function initFirestoreProductSync() {
                 localStorage.removeItem('python_live_products');
             }
             console.log('✅ Synced ' + products.length + ' products live from Firestore!');
+            if (typeof syncCartWithLivePrices === 'function') syncCartWithLivePrices();
             refreshActivePageProductViews();
             try {
                 window.dispatchEvent(new CustomEvent('products-updated', { detail: products }));
@@ -431,7 +676,12 @@ function displayProducts(filteredProducts) {
     if (!grid) return;
     grid.innerHTML = '';
 
+    const phase = typeof getBlackFridayPhase === 'function' ? getBlackFridayPhase() : 'ended';
+    const isBFLive = (phase === 'live');
+    const isBFTeaser = (phase === 'upcoming');
+
     filteredProducts.forEach((p) => {
+        const hasDeal = typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(p);
         const images = getProductImages(p);
         const sizeKeys = getProductSizes(p);
         const colors = getProductColors(p);
@@ -440,7 +690,15 @@ function displayProducts(filteredProducts) {
         const primaryColor = colors[0] || 'Default';
 
         let discountBadge = '';
-        if (displayOldPrice && displayOldPrice > displayPrice) {
+        if (isBFLive && hasDeal) {
+            const regularPrice = getFirstSizePrice(p.sizes) || Number(p.price) || displayPrice;
+            const bfDiscountPct = regularPrice > displayPrice
+                ? Math.round(((regularPrice - displayPrice) / regularPrice) * 100)
+                : 0;
+            discountBadge = `<span class="card-bf-discount-badge" style="position: absolute; top: 12px; left: 12px; background: #0A0A0A; color: #FBBF24; border: 1px solid rgba(251, 191, 36, 0.4); padding: 5px 12px; border-radius: 50px; font-size: 0.7rem; font-weight: 800; z-index: 10; letter-spacing: 0.5px; box-shadow: 0 4px 15px rgba(0,0,0,0.4);">🔥 BLACK FRIDAY${bfDiscountPct > 0 ? ` • ${bfDiscountPct}% OFF` : ''}</span>`;
+        } else if (isBFTeaser && hasDeal) {
+            discountBadge = `<span class="card-bf-teaser-badge" style="position: absolute; top: 12px; left: 12px; background: rgba(139, 0, 0, 0.88); color: #FFF; border: 1px solid rgba(255, 255, 255, 0.3); padding: 5px 12px; border-radius: 50px; font-size: 0.68rem; font-weight: 800; z-index: 10; opacity: 0.65; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(0,0,0,0.15);" title="Unlocks Nov 27">🔒 NOV 27 DROP: Rs. ${Number(p.blackFridayPrice).toLocaleString()}</span>`;
+        } else if (displayOldPrice && displayOldPrice > displayPrice) {
             const discountPercent = Math.round(((displayOldPrice - displayPrice) / displayOldPrice) * 100);
             discountBadge = `<span class="card-discount-badge">${discountPercent}% OFF</span>`;
         }
@@ -518,9 +776,13 @@ function displayProducts(filteredProducts) {
 
                 <div class="card-product-foot">
                     <div class="card-price-line">
-                        <span class="card-price-current">Rs. ${Number(displayPrice).toLocaleString()}</span>
+                        <span class="card-price-current"${(isBFLive && hasDeal) ? ' style="color: #8B0000; font-weight: 800;"' : ''}>Rs. ${Number(displayPrice).toLocaleString()}</span>
                         ${displayOldPrice ? `<span class="card-price-old">Rs. ${Number(displayOldPrice).toLocaleString()}</span>` : ''}
                     </div>
+                    ${(isBFTeaser && hasDeal) ? `
+                    <div class="bf-card-price-preview" style="font-size: 0.75rem; color: #8B0000; font-weight: 700; opacity: 0.55; margin-top: 3px;">
+                        ⚡ Friday Price: Rs. ${Number(p.blackFridayPrice).toLocaleString()}.00
+                    </div>` : ''}
 
                     ${isOutOfStock ? `
                     <button class="btn btn-outline card-add-to-cart" disabled>OUT OF STOCK</button>
@@ -792,17 +1054,25 @@ function filterShop() {
 
     // Dynamic Category filter
     if (currentShopCategory && currentShopCategory !== 'All') {
-        filtered = filtered.filter(p => {
-            const cat = String(p.category || '').toLowerCase().trim();
-            return cat === currentShopCategory.toLowerCase().trim();
-        });
+        if (currentShopCategory === 'Black Friday') {
+            filtered = filtered.filter(p => typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(p));
+        } else {
+            filtered = filtered.filter(p => {
+                const cat = String(p.category || '').toLowerCase().trim();
+                return cat === currentShopCategory.toLowerCase().trim();
+            });
+        }
     }
 
-    // Promo badge quick filter: New Drop / Best Seller / Hot / Limited
+    // Promo badge quick filter: New Drop / Best Seller / Hot / Limited / Black Friday
     if (currentShopBadge && currentShopBadge !== 'All') {
         const normalizeBadge = v => String(v || '').toUpperCase().replace(/[^A-Z]/g, '');
         const targetBadge = normalizeBadge(currentShopBadge);
-        filtered = filtered.filter(p => normalizeBadge(p.badge) === targetBadge);
+        if (targetBadge === 'BLACKFRIDAY') {
+            filtered = filtered.filter(p => typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(p));
+        } else {
+            filtered = filtered.filter(p => normalizeBadge(p.badge) === targetBadge);
+        }
     }
 
     // Size filter (sizes are stored as an object in Firestore)
@@ -855,7 +1125,47 @@ function filterProducts() {
 }
 
 
+
+function syncCartWithLivePrices() {
+    if (!Array.isArray(cart) || !Array.isArray(products) || products.length === 0) return;
+    let changed = false;
+    const isLive = (typeof isBlackFridayActive === 'function') ? isBlackFridayActive() : false;
+
+    cart.forEach(item => {
+        const prod = products.find(p => p.name === item.name || p.id === item.id);
+        if (!prod) return;
+
+        let targetPrice;
+        if (isLive && typeof hasBlackFridayDeal === 'function' && hasBlackFridayDeal(prod)) {
+            targetPrice = Number(prod.blackFridayPrice);
+        } else {
+            if (prod.sizes && item.size && prod.sizes[item.size]) {
+                targetPrice = prod.sizes[item.size].price;
+            } else if (prod.sizes && Object.values(prod.sizes)[0]) {
+                targetPrice = Object.values(prod.sizes)[0].price;
+            } else {
+                targetPrice = prod.price || item.price;
+            }
+        }
+
+        if (targetPrice && item.price !== targetPrice) {
+            item.price = targetPrice;
+            changed = true;
+        }
+    });
+
+    if (changed) {
+        saveCart();
+        updateCartCount();
+        if (window.location.pathname.includes('cart.html') && typeof renderCart === 'function') {
+            renderCart();
+        }
+    }
+}
+window.syncCartWithLivePrices = syncCartWithLivePrices;
+
 function renderCart() {
+    syncCartWithLivePrices();
     const cartContainer = document.getElementById('cart-items');
     const totalElement = document.getElementById('cart-total');
     if (!cartContainer) return;

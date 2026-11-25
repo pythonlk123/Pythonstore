@@ -386,6 +386,123 @@
             background: #F9FAFB;
         }
 
+        /* ── Order details modal (redesigned) ── */
+        #order-detail-modal .modal-card { max-width: 840px; display: flex; flex-direction: column; overflow: hidden; }
+        #order-detail-modal .modal-header { position: static; flex-shrink: 0; }
+        #order-detail-modal .modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; }
+        .order-modal-sub { font-size: 0.74rem; color: var(--text-dim); margin-top: 4px; font-weight: 600; }
+        .order-shell { display: flex; flex-direction: column; gap: 16px; }
+
+        .order-hero {
+            display: flex; align-items: center; justify-content: space-between; gap: 16px;
+            background: linear-gradient(135deg, #0A0A0A 0%, #262626 100%);
+            border-radius: var(--radius-md); padding: 18px 20px; color: #FFFFFF;
+        }
+        .order-hero-id { font-family: var(--font-mono); font-size: 1.08rem; font-weight: 800; letter-spacing: 0.3px; }
+        .order-hero-meta { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 6px; font-size: 0.72rem; color: rgba(255,255,255,0.66); font-weight: 600; }
+        .order-hero-status { display: inline-flex; align-items: center; gap: 5px; margin-top: 9px; padding: 3px 10px; border-radius: 50px; font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.6px; background: rgba(255,255,255,0.14); color: #FFFFFF; }
+        .order-hero-status.pending { background: rgba(245,158,11,0.22); color: #FCD34D; }
+        .order-hero-status.confirmed { background: rgba(34,197,94,0.22); color: #86EFAC; }
+        .order-hero-status.packed { background: rgba(249,115,22,0.22); color: #FDBA74; }
+        .order-hero-status.shipped, .order-hero-status.processing { background: rgba(96,165,250,0.22); color: #93C5FD; }
+        .order-hero-status.delivered { background: rgba(34,197,94,0.28); color: #BBF7D0; }
+        .order-hero-status.cancelled { background: rgba(248,113,113,0.22); color: #FCA5A5; }
+        .order-hero-total { text-align: right; flex-shrink: 0; }
+        .order-hero-total span { display: block; font-size: 0.62rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.55); font-weight: 800; }
+        .order-hero-total strong { font-family: var(--font-head); font-size: 1.4rem; font-weight: 900; }
+
+        .order-steps { display: flex; align-items: flex-start; padding: 14px 10px 10px; background: #F9FAFB; border: 1px solid var(--border); border-radius: var(--radius-md); overflow-x: auto; }
+        .order-step { position: relative; flex: 1 0 64px; display: flex; flex-direction: column; align-items: center; gap: 6px; color: var(--text-dim); }
+        .order-step:not(:last-child)::after { content: ''; position: absolute; top: 11px; left: calc(50% + 15px); right: calc(-50% + 15px); height: 2px; background: var(--border); border-radius: 2px; }
+        .order-step.done:not(:last-child)::after { background: var(--green); }
+        .order-step-dot { position: relative; z-index: 1; width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.6rem; font-weight: 900; background: #FFFFFF; border: 2px solid var(--border); color: var(--text-dim); }
+        .order-step.done .order-step-dot { background: var(--green); border-color: var(--green); color: #FFFFFF; }
+        .order-step.current .order-step-dot { background: var(--dark-red); border-color: var(--dark-red); color: #FFFFFF; box-shadow: 0 0 0 4px var(--dark-red-light); }
+        .order-step-label { font-size: 0.6rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.4px; text-align: center; }
+        .order-step.current .order-step-label { color: var(--dark-red); }
+        .order-step.done .order-step-label { color: var(--text); }
+        .order-cancelled-banner { display: flex; align-items: center; gap: 10px; padding: 12px 16px; border-radius: var(--radius-md); background: rgba(220,20,60,0.07); border: 1px solid rgba(220,20,60,0.22); color: #dc2626; font-size: 0.82rem; font-weight: 800; }
+
+        .order-quick { display: grid; grid-template-columns: repeat(auto-fit, minmax(116px, 1fr)); gap: 8px; }
+        .order-quick-btn { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 9px 10px; border: 1px solid var(--border); border-radius: var(--radius-sm); background: #FFFFFF; color: var(--text); font-size: 0.72rem; font-weight: 800; cursor: pointer; text-decoration: none; transition: all 0.18s ease; }
+        .order-quick-btn:hover { border-color: #0A0A0A; background: var(--bg-surface2); transform: translateY(-1px); }
+        .order-quick-btn.wa { background: rgba(37,211,102,0.08); border-color: rgba(37,211,102,0.4); color: #128C4A; }
+        .order-quick-btn.wa:hover { background: #25D366; border-color: #25D366; color: #FFFFFF; }
+        .order-quick-btn.call { background: var(--blue-light); border-color: rgba(29,78,216,0.35); color: var(--blue); }
+        .order-quick-btn.call:hover { background: var(--blue); border-color: var(--blue); color: #FFFFFF; }
+        .order-quick-btn.invoice { background: var(--dark-red-light); border-color: var(--dark-red-border); color: var(--dark-red); }
+        .order-quick-btn.invoice:hover { background: var(--dark-red); border-color: var(--dark-red); color: #FFFFFF; }
+
+        .order-info-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .order-info-card { border: 1px solid var(--border); border-radius: var(--radius-md); padding: 14px 16px; background: #FFFFFF; }
+        .order-info-card h5 { display: flex; align-items: center; gap: 6px; font-size: 0.66rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-dim); margin-bottom: 10px; }
+        .order-info-row { display: flex; justify-content: space-between; gap: 12px; padding: 5px 0; font-size: 0.82rem; border-bottom: 1px dashed rgba(0,0,0,0.07); }
+        .order-info-row:last-child { border-bottom: none; padding-bottom: 0; }
+        .order-info-row .k { color: var(--text-dim); font-weight: 700; white-space: nowrap; }
+        .order-info-row .v { font-weight: 700; text-align: right; word-break: break-word; }
+        .order-info-row .v.mono { font-family: var(--font-mono); }
+        .order-address-text { font-size: 0.84rem; line-height: 1.65; color: var(--text); }
+
+        .order-section-title { display: flex; align-items: center; justify-content: space-between; gap: 10px; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.9px; color: var(--text-dim); }
+        .order-count-pill { font-size: 0.64rem; padding: 2px 9px; border-radius: 50px; background: var(--bg-surface2); border: 1px solid var(--border); color: var(--text-muted); }
+        .order-items { border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+        .order-item { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid var(--border); background: #FFFFFF; }
+        .order-item:last-child { border-bottom: none; }
+        .order-item-thumb { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; border: 1px solid var(--border); background: #F3F4F6; flex-shrink: 0; }
+        .order-item-main { flex: 1; min-width: 0; }
+        .order-item-name { font-size: 0.85rem; font-weight: 800; color: #0A0A0A; }
+        .order-item-meta { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px; }
+        .order-chip { padding: 2px 8px; border-radius: 50px; background: #F3F4F6; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.3px; }
+        .order-chip.custom { background: var(--dark-red-light); border-color: var(--dark-red-border); color: var(--dark-red); }
+        .order-item-price { text-align: right; flex-shrink: 0; }
+        .order-item-price strong { display: block; font-family: var(--font-mono); font-size: 0.85rem; }
+        .order-item-price span { font-size: 0.66rem; color: var(--text-dim); }
+
+        .order-foot-grid { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-start; }
+        .order-note-card { flex: 1 1 240px; padding: 12px 14px; border-radius: var(--radius-md); border: 1px solid rgba(180,83,9,0.25); background: var(--amber-light); font-size: 0.8rem; line-height: 1.55; color: #92400E; }
+        .order-note-card strong { display: block; font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.8px; margin-bottom: 4px; }
+        .order-totals { flex: 0 1 320px; margin-left: auto; border: 1px solid var(--border); border-radius: var(--radius-md); overflow: hidden; }
+        .order-total-row { display: flex; justify-content: space-between; gap: 14px; padding: 9px 14px; font-size: 0.82rem; color: var(--text-muted); background: #FFFFFF; border-bottom: 1px solid var(--border); }
+        .order-total-row:last-child { border-bottom: none; }
+        .order-total-row .amount { font-family: var(--font-mono); font-weight: 700; color: var(--text); }
+        .order-total-row.grand { background: #0A0A0A; color: #FFFFFF; font-size: 0.92rem; font-weight: 900; padding: 12px 14px; }
+        .order-total-row.grand .amount { color: #FCA5A5; }
+
+        .order-advanced { border: 1px solid var(--border); border-radius: var(--radius-md); background: #F9FAFB; }
+        .order-advanced > summary { display: flex; align-items: center; gap: 8px; padding: 12px 16px; cursor: pointer; font-size: 0.7rem; font-weight: 900; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-dim); list-style: none; }
+        .order-advanced > summary::-webkit-details-marker { display: none; }
+        .order-advanced[open] > summary { border-bottom: 1px solid var(--border); }
+        .order-advanced-body { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; }
+        .order-advanced-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+        #modal-order-actions { display: block; padding: 14px 24px 18px; background: #FFFFFF; position: static; flex-shrink: 0; }
+        .order-action-label { font-size: 0.62rem; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 8px; }
+        .order-main-actions { display: grid; grid-template-columns: 1.4fr 1fr; gap: 8px; margin-bottom: 10px; }
+        .order-main-btn { display: inline-flex; align-items: center; justify-content: center; gap: 7px; padding: 12px 16px; border-radius: var(--radius-sm); border: 1px solid transparent; font-size: 0.84rem; font-weight: 800; cursor: pointer; transition: all 0.18s ease; }
+        .order-main-btn.next { background: var(--green); border-color: var(--green); color: #FFFFFF; box-shadow: 0 4px 14px rgba(21,128,61,0.25); }
+        .order-main-btn.next:hover { background: #166534; border-color: #166534; }
+        .order-main-btn.invoice { background: #FFFFFF; border-color: var(--border-dark); color: var(--text); }
+        .order-main-btn.invoice:hover { border-color: var(--dark-red); color: var(--dark-red); background: var(--dark-red-light); }
+        .order-main-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .order-status-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(104px, 1fr)); gap: 7px; }
+        .order-status-btn { padding: 8px 10px; border-radius: var(--radius-sm); border: 1px solid var(--border); background: #FFFFFF; color: var(--text); font-size: 0.7rem; font-weight: 800; cursor: pointer; transition: all 0.18s ease; display: inline-flex; align-items: center; justify-content: center; gap: 5px; }
+        .order-status-btn:hover { border-color: #0A0A0A; background: var(--bg-surface2); }
+        .order-status-btn.active { background: #0A0A0A; border-color: #0A0A0A; color: #FFFFFF; }
+        .order-danger-row { display: flex; justify-content: flex-end; margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+        .order-delete-btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: var(--radius-sm); border: 1px solid rgba(220,20,60,0.4); background: #FFFFFF; color: #dc2626; font-size: 0.72rem; font-weight: 800; cursor: pointer; transition: all 0.18s ease; }
+        .order-delete-btn:hover { background: rgba(220,20,60,0.08); }
+
+        @media (max-width: 640px) {
+            .order-info-grid, .order-advanced-grid { grid-template-columns: 1fr; }
+            .order-hero { flex-direction: column; align-items: flex-start; }
+            .order-hero-total { text-align: left; }
+            .order-main-actions { grid-template-columns: 1fr; }
+            .order-totals { flex-basis: 100%; margin-left: 0; }
+            #modal-order-actions { padding: 12px 16px 16px; }
+            #modal-order-actions .order-status-grid { grid-template-columns: repeat(3, 1fr); }
+            .order-modal-sub { display: none; }
+        }
+
         /* Form elements */
         .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
         .form-full { grid-column: 1 / -1; }
@@ -1726,6 +1843,52 @@
                     </div>
                 </div>
 
+                <!-- Black Friday Campaign Banner & Control -->
+                <div class="panel" style="margin-bottom: 20px; background: linear-gradient(135deg, #09090B 0%, #1A1116 100%); color: #FFFFFF; border: 1px solid rgba(220,20,60,0.4); border-radius: 14px; padding: 18px 22px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+                        <div style="display: flex; align-items: center; gap: 12px;">
+                            <div style="width: 42px; height: 42px; border-radius: 10px; background: rgba(220,20,60,0.18); border: 1px solid rgba(220,20,60,0.4); display: flex; align-items: center; justify-content: center; color: #EF4444; font-size: 1.2rem;">
+                                🔥
+                            </div>
+                            <div>
+                                <div style="display: flex; align-items: center; gap: 8px;">
+                                    <h4 style="margin: 0; font-family: var(--font-headline); font-size: 1.05rem; letter-spacing: 0.5px; color: #FFFFFF;">Black Friday 24H Campaign Control</h4>
+                                    <span id="admin-bf-status-pill" style="padding: 2px 8px; border-radius: 999px; font-size: 0.68rem; font-weight: 800; background: rgba(251,191,36,0.2); color: #FDE68A; border: 1px solid rgba(251,191,36,0.4);">
+                                        UPCOMING TEASER
+                                    </span>
+                                </div>
+                                <p style="margin: 3px 0 0; font-size: 0.78rem; color: #9CA3AF;">
+                                    Starts: <strong>2026/11/27 00:00:00</strong> • Ends: <strong>2026/11/28 00:00:00</strong>. Until Friday, items preview Black Friday price at reduced opacity while charging standard rates. During Friday, price drops go live. Afterward, prices automatically revert.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.7rem; color: #D1D5DB; font-weight: 700; text-transform: uppercase;">Offer Start (2026/11/27)</label>
+                                <input type="datetime-local" id="admin-bf-startdate" value="2026-11-27T00:00" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #FFF; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; font-family: var(--font-mono);">
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.7rem; color: #D1D5DB; font-weight: 700; text-transform: uppercase;">Offer End (2026/11/28)</label>
+                                <input type="datetime-local" id="admin-bf-enddate" value="2026-11-28T00:00" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #FFF; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; font-family: var(--font-mono);">
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 4px;">
+                                <label style="font-size: 0.7rem; color: #D1D5DB; font-weight: 700; text-transform: uppercase;">Status</label>
+                                <select id="admin-bf-enabled" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.2); color: #FFF; padding: 6px 10px; border-radius: 6px; font-size: 0.8rem; font-family: var(--font-mono);">
+                                    <option value="true" style="color:#000;">Enabled (Active)</option>
+                                    <option value="false" style="color:#000;">Disabled (Turn Off)</option>
+                                </select>
+                            </div>
+
+                            <button type="button" onclick="saveBlackFridayCampaignSettings()" class="btn-top primary" style="height: 35px; align-self: flex-end; font-size: 0.76rem; background: #DC143C;">
+                                Save Campaign
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="panel">
                     <div class="table-responsive">
                         <table class="dtable" id="products-table">
@@ -2295,6 +2458,33 @@
                             <input type="number" id="form-prod-oldprice" class="form-control" placeholder="2900" min="0">
                         </div>
 
+                        <!-- Black Friday Pricing & Promotion Configuration -->
+                        <div class="form-full" style="background: linear-gradient(135deg, rgba(139,0,0,0.06) 0%, rgba(10,10,10,0.04) 100%); border: 1.5px solid rgba(220,20,60,0.35); border-radius: 12px; padding: 14px 16px; margin: 4px 0 8px;">
+                            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 10px;">
+                                <label for="form-prod-is-blackfriday" style="display: flex; align-items: center; gap: 10px; cursor: pointer; font-weight: 800; font-size: 0.88rem; color: #111827; margin: 0;">
+                                    <input type="checkbox" id="form-prod-is-blackfriday" style="width: 20px; height: 20px; accent-color: #DC143C; cursor: pointer;" onchange="toggleBlackFridayPriceField(this.checked)">
+                                    <span style="display: flex; align-items: center; gap: 6px;">
+                                        <span style="background: #111827; color: #FBBF24; font-size: 0.65rem; font-weight: 900; padding: 2px 8px; border-radius: 4px; letter-spacing: 0.8px;">BLACK FRIDAY</span>
+                                        Tick to enable Black Friday Price Down
+                                    </span>
+                                </label>
+                                <span id="form-bf-discount-preview" style="display: none; font-size: 0.76rem; font-weight: 800; color: #DC143C; background: #FFF; padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(220,20,60,0.3);">
+                                    0% OFF
+                                </span>
+                            </div>
+                            <div id="form-bf-price-wrap" style="display: none;">
+                                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; align-items: center;">
+                                    <div>
+                                        <label class="form-label" style="margin-bottom: 4px;">Black Friday Sale Price (LKR) *</label>
+                                        <input type="number" id="form-prod-bfprice" class="form-control" placeholder="e.g. 1950" min="0" oninput="updateBfDiscountPreview()">
+                                    </div>
+                                    <div style="font-size: 0.74rem; color: #4B5563; line-height: 1.45; padding-top: 14px;">
+                                        ⚡ Product cards will display the exclusive <strong>BLACK FRIDAY</strong> badge. When Black Friday ends (2026/11/27), this price automatically deactivates and reverts to the regular Selling Price.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div>
                             <label class="form-label">Stock Quantity *</label>
                             <input type="number" id="form-prod-stock" class="form-control" required placeholder="20" min="0" value="20">
@@ -2460,7 +2650,10 @@
     <div class="modal-overlay" id="order-detail-modal">
         <div class="modal-card">
             <div class="modal-header">
-                <h3 id="modal-order-title">Order Details</h3>
+                <div>
+                    <h3 id="modal-order-title">Order Details</h3>
+                    <p class="order-modal-sub" id="modal-order-sub">—</p>
+                </div>
                 <button class="modal-close" onclick="closeOrderDetailModal()">&times;</button>
             </div>
             <div class="modal-body" id="modal-order-content">
@@ -2780,6 +2973,11 @@
                         <td>
                             <div style="font-weight: 900; color: #0A0A0A; font-family: var(--font-mono);">Rs. ${(p.price || 0).toLocaleString()}</div>
                             ${p.oldPrice ? `<div style="text-decoration: line-through; color: var(--text-dim); font-size: 0.72rem;">Rs. ${p.oldPrice.toLocaleString()}</div>` : ''}
+                            ${(p.isBlackFriday && p.blackFridayPrice) ? `
+                                <div style="display:inline-flex;align-items:center;gap:4px;background:#111827;color:#FBBF24;padding:2px 7px;border-radius:4px;font-size:0.68rem;font-weight:800;margin-top:4px;font-family:var(--font-mono);" title="Black Friday Sale Price active until 2026/11/27">
+                                    🔥 BF: Rs. ${Number(p.blackFridayPrice).toLocaleString()}
+                                </div>
+                            ` : ''}
                         </td>
                         <td>
                             <input type="number" value="${p.stock !== undefined ? p.stock : 10}" 
@@ -3154,6 +3352,11 @@
             document.getElementById('form-prod-stock').value = "20";
             const showHomeEl = document.getElementById('form-prod-show-home');
             if (showHomeEl) showHomeEl.checked = true;
+            const isBfEl = document.getElementById('form-prod-is-blackfriday');
+            if (isBfEl) isBfEl.checked = false;
+            const bfPriceEl = document.getElementById('form-prod-bfprice');
+            if (bfPriceEl) bfPriceEl.value = '';
+            toggleBlackFridayPriceField(false);
             document.getElementById('form-prod-img1').value = "";
             document.getElementById('form-prod-sizechart').value = "";
             productExtraImages = [];
@@ -3185,6 +3388,15 @@
             document.getElementById('form-prod-badge').value = p.badge || '';
             const showHomeEl = document.getElementById('form-prod-show-home');
             if (showHomeEl) showHomeEl.checked = (p.showOnHome !== false);
+
+            const isBfEl = document.getElementById('form-prod-is-blackfriday');
+            const isBF = Boolean(p.isBlackFriday);
+            if (isBfEl) isBfEl.checked = isBF;
+            const bfPriceEl = document.getElementById('form-prod-bfprice');
+            if (bfPriceEl) bfPriceEl.value = (p.blackFridayPrice !== undefined && p.blackFridayPrice !== null) ? p.blackFridayPrice : '';
+            toggleBlackFridayPriceField(isBF);
+            updateBfDiscountPreview();
+
             if (document.getElementById('form-prod-category')) document.getElementById('form-prod-category').value = p.category || '';
             document.getElementById('form-prod-desc').value = p.desc || '';
 
@@ -3257,6 +3469,16 @@
                 showToast('Images are still uploading. Please wait a moment.', true);
                 return;
             }
+            const isBfEl = document.getElementById('form-prod-is-blackfriday');
+            const isBlackFriday = Boolean(isBfEl && isBfEl.checked);
+            const bfPriceVal = document.getElementById('form-prod-bfprice') ? parseFloat(document.getElementById('form-prod-bfprice').value) : 0;
+            const blackFridayPrice = isBlackFriday ? (bfPriceVal || 0) : 0;
+
+            if (isBlackFriday && (!blackFridayPrice || blackFridayPrice <= 0)) {
+                showToast('Please enter a valid Black Friday discounted price.', true);
+                return;
+            }
+
             if (!sizes.length) {
                 showToast('Select at least one available size.', true);
                 return;
@@ -3264,7 +3486,12 @@
 
             const sizeMap = {};
             sizes.forEach(size => {
-                sizeMap[size] = { price: price, oldPrice: oldPrice };
+                sizeMap[size] = {
+                    price: price,
+                    oldPrice: oldPrice,
+                    isBlackFriday: isBlackFriday,
+                    blackFridayPrice: blackFridayPrice
+                };
             });
 
             const fabricSpec = specifications['Fabric'] || specifications['Fabric / GSM'] || '';
@@ -3275,6 +3502,8 @@
                 category,
                 price,
                 oldPrice,
+                isBlackFriday,
+                blackFridayPrice,
                 stock,
                 stockStatus: stock === 0 ? 'out_of_stock' : 'in_stock',
                 badge,
@@ -3315,6 +3544,119 @@
                 btn.innerText = "Save Product";
             }
         }
+
+        function toggleBlackFridayPriceField(checked) {
+            const wrap = document.getElementById('form-bf-price-wrap');
+            const preview = document.getElementById('form-bf-discount-preview');
+            if (wrap) wrap.style.display = checked ? 'block' : 'none';
+            if (preview) preview.style.display = checked ? 'inline-block' : 'none';
+            if (checked) updateBfDiscountPreview();
+        }
+
+        function updateBfDiscountPreview() {
+            const regPrice = parseFloat(document.getElementById('form-prod-price').value) || 0;
+            const bfPrice = parseFloat(document.getElementById('form-prod-bfprice').value) || 0;
+            const preview = document.getElementById('form-bf-discount-preview');
+            if (!preview) return;
+            if (regPrice > 0 && bfPrice > 0 && bfPrice < regPrice) {
+                const pct = Math.round(((regPrice - bfPrice) / regPrice) * 100);
+                preview.textContent = `SAVE RS. ${(regPrice - bfPrice).toLocaleString()} (${pct}% OFF)`;
+                preview.style.color = '#16A34A';
+                preview.style.borderColor = 'rgba(22,163,74,0.4)';
+            } else if (bfPrice >= regPrice && regPrice > 0) {
+                preview.textContent = 'BF PRICE MUST BE LOWER THAN SELLING PRICE';
+                preview.style.color = '#DC143C';
+                preview.style.borderColor = 'rgba(220,20,60,0.4)';
+            } else {
+                preview.textContent = 'ENTER BF PRICE';
+                preview.style.color = '#6B7280';
+            }
+        }
+
+        async function saveBlackFridayCampaignSettings() {
+            const startVal = document.getElementById('admin-bf-startdate').value;
+            const endVal = document.getElementById('admin-bf-enddate').value;
+            const enabledVal = document.getElementById('admin-bf-enabled').value === 'true';
+            if (!startVal || !endVal) {
+                showToast('Please select valid start and end dates/times.', true);
+                return;
+            }
+            try {
+                await db.collection('settings').doc('black_friday').set({
+                    enabled: enabledVal,
+                    startDate: startVal + ':00+05:30',
+                    endDate: endVal + ':00+05:30',
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                }, { merge: true });
+                showToast('✅ Black Friday campaign schedule saved!');
+                updateAdminBfStatusPill();
+            } catch (err) {
+                showToast('Error saving settings: ' + err.message, true);
+            }
+        }
+
+        function updateAdminBfStatusPill() {
+            const pill = document.getElementById('admin-bf-status-pill');
+            const startInput = document.getElementById('admin-bf-startdate');
+            const endInput = document.getElementById('admin-bf-enddate');
+            const enabledInput = document.getElementById('admin-bf-enabled');
+            if (!pill || !endInput || !startInput) return;
+            const now = Date.now();
+            const startMs = new Date(startInput.value).getTime();
+            const endMs = new Date(endInput.value).getTime();
+            const isEnabled = enabledInput ? enabledInput.value === 'true' : true;
+
+            if (!isEnabled) {
+                pill.textContent = 'CAMPAIGN DISABLED';
+                pill.style.background = 'rgba(239,68,68,0.2)';
+                pill.style.color = '#FCA5A5';
+                pill.style.borderColor = 'rgba(239,68,68,0.4)';
+            } else if (now < startMs) {
+                const diffDays = Math.max(1, Math.ceil((startMs - now) / (1000 * 60 * 60 * 24)));
+                pill.textContent = `TEASER PREVIEW (Starts in ${diffDays}d)`;
+                pill.style.background = 'rgba(251,191,36,0.2)';
+                pill.style.color = '#FDE68A';
+                pill.style.borderColor = 'rgba(251,191,36,0.4)';
+            } else if (now >= startMs && now < endMs) {
+                const diffHours = Math.max(1, Math.ceil((endMs - now) / (1000 * 60 * 60)));
+                pill.textContent = `🔥 LIVE NOW (${diffHours}h left)`;
+                pill.style.background = 'rgba(34,197,94,0.2)';
+                pill.style.color = '#86EFAC';
+                pill.style.borderColor = 'rgba(34,197,94,0.4)';
+            } else {
+                pill.textContent = 'OFFER CONCLUDED / ENDED';
+                pill.style.background = 'rgba(156,163,175,0.2)';
+                pill.style.color = '#D1D5DB';
+                pill.style.borderColor = 'rgba(156,163,175,0.4)';
+            }
+        }
+
+        // Initialize and listen to Black Friday settings in admin
+        function initAdminBlackFriday() {
+            if (typeof db !== 'undefined' && db) {
+                db.collection('settings').doc('black_friday').onSnapshot(doc => {
+                    if (doc.exists) {
+                        const data = doc.data() || {};
+                        const startInput = document.getElementById('admin-bf-startdate');
+                        const endInput = document.getElementById('admin-bf-enddate');
+                        const enabledInput = document.getElementById('admin-bf-enabled');
+                        if (startInput && data.startDate) {
+                            startInput.value = data.startDate.slice(0, 16);
+                        }
+                        if (endInput && data.endDate) {
+                            endInput.value = data.endDate.slice(0, 16);
+                        }
+                        if (enabledInput && data.enabled !== undefined) {
+                            enabledInput.value = String(data.enabled);
+                        }
+                    }
+                    updateAdminBfStatusPill();
+                });
+            } else {
+                updateAdminBfStatusPill();
+            }
+        }
+        document.addEventListener('DOMContentLoaded', initAdminBlackFriday);
 
         function quickUpdateStock(id, newStock) {
             const stockNum = parseInt(newStock) || 0;
@@ -3478,93 +3820,329 @@
             }
         }
 
+        // ── Order detail helpers (redesigned modal) ──
+        const ORDER_STATUS_FLOW = ['pending', 'confirmed', 'packed', 'shipped', 'delivered'];
+        const ORDER_STATUS_LABELS = {
+            pending: 'Pending', confirmed: 'Confirmed', packed: 'Packed',
+            shipped: 'Shipped', delivered: 'Delivered', cancelled: 'Cancelled', processing: 'Processing'
+        };
+
+        function orderEsc(value) {
+            return String(value == null ? '' : value).replace(/[&<>"']/g, function (ch) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch];
+            });
+        }
+        function orderJs(value) {
+            return "'" + String(value == null ? '' : value)
+                .replace(/\\/g, '\\\\')
+                .replace(/'/g, "\\'")
+                .replace(/\r?\n/g, ' ')
+                .replace(/</g, '\\u003c') + "'";
+        }
+        function orderStatusLabel(status) {
+            const key = String(status || 'pending').toLowerCase();
+            return ORDER_STATUS_LABELS[key] || (status ? String(status) : 'Pending');
+        }
+        function orderNextStatus(status) {
+            const idx = ORDER_STATUS_FLOW.indexOf(String(status || 'pending').toLowerCase());
+            if (idx === -1 || idx >= ORDER_STATUS_FLOW.length - 1) return null;
+            return ORDER_STATUS_FLOW[idx + 1];
+        }
+        function orderStepsHtml(status) {
+            const current = String(status || 'pending').toLowerCase();
+            if (current === 'cancelled') {
+                return '<div class="order-cancelled-banner"><i data-lucide="x-circle" style="width:16px;height:16px;"></i> This order was cancelled. Change the status in Advanced options to reactivate it.</div>';
+            }
+            const idx = ORDER_STATUS_FLOW.indexOf(current);
+            return '<div class="order-steps">' + ORDER_STATUS_FLOW.map(function (step, i) {
+                const cls = i < idx ? 'done' : (i === idx ? 'current' : '');
+                return '<div class="order-step ' + cls + '">' +
+                    '<span class="order-step-dot">' + (i < idx ? '&#10003;' : (i + 1)) + '</span>' +
+                    '<span class="order-step-label">' + orderEsc(orderStatusLabel(step)) + '</span>' +
+                '</div>';
+            }).join('') + '</div>';
+        }
+        function orderDigits(value) {
+            return String(value == null ? '' : value).replace(/\D/g, '');
+        }
+        function orderCopyFallback(text) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.setAttribute('readonly', '');
+                ta.style.position = 'fixed';
+                ta.style.top = '-9999px';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+            } catch (e) {}
+        }
+        function orderCopy(text, label) {
+            if (!text) { showToast('Nothing to copy.', true); return; }
+            const done = function () { showToast((label || 'Text') + ' copied to clipboard.'); };
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(done).catch(function () {
+                    orderCopyFallback(text);
+                    done();
+                });
+            } else {
+                orderCopyFallback(text);
+                done();
+            }
+        }
+        function orderAddressText(o) {
+            return [
+                o.userName || o.name || '',
+                o.userPhone || o.phone || '',
+                o.streetAddress || o.userAddress || o.address || '',
+                o.city || '',
+                o.district || '',
+                o.postal || ''
+            ].filter(function (part) { return String(part || '').trim(); }).join('\n');
+        }
+        function copyOrderAddress(docId) {
+            const o = liveOrders.find(function (ord) { return ord._docId === docId || ord.id === docId; });
+            if (!o) { showToast('Order not found.', true); return; }
+            orderCopy(orderAddressText(o), 'Address');
+        }
+        function orderSummaryText(o, docId) {
+            const items = (Array.isArray(o.items) ? o.items : []).map(function (it) {
+                return '- ' + (it.name || 'Item') + ' x' + (it.quantity || 1) +
+                    ' — Rs. ' + (((it.price || 0) * (it.quantity || 1))).toLocaleString();
+            }).join('\n');
+            const delivery = (o.delivery != null) ? o.delivery : 500;
+            return [
+                'Order #' + (o.id || docId),
+                'Customer: ' + (o.userName || o.name || 'Guest'),
+                'Phone: ' + (o.userPhone || o.phone || '—'),
+                'Address: ' + (o.streetAddress || o.userAddress || o.address || '—'),
+                'City: ' + (o.city || '—') + (o.district ? ' / ' + o.district : ''),
+                '',
+                'Items:',
+                items || '- (no items)',
+                '',
+                'Subtotal: Rs. ' + (o.subtotal || o.total || 0).toLocaleString(),
+                'Delivery: ' + (delivery === 0 ? 'FREE' : 'Rs. ' + (Number(delivery) || 0).toLocaleString()),
+                'Total: Rs. ' + (o.total || 0).toLocaleString(),
+                'Status: ' + orderStatusLabel(o.status)
+            ].join('\n');
+        }
+        function copyOrderSummary(docId) {
+            const o = liveOrders.find(function (ord) { return ord._docId === docId || ord.id === docId; });
+            if (!o) { showToast('Order not found.', true); return; }
+            orderCopy(orderSummaryText(o, docId), 'Order summary');
+        }
+
         function viewOrderDetails(docId) {
-            const o = liveOrders.find(ord => ord._docId === docId);
-            if (!o) return;
+            const o = liveOrders.find(function (ord) { return ord._docId === docId || ord.id === docId; });
+            if (!o) { showToast('Order not found.', true); return; }
 
-            document.getElementById('modal-order-title').innerText = `Order Details: ${o.id || docId}`;
+            const orderId = o.id || docId;
+            const status = String(o.status || 'pending').toLowerCase();
+            const customerName = o.userName || o.name || 'Guest';
+            const phoneRaw = o.userPhone || o.phone || '';
+            const phoneDigits = orderDigits(phoneRaw);
+            const waNumber = phoneDigits.replace(/^0/, '');
+            const address = o.streetAddress || o.userAddress || o.address || '—';
+            const items = Array.isArray(o.items) ? o.items : [];
+            const itemCount = items.reduce(function (sum, it) { return sum + (Number(it.quantity) || 1); }, 0);
+            const delivery = (o.delivery != null) ? o.delivery : 500;
+            const subtotal = (o.subtotal != null) ? o.subtotal : (o.total || 0);
+            const next = orderNextStatus(status);
 
-            const itemsHtml = (Array.isArray(o.items) ? o.items : []).map(it => `
-                <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--border);">
-                    <div style="display: flex; align-items: center; gap: 12px;">
-                        <img src="${it.image || 'logo.png'}" style="width: 42px; height: 42px; border-radius: 6px; object-fit: cover; border: 1px solid var(--border);" onerror="this.src='logo.png'">
-                        <div>
-                            <div style="font-weight: 800; font-size: 0.88rem;">${it.name}</div>
-                            <div style="font-size: 0.74rem; color: var(--text-dim);">Size: ${it.size || 'Free'} | Color: ${getColorName(it.color)} | Qty: ${it.quantity || 1}</div>
-                        </div>
-                    </div>
-                    <div style="font-weight: 800; font-family: var(--font-mono);">Rs. ${((it.price || 0) * (it.quantity || 1)).toLocaleString()}</div>
-                </div>
-            `).join('');
+            document.getElementById('modal-order-title').textContent = 'Order #' + orderId;
+            const subEl = document.getElementById('modal-order-sub');
+            if (subEl) {
+                subEl.textContent = (o.date || '—') + ' · ' + itemCount + ' item' + (itemCount === 1 ? '' : 's') +
+                    (o.paymentMethod ? ' · ' + o.paymentMethod : '');
+            }
 
-            const content = `
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; background: var(--bg-surface); padding: 14px; border-radius: 8px; margin-bottom: 18px; font-size: 0.84rem;">
-                    <div><strong>Customer:</strong> ${o.userName || o.name || 'Guest'}</div>
-                    <div><strong>Phone:</strong> ${o.userPhone || o.phone || '—'}</div>
-                    <div style="grid-column: 1 / -1;"><strong>Address:</strong> ${o.streetAddress || o.userAddress || o.address || '—'}</div>
-                    <div><strong>City:</strong> ${o.city || '—'}</div>
-                    <div><strong>District:</strong> ${o.district || '—'}</div>
-                    <div><strong>Postal Code:</strong> ${o.postal || '—'}</div>
-                    <div><strong>Date:</strong> ${o.date || '—'}</div>
-                    <div><strong>Status:</strong> <span class="badge ${o.status || 'pending'}">${o.status || 'pending'}</span></div>
-                    ${o.notes ? `<div style="grid-column: 1 / -1; color: var(--amber);"><strong>Notes:</strong> ${o.notes}</div>` : ''}
-                </div>
+            const itemsHtml = items.length ? items.map(function (it) {
+                const qty = Number(it.quantity) || 1;
+                const lineTotal = (Number(it.price) || 0) * qty;
+                const thumb = it.image || it.previewImage || 'logo.png';
+                const isCustom = !!(it.isCustom || (Array.isArray(it.customStickers) && it.customStickers.length));
+                const stickerCount = Array.isArray(it.customStickers) ? it.customStickers.length : 0;
+                return '<div class="order-item">' +
+                    '<img class="order-item-thumb" src="' + orderEsc(thumb) + '" alt="" onerror="this.src=\'logo.png\'">' +
+                    '<div class="order-item-main">' +
+                        '<div class="order-item-name">' + orderEsc(it.name || 'Item') + '</div>' +
+                        '<div class="order-item-meta">' +
+                            '<span class="order-chip">Size: ' + orderEsc(it.size || 'Free') + '</span>' +
+                            '<span class="order-chip">Color: ' + orderEsc(getColorName(it.color)) + '</span>' +
+                            '<span class="order-chip">Qty: ' + qty + '</span>' +
+                            (isCustom ? '<span class="order-chip custom">Custom' + (stickerCount ? ' · ' + stickerCount + ' sticker' + (stickerCount === 1 ? '' : 's') : '') + '</span>' : '') +
+                        '</div>' +
+                    '</div>' +
+                    '<div class="order-item-price"><strong>Rs. ' + lineTotal.toLocaleString() + '</strong><span>Rs. ' + (Number(it.price) || 0).toLocaleString() + ' each</span></div>' +
+                '</div>';
+            }).join('') : '<div class="order-item"><div class="order-item-main"><div class="order-item-name" style="color:var(--text-dim);font-weight:600;">No items recorded for this order.</div></div></div>';
 
-                <h4 style="font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-dim); margin-bottom: 10px;">Ordered Items</h4>
-                <div style="margin-bottom: 18px;">${itemsHtml}</div>
+            const content = '' +
+                '<div class="order-shell">' +
+                    '<div class="order-hero">' +
+                        '<div>' +
+                            '<div class="order-hero-id">#' + orderEsc(orderId) + '</div>' +
+                            '<div class="order-hero-meta">' +
+                                '<span>' + orderEsc(o.date || '—') + '</span>' +
+                                '<span>' + itemCount + ' item' + (itemCount === 1 ? '' : 's') + '</span>' +
+                                '<span>' + orderEsc(o.paymentMethod || 'Cash on Delivery') + '</span>' +
+                            '</div>' +
+                            '<span class="order-hero-status ' + orderEsc(status) + '">' + orderEsc(orderStatusLabel(status)) + '</span>' +
+                        '</div>' +
+                        '<div class="order-hero-total"><span>Grand Total</span><strong>Rs. ' + (Number(o.total) || 0).toLocaleString() + '</strong></div>' +
+                    '</div>' +
 
-                <div style="background: #F9FAFB; padding: 14px; border-radius: 8px; border: 1px solid var(--border); font-size: 0.88rem;">
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted);">
-                        <span>Subtotal:</span>
-                        <span>Rs. ${(o.subtotal || o.total || 0).toLocaleString()}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; margin-bottom: 6px; color: var(--text-muted);">
-                        <span>Delivery:</span>
-                        <span>${o.delivery === 0 ? 'FREE' : 'Rs. ' + (o.delivery || 500)}</span>
-                    </div>
-                    <div style="display: flex; justify-content: space-between; font-size: 1.1rem; font-weight: 900; color: #0A0A0A; border-top: 1px solid var(--border); padding-top: 8px; margin-top: 8px;">
-                        <span>Grand Total:</span>
-                        <span style="color: var(--dark-red);">Rs. ${(o.total || 0).toLocaleString()}</span>
-                    </div>
-                </div>
-            `;
+                    orderStepsHtml(status) +
+
+                    '<div class="order-quick">' +
+                        (phoneDigits ? '<a class="order-quick-btn call" href="tel:' + orderEsc(phoneDigits) + '"><i data-lucide="phone" style="width:14px;height:14px;"></i> Call</a>' : '') +
+                        (phoneDigits ? '<a class="order-quick-btn wa" target="_blank" rel="noopener" href="https://wa.me/94' + orderEsc(waNumber) + '?text=' + encodeURIComponent('Hello ' + customerName + ', regarding your order #' + orderId + '.') + '"><i data-lucide="message-circle" style="width:14px;height:14px;"></i> WhatsApp</a>' : '') +
+                        '<button type="button" class="order-quick-btn" onclick="copyOrderAddress(' + orderJs(docId) + ')"><i data-lucide="copy" style="width:14px;height:14px;"></i> Copy Address</button>' +
+                        '<button type="button" class="order-quick-btn" onclick="copyOrderSummary(' + orderJs(docId) + ')"><i data-lucide="clipboard-list" style="width:14px;height:14px;"></i> Copy Summary</button>' +
+                        '<button type="button" class="order-quick-btn invoice" onclick="openOrderInvoice(' + orderJs(docId) + ')"><i data-lucide="printer" style="width:14px;height:14px;"></i> Invoice</button>' +
+                    '</div>' +
+
+                    '<div class="order-info-grid">' +
+                        '<div class="order-info-card">' +
+                            '<h5><i data-lucide="user" style="width:13px;height:13px;"></i> Customer</h5>' +
+                            '<div class="order-info-row"><span class="k">Name</span><span class="v">' + orderEsc(customerName) + '</span></div>' +
+                            '<div class="order-info-row"><span class="k">Phone</span><span class="v mono">' + orderEsc(phoneRaw || '—') + '</span></div>' +
+                            '<div class="order-info-row"><span class="k">Email</span><span class="v">' + orderEsc(o.email || '—') + '</span></div>' +
+                            '<div class="order-info-row"><span class="k">Payment</span><span class="v">' + orderEsc(o.paymentMethod || 'Cash on Delivery') + '</span></div>' +
+                        '</div>' +
+                        '<div class="order-info-card">' +
+                            '<h5><i data-lucide="map-pin" style="width:13px;height:13px;"></i> Shipping Address</h5>' +
+                            '<div class="order-address-text">' + orderEsc(address) + '</div>' +
+                            '<div class="order-info-row" style="margin-top:8px;"><span class="k">City</span><span class="v">' + orderEsc(o.city || '—') + '</span></div>' +
+                            '<div class="order-info-row"><span class="k">District</span><span class="v">' + orderEsc(o.district || '—') + '</span></div>' +
+                            '<div class="order-info-row"><span class="k">Postal Code</span><span class="v mono">' + orderEsc(o.postal || '—') + '</span></div>' +
+                        '</div>' +
+                    '</div>' +
+
+                    '<div class="order-section-title">Ordered Items <span class="order-count-pill">' + itemCount + ' pcs</span></div>' +
+                    '<div class="order-items">' + itemsHtml + '</div>' +
+
+                    '<div class="order-foot-grid">' +
+                        (o.notes ? '<div class="order-note-card"><strong>Customer Note</strong>' + orderEsc(o.notes) + '</div>' : '') +
+                        (o.trackingNumber ? '<div class="order-note-card" style="border-color:rgba(29,78,216,0.25);background:var(--blue-light);color:var(--blue);"><strong>Tracking Number</strong>' + orderEsc(o.trackingNumber) + '</div>' : '') +
+                        '<div class="order-totals">' +
+                            '<div class="order-total-row"><span>Subtotal</span><span class="amount">Rs. ' + (Number(subtotal) || 0).toLocaleString() + '</span></div>' +
+                            '<div class="order-total-row"><span>Delivery</span><span class="amount">' + (delivery === 0 ? 'FREE' : 'Rs. ' + (Number(delivery) || 0).toLocaleString()) + '</span></div>' +
+                            '<div class="order-total-row grand"><span>Grand Total</span><span class="amount">Rs. ' + (Number(o.total) || 0).toLocaleString() + '</span></div>' +
+                        '</div>' +
+                    '</div>' +
+
+                    '<details class="order-advanced">' +
+                        '<summary><i data-lucide="settings-2" style="width:14px;height:14px;"></i> Advanced Options</summary>' +
+                        '<div class="order-advanced-body">' +
+                            '<div class="order-advanced-grid">' +
+                                '<div><label class="form-label">Order Status</label><select id="order-status-select" class="form-control">' +
+                                    ['pending','confirmed','packed','shipped','delivered','cancelled'].map(function (s) {
+                                        return '<option value="' + s + '"' + (s === status ? ' selected' : '') + '>' + orderStatusLabel(s) + '</option>';
+                                    }).join('') +
+                                '</select></div>' +
+                                '<div><label class="form-label">Tracking Number</label><input type="text" id="order-tracking-input" class="form-control" placeholder="e.g. LP123456789LK" value="' + orderEsc(o.trackingNumber || '') + '"></div>' +
+                            '</div>' +
+                            '<div><label class="form-label">Admin Note</label><textarea id="order-admin-note" class="form-control" placeholder="Internal note about this order...">' + orderEsc(o.adminNote || '') + '</textarea></div>' +
+                            '<div style="display:flex;justify-content:flex-end;"><button type="button" class="order-main-btn next" style="padding:9px 16px;font-size:0.8rem;" onclick="saveOrderAdvanced(' + orderJs(docId) + ')"><i data-lucide="save" style="width:14px;height:14px;"></i> Save Changes</button></div>' +
+                        '</div>' +
+                    '</details>' +
+                '</div>';
 
             document.getElementById('modal-order-content').innerHTML = content;
 
-            // Dynamic Action buttons based on status
-            const actions = `
-                <button onclick="openOrderInvoice('${docId}')" class="btn-top" style="background: #8B0000; color: white; border-color: #8B0000;">
-                    <i data-lucide="printer" style="width: 14px;"></i> Print / View E-Invoice
-                </button>
-                <button onclick="updateOrderStatus('${docId}', 'confirmed')" class="btn-top" style="background: var(--green); color: white; border-color: var(--green);">
-                    Mark Confirmed
-                </button>
-                <button onclick="updateOrderStatus('${docId}', 'packed')" class="btn-top" style="background: #D97706; color: white; border-color: #D97706;">
-                    Mark Packed
-                </button>
-                <button onclick="updateOrderStatus('${docId}', 'shipped')" class="btn-top" style="background: var(--blue); color: white; border-color: var(--blue);">
-                    Mark Shipped
-                </button>
-                <button onclick="updateOrderStatus('${docId}', 'delivered')" class="btn-top primary">
-                    Mark Delivered
-                </button>
-                <button onclick="updateOrderStatus('${docId}', 'cancelled')" class="btn-top" style="color: #dc2626; border-color: #fca5a5;">
-                    Cancel Order
-                </button>
-                <button onclick="deleteOrderPrompt('${docId}', '${o.id || docId}')" class="btn-top" style="color: #dc2626; border-color: #dc2626; margin-left: auto;">
-                    <i data-lucide="trash-2" style="width: 14px;"></i> Delete Order
-                </button>
-            `;
-            document.getElementById('modal-order-actions').innerHTML = actions;
+            const actions =
+                '<div class="order-action-label">Order Actions</div>' +
+                '<div class="order-main-actions">' +
+                    (next
+                        ? '<button type="button" class="order-main-btn next" onclick="updateOrderStatus(' + orderJs(docId) + ', \'' + next + '\')"><i data-lucide="arrow-right-circle" style="width:16px;height:16px;"></i> Next: Mark ' + orderStatusLabel(next) + '</button>'
+                        : '<button type="button" class="order-main-btn next" disabled><i data-lucide="check-circle" style="width:16px;height:16px;"></i> ' + (status === 'cancelled' ? 'Order Cancelled' : 'Order Completed') + '</button>') +
+                    '<button type="button" class="order-main-btn invoice" onclick="openOrderInvoice(' + orderJs(docId) + ')"><i data-lucide="printer" style="width:16px;height:16px;"></i> Print Invoice</button>' +
+                '</div>' +
+                '<div class="order-status-grid">' +
+                    ['confirmed','packed','shipped','delivered','cancelled'].map(function (s) {
+                        const isActive = status === s;
+                        return '<button type="button" class="order-status-btn' + (isActive ? ' active' : '') + '"' +
+                            (isActive ? ' disabled' : '') +
+                            ' onclick="updateOrderStatus(' + orderJs(docId) + ', \'' + s + '\')">' +
+                            orderStatusLabel(s) + '</button>';
+                    }).join('') +
+                '</div>' +
+                '<div class="order-danger-row">' +
+                    '<button type="button" class="order-delete-btn" onclick="deleteOrderPrompt(' + orderJs(docId) + ', ' + orderJs(orderId) + ')"><i data-lucide="trash-2" style="width:14px;height:14px;"></i> Delete Order</button>' +
+                '</div>';
 
+            document.getElementById('modal-order-actions').innerHTML = actions;
             document.getElementById('order-detail-modal').classList.add('open');
+            if (typeof lucide !== 'undefined') lucide.createIcons();
         }
 
         function closeOrderDetailModal() {
             document.getElementById('order-detail-modal').classList.remove('open');
         }
 
+        async function saveOrderAdvanced(docId) {
+            const o = liveOrders.find(function (ord) { return ord._docId === docId || ord.id === docId; });
+            if (!o) { showToast('Order not found.', true); return; }
+            const statusEl = document.getElementById('order-status-select');
+            const trackingEl = document.getElementById('order-tracking-input');
+            const noteEl = document.getElementById('order-admin-note');
+            const saveBtn = document.querySelector('.order-advanced-body .order-main-btn.next');
+            const saveLabel = saveBtn ? saveBtn.innerHTML : '';
+            const newStatus = statusEl ? statusEl.value : (o.status || 'pending');
+            const trackingNumber = trackingEl ? trackingEl.value.trim() : '';
+            const adminNote = noteEl ? noteEl.value.trim() : '';
+            if (saveBtn) {
+                saveBtn.disabled = true;
+                saveBtn.innerHTML = 'Saving…';
+            }
+            try {
+                await db.collection('orders').doc(docId).update({
+                    status: newStatus,
+                    trackingNumber: trackingNumber,
+                    adminNote: adminNote,
+                    statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp(),
+                    updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+                });
+                o.status = newStatus;
+                o.trackingNumber = trackingNumber;
+                o.adminNote = adminNote;
+                try {
+                    let local = JSON.parse(localStorage.getItem('python_orders') || '[]');
+                    let touched = false;
+                    local.forEach(function (lo) {
+                        if (lo.docId === docId || lo.id === docId || lo.id === o.id) {
+                            lo.status = newStatus;
+                            lo.trackingNumber = trackingNumber;
+                            lo.adminNote = adminNote;
+                            touched = true;
+                        }
+                    });
+                    if (touched) localStorage.setItem('python_orders', JSON.stringify(local));
+                } catch (e) {}
+                showToast('Order updated successfully.');
+                renderOrdersTable(liveOrders);
+                renderOverviewOrders(liveOrders);
+                if (typeof updateKPIs === 'function') updateKPIs();
+                if (typeof renderCustomersTable === 'function') renderCustomersTable();
+                viewOrderDetails(docId);
+            } catch (e) {
+                if (saveBtn) {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = saveLabel;
+                }
+                showToast('Update failed: ' + e.message, true);
+            }
+        }
+
         function updateOrderStatus(docId, newStatus) {
+            const actionBar = document.getElementById('modal-order-actions');
+            if (actionBar) {
+                actionBar.querySelectorAll('button').forEach(function (b) { b.disabled = true; });
+            }
             db.collection('orders').doc(docId).update({
                 status: newStatus,
                 statusUpdatedAt: firebase.firestore.FieldValue.serverTimestamp()
@@ -3587,10 +4165,21 @@
                     }
                 } catch(e) {}
 
-                showToast(`Order status updated to "${newStatus.toUpperCase()}"!`);
-                closeOrderDetailModal();
-                if (typeof renderOrdersTable === 'function') renderOrdersTable();
-            }).catch(e => showToast("Status update failed: " + e.message, true));
+                showToast(`Order marked as "${orderStatusLabel(newStatus)}".`);
+                if (typeof renderOrdersTable === 'function') renderOrdersTable(liveOrders);
+                if (typeof renderOverviewOrders === 'function') renderOverviewOrders(liveOrders.slice(0, 5));
+                if (typeof updateKPIs === 'function') updateKPIs();
+                if (typeof renderCustomersTable === 'function') renderCustomersTable();
+                // Keep the modal open and re-render it so the stepper + buttons update
+                if (document.getElementById('order-detail-modal').classList.contains('open')) {
+                    viewOrderDetails(docId);
+                }
+            }).catch(e => {
+                if (actionBar) {
+                    actionBar.querySelectorAll('button').forEach(function (b) { b.disabled = false; });
+                }
+                showToast("Status update failed: " + e.message, true);
+            });
         }
         function openOrderInvoice(docId) {
             const o = liveOrders.find(ord => ord._docId === docId || ord.id === docId);

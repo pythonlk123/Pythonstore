@@ -731,6 +731,7 @@
                 return;
             }
 
+            if (typeof syncCartWithLivePrices === 'function') syncCartWithLivePrices();
             let itemsHtml = '';
             cart.forEach(item => {
                 const itemTotal = item.price * item.quantity;

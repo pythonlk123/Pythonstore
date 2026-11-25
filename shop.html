@@ -346,6 +346,22 @@
     </div>
   </nav>
 </header>
+  <!-- Compact Black Friday Strip on Shop Page -->
+  <div class="bf-shop-strip-wrap" style="max-width: 1380px; margin: 24px auto 0; padding: 0 4%;">
+    <div class="bf-shop-strip" id="bf-shop-countdown-strip">
+      <div class="bf-shop-strip-left">
+        <span class="bf-live-dot"></span>
+        <span id="bf-shop-label-text">BLACK FRIDAY ARCHIVE DROP STARTS IN</span>
+      </div>
+      <div class="bf-shop-strip-right">
+        <span class="bf-shop-timer-pill" id="bf-shop-timer-text">00d : 00h : 00m : 00s</span>
+        <button type="button" class="bf-shop-deals-btn" onclick="selectShopBadge('BLACK FRIDAY')">
+          🔥 View Deals
+        </button>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Mobile Drawer Menu -->
   <div class="menu-overlay" id="menu-overlay"></div>
@@ -487,6 +503,9 @@
       <button class="shop-badge-pill" data-badge="LIMITED" onclick="selectShopBadge('LIMITED')">
         <span class="sbp-dot"></span> Limited
       </button>
+          <button class="shop-badge-pill" data-badge="BLACK FRIDAY" onclick="selectShopBadge('BLACK FRIDAY')" style="border-color: rgba(139, 0, 0, 0.4); color: #8B0000; font-weight: 800;">
+        <span class="sbp-dot" style="background: #8B0000;"></span> 🔥 Black Friday
+      </button>
     </div>
   </div>
 
@@ -611,6 +630,23 @@
     }
 
     loadShopCategories();
+    (function applyUrlFilterOnLoad() {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const f = (params.get('filter') || '').toLowerCase();
+        if (f === 'blackfriday' && typeof selectShopBadge === 'function') {
+          setTimeout(() => selectShopBadge('BLACK FRIDAY'), 350);
+        }
+      } catch (e) {}
+    })();
+
+    // Compatibility alias
+    function selectCategory(cat) {
+      if (typeof selectShopCategory === 'function') {
+        selectShopCategory(cat);
+      }
+    }
+
     function openSizeChart() {
       const modal = document.getElementById('sizeChartModal');
       if (modal) {
